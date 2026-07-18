@@ -1,0 +1,53 @@
+version: '3'
+
+silent: true
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  bootstrap:
+    desc: Interactively configure a repository created from this template
+    cmds:
+      - python3 scripts/bootstrap_project.py
+
+  bootstrap-config:
+    desc: Configure the repository from project.yml
+    preconditions:
+      - sh: test -f project.yml
+        msg: Copy project.config.example.yml to project.yml and edit it first.
+    cmds:
+      - python3 scripts/bootstrap_project.py --config project.yml
+
+  validate:
+    desc: Validate required structure, local links, placeholders, and configuration
+    cmds:
+      - python3 scripts/validate_repository.py
+
+  verify:
+    desc: Run the complete stack-agnostic verification suite
+    deps: [validate]
+    cmds:
+      - echo "Base repository verification passed. Add stack-specific checks to this task."
+
+  feature:
+    desc: Create a feature workspace from the standard templates
+    requires:
+      vars: [FEATURE, NAME]
+    cmds:
+      - python3 scripts/create_feature.py --feature "{{.FEATURE}}" --name "{{.NAME}}"
+
+  archive-feature:
+    desc: Archive a completed feature workspace
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 scripts/archive_feature.py --work "{{.WORK}}"
+
+  example-test:
+    desc: Run the dependency-free reference application tests
+    dir: examples/reference-project
+    cmds:
+      - node --test

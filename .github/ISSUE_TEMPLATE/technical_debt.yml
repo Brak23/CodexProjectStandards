@@ -1,0 +1,30 @@
+name: Technical debt
+description: Propose a bounded maintainability or reliability improvement
+title: "refactor: "
+labels: [technical-debt, triage]
+body:
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current cost and evidence
+      description: Describe measurable risk, delay, defects, or operational burden.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Proposed scope and non-goals
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Behavior that must remain unchanged
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification strategy
+    validations:
+      required: true

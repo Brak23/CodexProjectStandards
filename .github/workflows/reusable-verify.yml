@@ -1,0 +1,24 @@
+name: Reusable verification
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Validate repository
+        run: python3 scripts/validate_repository.py
+
+      - name: Test reference application
+        working-directory: examples/reference-project
+        run: node --test

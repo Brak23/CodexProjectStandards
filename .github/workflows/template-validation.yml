@@ -1,0 +1,39 @@
+name: Template validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: template-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Validate repository
+        run: python3 scripts/validate_repository.py
+
+      - name: Test bootstrap parser
+        run: python3 scripts/bootstrap_project.py --config project.config.example.yml --dry-run
+
+      - name: Test feature workspace creation
+        run: |
+          python3 scripts/create_feature.py --feature TEST-001 --name validation-example
+          test -f docs/work/TEST-001-validation-example/brief.md
+          rm -rf docs/work/TEST-001-validation-example
+
+      - name: Test reference application
+        working-directory: examples/reference-project
+        run: node --test

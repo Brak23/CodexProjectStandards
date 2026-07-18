@@ -1,0 +1,21 @@
+project:
+  name: Example Project
+  slug: example-project
+  description: Replace with the user and business outcome this project delivers.
+  github_owner: Brak23
+  repository_mode: solo
+  license: MIT
+
+profiles:
+  - node-typescript
+  - docker
+  - postgresql
+
+deployment_targets:
+  - github-container-registry
+  - docker-compose
+
+options:
+  keep_reference_project: false
+  preserve_template_readme: true
+  enable_semantic_release: true

@@ -1,6 +1,6 @@
 # AI-Assisted Full-Stack Project Standards
 
-A production-grade GitHub template for planning, building, reviewing, documenting, releasing, and operating software with Codex and Claude Code.
+A production-grade GitHub template for planning, building, reviewing, documenting, releasing, and operating software with AI coding agents.
 
 This repository treats AI coding as a governed engineering workflow:
 
@@ -14,62 +14,21 @@ This repository treats AI coding as a governed engineering workflow:
 
 It becomes the permanent operating structure for the project: agent instructions, documentation locations, testing expectations, security rules, pull request standards, and release controls.
 
-You do **not** create a fresh copy of this template for every feature or bug fix. Once the project uses it, each individual change follows a lighter or heavier version of the workflow based on risk.
+You do **not** create a fresh copy for every feature or bug fix. Each change follows a lighter or heavier workflow based on its scope and risk.
 
-### How much process does each change need?
+> **Remember:** one template per codebase, then choose the amount of process per change.
 
-#### Tiny, low-risk change: use the light workflow
+### Choose the workflow
 
-Examples:
+- **Light:** typo, docs, small UI issue, or contained low-risk bug.
+- **Full Feature:** new capability, API, integration, dependency, significant refactor, or multi-module behavior change.
+- **High Risk:** authentication, permissions, payments, sensitive data, migrations, infrastructure access, secrets, or breaking public contracts.
 
-- Fix a typo.
-- Correct a small display issue.
-- Make a simple, well-understood bug fix in one area.
-- Update documentation without changing behavior.
+Use the visual guide at [`docs/getting-started/workflow-decision-tree.md`](docs/getting-started/workflow-decision-tree.md), or run:
 
-Usually required:
-
-- Understand the current behavior.
-- Make the smallest focused change.
-- Run the relevant tests and `task verify`.
-- Use a branch and pull request.
-
-Usually **not** required:
-
-- A full feature workspace.
-- A long execution plan.
-- Architecture or threat-model documentation.
-
-#### Normal feature or meaningful change: use the full feature workflow
-
-Examples:
-
-- Add a new user-facing feature.
-- Change behavior across multiple files or modules.
-- Add an API, integration, background job, or significant refactor.
-- Change data handling, permissions, dependencies, or deployment behavior.
-
-Use:
-
-1. A feature brief.
-2. Read-only repository discovery.
-3. An approved execution plan.
-4. Agent implementation on a branch.
-5. Independent review.
-6. Full verification evidence.
-7. Human-controlled merge and release.
-
-#### High-risk change: use the full workflow plus extra safeguards
-
-Examples:
-
-- Authentication or authorization.
-- Payments or financial calculations.
-- Sensitive or regulated data.
-- Database migrations with production data.
-- Infrastructure permissions, secrets, or public breaking changes.
-
-Also require the applicable threat model, migration plan, rollback plan, security review, staged rollout, and explicit human approval.
+```bash
+task recommend
+```
 
 ### Good fit
 
@@ -77,8 +36,8 @@ Use this for:
 
 - A new app, API, service, CLI, library, or monorepo you expect to maintain.
 - An existing codebase that needs clearer structure and safer AI-assisted development.
-- Personal projects that may grow beyond a prototype.
-- Professional or team projects where Codex or Claude Code will make meaningful changes.
+- A personal project that may grow beyond a prototype.
+- A professional or team project where an AI agent will make meaningful changes.
 
 ### Probably not worth it
 
@@ -89,21 +48,37 @@ Skip the full template for:
 - A disposable proof of concept.
 - A tiny repository you do not expect to maintain.
 
-A small bug fix **inside a project already using this template** still follows the repository's basic rules, but it normally uses the light workflow rather than the full feature process.
+A small bug fix inside a project already using this template still follows the repository's baseline rules, but normally uses the light workflow instead of the full feature process.
 
-> **Remember:** one template per codebase, then choose the amount of process per change.
+## What this template does not do
 
-For the same guidance as a permanent project document, see [`docs/getting-started/when-to-use-this.md`](docs/getting-started/when-to-use-this.md).
+- It does not generate a finished application.
+- It does not choose every framework or architecture for you.
+- It does not make an AI agent automatically correct.
+- It does not replace meaningful tests, review, or product judgment.
+- It does not allow an agent to approve its own risky decisions, merge, or production release.
+- It does not require maximum ceremony for every small change.
+
+## Two commands to remember
+
+```bash
+task doctor     # What is missing from this repository?
+task recommend  # How much workflow does this change need?
+```
+
+`task doctor` reports the repository's adoption health and highest-priority gaps. It also reminds you which GitHub settings require manual confirmation.
 
 ## What this template provides
 
 - A root `AGENTS.md` operating contract for Codex and compatible agents.
 - A `CLAUDE.md` entry point for Claude Code.
+- A model-agnostic compatibility standard for other coding agents.
 - Feature briefs, execution plans, decision logs, and verification evidence.
 - Stack-agnostic product, architecture, engineering, security, release, and operations standards.
 - Optional standards profiles for TypeScript/Node, Next.js/React, Python, Docker, PostgreSQL, and Terraform.
 - Structured GitHub issues, PR evidence requirements, CODEOWNERS, Dependabot, CI validation, and semantic releases.
 - Interactive and configuration-driven bootstrap.
+- A workflow recommender and repository health doctor.
 - A reference project used to verify the template itself.
 
 This is a **standards scaffold with bootstrap automation**, not a framework-specific application generator. Selected profiles define the controls and commands a project should implement. They do not generate production application code.
@@ -121,8 +96,6 @@ The repository pins Python, Node.js, and Task in `.mise.toml`. With Mise install
 ```bash
 mise install
 ```
-
-You may also install Task separately and use the system Python and Node versions documented by the project.
 
 ### 3. Configure the project
 
@@ -148,13 +121,14 @@ Bootstrap records and applies:
 - Project README and committed `project.yml`.
 - Private security-reporting link.
 - Project validation and optional semantic-release workflows.
-- Template provenance without retaining broken template-relative documentation links.
+- Template provenance without broken template-relative links.
 
 The bootstrap is idempotent. Running it again with the same `project.yml` must not change the repository.
 
-### 4. Validate the repository
+### 4. Check readiness
 
 ```bash
+task doctor
 task verify
 ```
 
@@ -164,7 +138,11 @@ task verify
 
 Repository settings cannot be applied by copied files alone. Follow [`docs/security/github-hardening.md`](docs/security/github-hardening.md) and [`docs/getting-started/customization-checklist.md`](docs/getting-started/customization-checklist.md).
 
-### 6. Start the first feature
+### 6. Follow the golden path
+
+See [`docs/getting-started/golden-path.md`](docs/getting-started/golden-path.md) for the complete path from repository creation through release.
+
+For a normal first feature:
 
 ```bash
 task feature FEATURE=APP-001 NAME=user-authentication
@@ -181,14 +159,42 @@ Then:
 7. Open a draft PR.
 8. Human-review, merge, deploy, and verify production behavior.
 
+## Prompt entry points
+
+Start at [`docs/prompts/README.md`](docs/prompts/README.md) for ready-to-copy prompts covering:
+
+- New projects.
+- Workflow classification.
+- Small bug fixes.
+- New features.
+- Planning and implementation.
+- Architecture and security review.
+- Release and postmortems.
+
+## Project maturity
+
+Use [`docs/getting-started/maturity-model.md`](docs/getting-started/maturity-model.md) to choose controls appropriate for a disposable experiment, maintained personal project, professional solo project, small team, or regulated enterprise environment.
+
+## AI agent compatibility
+
+The standards are the durable layer. Codex, Claude Code, Cursor, Gemini CLI, Aider, and future agents are adapters to that layer.
+
+See [`docs/engineering/agent-compatibility.md`](docs/engineering/agent-compatibility.md). Tool-specific entry files should delegate to `AGENTS.md` rather than copy and drift the rules.
+
 ## Documentation map
 
 | Need | Start here |
 | --- | --- |
-| Decide whether this template or full workflow applies | [`docs/getting-started/when-to-use-this.md`](docs/getting-started/when-to-use-this.md) |
+| Decide which workflow applies | [`docs/getting-started/workflow-decision-tree.md`](docs/getting-started/workflow-decision-tree.md) |
+| Follow an end-to-end example | [`docs/getting-started/golden-path.md`](docs/getting-started/golden-path.md) |
+| Choose project maturity controls | [`docs/getting-started/maturity-model.md`](docs/getting-started/maturity-model.md) |
 | Configure a new project | [`docs/getting-started/README.md`](docs/getting-started/README.md) |
+| Copy a starting prompt | [`docs/prompts/README.md`](docs/prompts/README.md) |
+| Understand why the rules exist | [`docs/philosophy.md`](docs/philosophy.md) |
 | Understand the human-agent workflow | [`docs/engineering/ai-assisted-development.md`](docs/engineering/ai-assisted-development.md) |
-| Reuse agent prompts | [`docs/engineering/prompt-library.md`](docs/engineering/prompt-library.md) |
+| Adapt another coding agent | [`docs/engineering/agent-compatibility.md`](docs/engineering/agent-compatibility.md) |
+| Report confidence and escalation | [`docs/engineering/confidence-and-escalation.md`](docs/engineering/confidence-and-escalation.md) |
+| Reuse specialist agent prompts | [`docs/engineering/prompt-library.md`](docs/engineering/prompt-library.md) |
 | Understand enforceable versus manual controls | [`docs/engineering/enforcement-matrix.md`](docs/engineering/enforcement-matrix.md) |
 | Request a standards exception | [`docs/engineering/exception-process.md`](docs/engineering/exception-process.md) |
 | Understand agent rules | [`AGENTS.md`](AGENTS.md) and [`CLAUDE.md`](CLAUDE.md) |

@@ -1,6 +1,9 @@
 # Repository utilities
 
 - `bootstrap_project.py`: Interactive or config-driven, atomic, idempotent project initialization.
+- `bootstrap_next_steps.py`: Concise post-bootstrap handoff and next commands.
+- `doctor.py`: Repository adoption health report used by `task doctor`.
+- `recommend_workflow.py`: Light, Full Feature, or High-Risk workflow recommendation used by `task recommend`.
 - `validate_repository.py`: Dynamic template or generated-project structure, local-link, workflow, and safety validation.
 - `verify_project.py`: Authoritative stack-agnostic verification contract used by `task verify` and CI.
 - `test_bootstrap.py`: Two-pass end-to-end bootstrap integration test in an isolated repository copy.

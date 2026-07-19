@@ -2,10 +2,12 @@
 
 Documentation is separated by purpose so agents and humans can find authoritative information quickly.
 
-- [`getting-started/`](getting-started/README.md): Create and configure a project.
+- [`getting-started/`](getting-started/README.md): Decide when to use the template, choose a workflow, configure a project, and follow the golden path.
+- [`prompts/`](prompts/README.md): Copy-ready entry prompts for common development stages.
+- [`philosophy.md`](philosophy.md): Why the operating model and controls exist.
 - [`product/`](product/README.md): Product intent, domain concepts, users, and success measures.
 - [`architecture/`](architecture/README.md): Components, boundaries, data ownership, interfaces, and ADRs.
-- [`engineering/`](engineering/README.md): Coding, testing, review, AI workflow, enforcement, exceptions, and releases.
+- [`engineering/`](engineering/README.md): Coding, testing, review, agent compatibility, confidence, enforcement, exceptions, and releases.
 - [`security/`](security/README.md): Risk classification, threat modeling, supply chain, and GitHub hardening.
 - [`contracts/`](contracts/README.md): API, event, and schema design standards.
 - [`operations/`](operations/README.md): Deployment, migrations, rollback, observability, incidents, and recovery.

@@ -1,40 +1,61 @@
 # Getting started
 
-## New project checklist
+## Create and configure a project
 
-1. Create a repository using this GitHub template.
+1. Create a repository from the GitHub template.
 2. Clone it locally.
-3. Run `task bootstrap` or configure `project.yml` and run `task bootstrap-config`.
-4. Review the generated README and `project.yml`.
-5. Select and adapt stack profiles from `docs/profiles/`.
-6. Replace base `task verify` with real stack checks while preserving the stable command.
-7. Configure GitHub protections using `docs/security/github-hardening.md`.
-8. Configure private vulnerability reporting.
-9. Configure deployment environments and OIDC.
-10. Run `task verify` before the first pull request.
+3. Install the versions in `.mise.toml` or equivalent pinned versions.
+4. Run `task bootstrap`, or copy `project.config.example.yml` to `project.yml` and run `task bootstrap-config`.
+5. Commit the generated `project.yml`. It contains non-secret canonical project metadata.
+6. Review the generated README, CODEOWNERS, LICENSE, security link, and workflows.
+7. Implement the selected stack profiles behind stable Task commands.
+8. Run `task verify`.
+9. Configure GitHub repository settings using the hardening checklist.
+10. Start feature work only after the base repository passes CI.
+
+## Configuration fields
+
+`project.yml` records:
+
+- `project.name`
+- `project.type`: `web-app`, `api`, `service`, `cli`, `library`, `monorepo`, or `other`
+- `project.description`
+- `project.license`: `MIT`, `Apache-2.0`, or `Proprietary`
+- `project.license_holder`
+- `project.license_year`
+- `repository.owner`
+- `repository.name`
+- `repository.mode`: `solo` or `team`
+- `repository.codeowners`: valid GitHub users or `@organization/team` entries
+- `profiles`
+- `deployment_targets`
+- bootstrap options
+
+The repository owner and CODEOWNER are separate concepts. An organization repository normally uses a person or organization team as CODEOWNER.
+
+## Selected profiles
+
+Profiles are standards overlays, not application generators. For every selected profile:
+
+1. Read its document under `docs/profiles/`.
+2. Add the relevant runtime, package, build, test, and security configuration.
+3. Implement stable Task commands.
+4. Add stack-specific checks under `scripts/verify.d/`; `task verify` and CI execute them through the same script.
+5. Add nested `AGENTS.md` only when a directory has genuinely different rules.
 
 ## First feature
-
-Create a workspace:
 
 ```bash
 task feature FEATURE=APP-001 NAME=first-capability
 ```
 
-Complete and approve `brief.md`, then have the agent perform discovery and draft `plan.md`. Do not allow implementation to begin while blocking product, security, data, cost, or compatibility decisions remain.
+Complete and approve `brief.md`, then have the agent perform discovery and draft `plan.md`. Do not allow implementation while blocking product, security, data, cost, or compatibility decisions remain.
 
-## Files you should customize immediately
+## Bootstrap safety
 
-- `README.md`
-- `project.yml`
-- `CODEOWNERS`
-- `.github/ISSUE_TEMPLATE/config.yml`
-- `docs/product/vision.md`
-- `docs/product/domain-model.md`
-- `docs/architecture/overview.md`
-- `docs/architecture/boundaries.md`
-- `docs/operations/deployment.md`
-- `docs/operations/rollback.md`
-- `docs/operations/observability.md`
-
-See [`customization-checklist.md`](customization-checklist.md) for the full handoff checklist.
+- Bootstrap is deterministic and idempotent.
+- It writes files atomically.
+- It regenerates managed ownership, security, README, license, and workflow files from `project.yml`.
+- It replaces template-only validation with project validation.
+- It removes the reference project only when configured.
+- `task verify` includes a real two-pass bootstrap integration test while this repository remains a template source.

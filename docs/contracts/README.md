@@ -2,6 +2,9 @@
 
 Machine-consumable contracts are authoritative for interfaces.
 
+- [`api-design.md`](api-design.md): HTTP APIs, errors, compatibility, authorization, and reliability.
+- [`event-design.md`](event-design.md): Event identity, semantics, evolution, and consumer safety.
+
 Recommended locations:
 
 - `docs/contracts/openapi.yaml` for HTTP APIs.

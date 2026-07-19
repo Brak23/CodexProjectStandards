@@ -3,9 +3,6 @@
 .env.*
 !.env.example
 
-# Generated local configuration
-project.yml
-
 # Editors and operating systems
 .DS_Store
 Thumbs.db

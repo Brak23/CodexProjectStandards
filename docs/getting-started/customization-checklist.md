@@ -2,11 +2,12 @@
 
 ## Repository identity
 
-- [ ] Project name and description are accurate.
+- [ ] `project.yml` is committed and accurate.
+- [ ] Project name, type, description, and repository path are accurate.
 - [ ] Repository visibility is correct.
-- [ ] GitHub template source references are retained or removed intentionally.
-- [ ] License is correct.
-- [ ] CODEOWNERS uses valid users or teams.
+- [ ] License file, holder, and year match `project.yml`.
+- [ ] CODEOWNERS contains valid users or organization teams with repository access.
+- [ ] Private security reporting link targets the generated repository.
 
 ## Product
 
@@ -19,20 +20,23 @@
 
 - [ ] Runtime components are documented.
 - [ ] Dependency direction is documented.
-- [ ] Data ownership and system of record are documented.
+- [ ] Data ownership and systems of record are documented.
 - [ ] Authentication and authorization boundaries are documented.
 - [ ] External dependencies and failure behavior are documented.
 
 ## Engineering
 
+- [ ] Selected stack profiles have been implemented, not merely listed.
 - [ ] `task setup`, `task dev`, `task test`, `task verify`, and `task build` are implemented as applicable.
-- [ ] Formatting, lint, type checking, tests, and build run in CI.
-- [ ] Stack-specific nested `AGENTS.md` files contain only local differences.
-- [ ] Test strategy matches system risk.
+- [ ] Formatting, linting, type checking, tests, security checks, and build are implemented as `scripts/verify.d/` hooks and reachable through `task verify`.
+- [ ] GitHub Actions uses the same verification contract.
+- [ ] Nested `AGENTS.md` files contain only local differences.
+- [ ] Enforcement matrix reflects actual mechanisms.
 
 ## Security
 
-- [ ] Branch protection is enabled.
+- [ ] Branch ruleset is enabled.
+- [ ] Solo or team approval mode is selected intentionally.
 - [ ] Secret scanning and push protection are enabled where available.
 - [ ] Dependabot and dependency review are enabled.
 - [ ] CodeQL or equivalent analysis is enabled.
@@ -42,8 +46,9 @@
 
 ## Operations
 
-- [ ] Deployment and rollback are executable.
 - [ ] Staging and production environments are protected.
+- [ ] Deployment and rollback are executable.
 - [ ] Logs, metrics, traces, and release markers exist.
 - [ ] SLOs and actionable alerts are defined.
 - [ ] Backup restore has been tested where data is persistent.
+- [ ] Incident and postmortem ownership is defined.

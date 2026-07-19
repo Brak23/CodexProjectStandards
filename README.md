@@ -6,6 +6,95 @@ This repository treats AI coding as a governed engineering workflow:
 
 > Human-owned intent, agent-executed implementation, deterministic verification, independent review, and human-controlled merge and production release.
 
+## Start here: when do I use this?
+
+### The main answer
+
+**Use this template once for the entire repository and codebase.**
+
+It becomes the permanent operating structure for the project: agent instructions, documentation locations, testing expectations, security rules, pull request standards, and release controls.
+
+You do **not** create a fresh copy of this template for every feature or bug fix. Once the project uses it, each individual change follows a lighter or heavier version of the workflow based on risk.
+
+### How much process does each change need?
+
+#### Tiny, low-risk change: use the light workflow
+
+Examples:
+
+- Fix a typo.
+- Correct a small display issue.
+- Make a simple, well-understood bug fix in one area.
+- Update documentation without changing behavior.
+
+Usually required:
+
+- Understand the current behavior.
+- Make the smallest focused change.
+- Run the relevant tests and `task verify`.
+- Use a branch and pull request.
+
+Usually **not** required:
+
+- A full feature workspace.
+- A long execution plan.
+- Architecture or threat-model documentation.
+
+#### Normal feature or meaningful change: use the full feature workflow
+
+Examples:
+
+- Add a new user-facing feature.
+- Change behavior across multiple files or modules.
+- Add an API, integration, background job, or significant refactor.
+- Change data handling, permissions, dependencies, or deployment behavior.
+
+Use:
+
+1. A feature brief.
+2. Read-only repository discovery.
+3. An approved execution plan.
+4. Agent implementation on a branch.
+5. Independent review.
+6. Full verification evidence.
+7. Human-controlled merge and release.
+
+#### High-risk change: use the full workflow plus extra safeguards
+
+Examples:
+
+- Authentication or authorization.
+- Payments or financial calculations.
+- Sensitive or regulated data.
+- Database migrations with production data.
+- Infrastructure permissions, secrets, or public breaking changes.
+
+Also require the applicable threat model, migration plan, rollback plan, security review, staged rollout, and explicit human approval.
+
+### Good fit
+
+Use this for:
+
+- A new app, API, service, CLI, library, or monorepo you expect to maintain.
+- An existing codebase that needs clearer structure and safer AI-assisted development.
+- Personal projects that may grow beyond a prototype.
+- Professional or team projects where Codex or Claude Code will make meaningful changes.
+
+### Probably not worth it
+
+Skip the full template for:
+
+- A throwaway script.
+- A one-file experiment.
+- A disposable proof of concept.
+- A tiny repository you do not expect to maintain.
+
+A small bug fix **inside a project already using this template** still follows the repository's basic rules, but it normally uses the light workflow rather than the full feature process.
+
+> **Remember:** one template per codebase, then choose the amount of process per change.
+
+For the same guidance as a permanent project document, see [`docs/getting-started/when-to-use-this.md`](docs/getting-started/when-to-use-this.md).
+
 ## What this template provides
 
 - A root `AGENTS.md` operating contract for Codex and compatible agents.
@@ -96,6 +185,7 @@ Then:
 
 | Need | Start here |
 | --- | --- |
+| Decide whether this template or full workflow applies | [`docs/getting-started/when-to-use-this.md`](docs/getting-started/when-to-use-this.md) |
 | Configure a new project | [`docs/getting-started/README.md`](docs/getting-started/README.md) |
 | Understand the human-agent workflow | [`docs/engineering/ai-assisted-development.md`](docs/engineering/ai-assisted-development.md) |
 | Reuse agent prompts | [`docs/engineering/prompt-library.md`](docs/engineering/prompt-library.md) |

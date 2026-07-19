@@ -1,6 +1,6 @@
 # AI engineering prompt library
 
-Use these prompts with the repository files as the source of truth. Replace bracketed values.
+Use these specialist prompts with the repository files as the source of truth. For short copy-ready prompts organized by common starting situation, begin at [`../prompts/README.md`](../prompts/README.md). Replace bracketed values.
 
 ## Ideation and specification
 
@@ -48,5 +48,5 @@ The implementation failed verification. Revert speculative repairs, reproduce fr
 ## PR preparation
 
 ```text
-Generate the PR description from the final diff and actual verification results. Include user-visible behavior, deliberately unchanged behavior, architecture, security, data, exact checks, rollout, rollback, and limitations. Do not claim secure, backward compatible, fully tested, or production ready without explicit evidence.
+Generate the PR description from the final diff and actual verification results. Include user-visible behavior, deliberately unchanged behavior, architecture, security, data, exact checks, rollout, rollback, limitations, and evidence-based confidence. Do not claim secure, backward compatible, fully tested, or production ready without explicit evidence.
 ```

@@ -20,6 +20,7 @@ def run(command: list[str], cwd: Path = ROOT) -> None:
 
 def main() -> int:
     run([sys.executable, "scripts/validate_repository.py"])
+    run([sys.executable, "scripts/validate_agent_governance.py"])
     run([sys.executable, "scripts/doctor.py", "--strict"])
     run([sys.executable, "scripts/recommend_workflow.py", "add", "a", "new", "API", "endpoint"])
 

@@ -1,4 +1,4 @@
 [tools]
 python = "3.12"
 node = "24"
-task = "latest"
+task = "3.51.1"

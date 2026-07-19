@@ -22,15 +22,14 @@ tasks:
       - python3 scripts/bootstrap_project.py --config project.yml
 
   validate:
-    desc: Validate required structure, local links, placeholders, and configuration
+    desc: Validate required structure, local links, workflows, and configuration
     cmds:
       - python3 scripts/validate_repository.py
 
   verify:
-    desc: Run the complete stack-agnostic verification suite
-    deps: [validate]
+    desc: Run the authoritative stack-agnostic verification contract
     cmds:
-      - echo "Base repository verification passed. Add stack-specific checks to this task."
+      - python3 scripts/verify_project.py
 
   feature:
     desc: Create a feature workspace from the standard templates
@@ -47,7 +46,11 @@ tasks:
       - python3 scripts/archive_feature.py --work "{{.WORK}}"
 
   example-test:
-    desc: Run the dependency-free reference application tests
-    dir: examples/reference-project
+    desc: Run the dependency-free reference application tests when present
     cmds:
-      - node --test
+      - |
+        if [ -f examples/reference-project/package.json ]; then
+          cd examples/reference-project && node --test
+        else
+          echo "Reference project is not present."
+        fi

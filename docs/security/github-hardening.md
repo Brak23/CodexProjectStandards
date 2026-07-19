@@ -1,24 +1,25 @@
 # GitHub hardening checklist
 
-## Repository settings
+Complete these settings after bootstrap. Repository files can recommend controls, but GitHub settings enforce them.
 
-Enable the repository as a template when applicable. Disable unused merge methods and prefer squash merge. Enable automatic branch deletion only when desired.
+## 1. Repository identity and template status
 
-## Branch protection for `main`
+For the standards source repository, enable **Template repository**. Generated projects should normally leave that setting off unless they are intentionally reusable templates.
 
-Require:
+Confirm visibility, description, topics, default branch, and vulnerability-reporting contact.
 
-- Pull request before merging
-- Required status checks
-- Resolved conversations
-- No force pushes
-- No deletion
-- Linear history or squash merge
-- CODEOWNER review for sensitive paths
+## 2. Merge behavior
 
-Team mode also requires at least one approval and dismissal of stale approvals after material changes. Apply rules to administrators except documented emergencies.
+- Enable squash merge.
+- Disable merge commits and rebase merge unless the project intentionally uses them.
+- Enable automatic deletion of head branches if desired.
+- Require branches to be up to date only when the CI and queue strategy supports it.
 
-## Security features
+## 3. Default Actions permissions
+
+Set the default `GITHUB_TOKEN` permission to read-only. Grant write permissions only on the individual jobs that need them.
+
+## 4. Security features
 
 Enable where available:
 
@@ -29,18 +30,44 @@ Enable where available:
 - Private vulnerability reporting
 - Dependency review for pull requests
 
-## GitHub Actions
+Copy the optional workflows from `templates/github-actions/` only after selecting the actual languages and package ecosystems.
 
-- Default token permission is read-only.
-- Grant permissions per job.
-- Pin third-party actions to full commit SHAs.
-- Do not execute fork-controlled code in privileged `pull_request_target` or `workflow_run` contexts.
-- Use OIDC for cloud access.
-- Protect staging and production environments.
-- Prevent deployment initiators from self-approving.
-- Use concurrency controls for deployments.
-- Build once and promote the same immutable artifact.
+## 5. Ruleset for `main`
 
-## Manual steps after bootstrap
+Require:
 
-The bootstrap cannot configure repository settings. Complete this checklist in GitHub before production work begins.
+- Pull request before merging
+- Required `verify` or project-validation status check
+- Resolved review conversations
+- No force pushes
+- No deletion
+- Linear history
+- CODEOWNER review for sensitive paths when using team mode
+- Rules applied to administrators except a documented emergency bypass role
+
+### Solo versus team approval
+
+A required approval needs a different eligible reviewer from the PR author. For a truly solo repository, omit the approval requirement but keep PRs, CI, conversations, CODEOWNERS visibility, and production approval. For team mode, require at least one approval and dismiss stale approvals after material changes.
+
+## 6. Protected environments
+
+Create `staging` and `production` environments before adding deployment workflows.
+
+For production:
+
+- Require named reviewers who did not initiate the deployment where practical.
+- Restrict deployment branches or tags.
+- Store only environment-specific secrets that cannot use OIDC.
+- Prefer OIDC and short-lived cloud roles.
+- Add concurrency controls to prevent overlapping deployments.
+
+## 7. Supply-chain settings
+
+- Require dependency review and code scanning checks where configured.
+- Keep actions pinned to full commit SHAs.
+- Generate SBOM and provenance for deployable artifacts.
+- Build once and promote the exact digest.
+
+## 8. Validate enforcement
+
+Run `task verify`, open a test pull request, and confirm the ruleset blocks merge until required checks and reviews are satisfied. Record the actual enforcement state in `docs/engineering/enforcement-matrix.md`.

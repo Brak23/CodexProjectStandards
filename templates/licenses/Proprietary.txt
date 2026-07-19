@@ -1,0 +1,3 @@
+Copyright (c) {year} {holder}
+
+All rights reserved. This source code and associated documentation are proprietary and confidential. No permission is granted to use, copy, modify, publish, distribute, sublicense, or sell any portion without prior written authorization from the copyright holder.

@@ -28,6 +28,7 @@ Before changing code, read:
 - `docs/engineering/security-standards.md`
 - `docs/engineering/code-review.md`
 - `docs/engineering/enforcement-matrix.md`
+- `docs/design/README.md` for user-facing interface work
 - Relevant nested `AGENTS.md` files
 - The approved feature brief and execution plan
 
@@ -69,7 +70,9 @@ For non-trivial work:
 5. Separate explicit requirements from assumptions.
 6. Create or update the ExecPlan using `.agent/PLANS.md`.
 7. Map every acceptance criterion to planned implementation and verification.
-8. Stop before editing if a blocking product, security, data, cost, or compatibility decision is unresolved.
+8. Stop before editing if a blocking product, security, data, cost, design, usability, or compatibility decision is unresolved.
+
+For UI-significant work, also inspect the existing design system and comparable interfaces, then complete or review `ux-requirements.md`. Do not infer missing interaction, content, responsive, or accessibility decisions from a static mockup.
 
 ## Implementation rules
 
@@ -84,6 +87,20 @@ For non-trivial work:
 - Do not suppress an error before establishing its root cause.
 - Keep the repository coherent after each milestone.
 - Update plan progress, decisions, unexpected findings, and evidence as work proceeds.
+
+## UX and UI rules
+
+For user-facing changes:
+
+- Reuse established components, semantic tokens, interaction patterns, and terminology before creating alternatives.
+- Define applicable loading, empty, error, success, disabled, read-only, permission-denied, partial, and recovery states.
+- Preserve semantic HTML, keyboard operation, visible focus, focus restoration, screen-reader meaning, zoom, and reduced-motion behavior.
+- Design responsive reflow deliberately; do not merely shrink or hide essential desktop content.
+- Keep business and authorization policy outside presentational components.
+- Review user-facing content in the implemented interface.
+- Record narrow and wide visual evidence plus important non-ideal states.
+- Document intentional differences from approved designs.
+- Use `docs/design/ui-review-checklist.md` and `ui-verification.md` for significant UI work.
 
 ## Protected surfaces
 
@@ -162,6 +179,8 @@ A targeted test proves only targeted behavior. Run and record the applicable lad
 9. Critical end-to-end smoke tests
 10. Production-like validation when warranted
 
+For UI-significant changes, add applicable component interaction tests, automated accessibility checks, keyboard and focus testing, responsive and zoom verification, screen-reader testing, visual regression, content review, and usability evidence.
+
 Record exact commands, environment, commit SHA, exit codes, test counts, skips, findings, and artifact locations.
 
 ## Documentation rules
@@ -169,7 +188,7 @@ Record exact commands, environment, commit SHA, exit codes, test counts, skips, 
 - Documentation must describe final verified behavior, not the original plan.
 - Commands and examples must be executed or mechanically checked where practical.
 - Mark behavior as implemented, planned, deprecated, experimental, or unknown.
-- Omit claims that cannot be traced to code, schema, test, command output, ADR, issue, or PR.
+- Omit claims that cannot be traced to code, schema, test, command output, ADR, issue, PR, approved design decision, or research evidence.
 - Update documentation in the same PR as behavior.
 - Create changelog or release-note entries only for meaningful user, operator, or integrator impact.
 

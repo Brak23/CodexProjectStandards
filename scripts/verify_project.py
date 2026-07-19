@@ -20,6 +20,8 @@ def run(command: list[str], cwd: Path = ROOT) -> None:
 
 def main() -> int:
     run([sys.executable, "scripts/validate_repository.py"])
+    run([sys.executable, "scripts/doctor.py", "--strict"])
+    run([sys.executable, "scripts/recommend_workflow.py", "add", "a", "new", "API", "endpoint"])
 
     project_config = ROOT / "project.yml"
     if project_config.exists():

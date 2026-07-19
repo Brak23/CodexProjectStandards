@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recommend a workflow level from explicit risk questions."""
+"""Recommend a workflow level from impact, reversibility, and risk questions."""
 
 from __future__ import annotations
 
@@ -7,14 +7,15 @@ import argparse
 
 HIGH_RISK_TERMS = {
     "auth", "authentication", "authorization", "permission", "payment", "billing",
-    "financial", "sensitive", "regulated", "pii", "phi", "migration", "database",
-    "infrastructure", "iam", "secret", "breaking", "encryption", "production data",
+    "financial", "sensitive", "regulated", "pii", "phi", "migration", "production data",
+    "infrastructure", "iam", "secret", "breaking", "encryption", "tenant isolation",
 }
 FEATURE_TERMS = {
     "feature", "api", "endpoint", "integration", "dependency", "refactor", "module",
     "background job", "queue", "schema", "workflow", "new screen", "new page",
+    "global css", "theme token", "design system", "shared component",
 }
-LIGHT_TERMS = {"typo", "docs", "documentation", "copy", "small bug", "css", "display", "label"}
+LIGHT_TERMS = {"typo", "docs", "documentation", "copy edit", "small bug", "display issue", "label text"}
 
 
 def yes_no(question: str) -> bool:
@@ -37,36 +38,41 @@ def classify(description: str, interactive: bool) -> tuple[str, list[str]]:
 
     high = bool(matched_high)
     feature = bool(matched_feature)
+    localized = bool(matched_light) and not high and not feature
 
     if matched_high:
-        reasons.append("High-risk topic detected: " + ", ".join(matched_high))
+        reasons.append("High-risk surface detected: " + ", ".join(matched_high))
     if matched_feature:
-        reasons.append("Meaningful feature/change topic detected: " + ", ".join(matched_feature))
+        reasons.append("Meaningful or cross-boundary change detected: " + ", ".join(matched_feature))
 
     if interactive:
-        if yes_no("Does this affect authentication, permissions, payments, sensitive data, production migrations, infrastructure access, secrets, or a breaking public contract?"):
+        trust_or_sensitive = yes_no("Does this affect trust boundaries, permissions, payments, sensitive data, secrets, or regulated behavior?")
+        production_or_contract = yes_no("Does this affect production data, migrations, infrastructure, or a breaking public contract?")
+        cross_boundary = yes_no("Does this add behavior, span modules, change shared UI, add a dependency, or require architecture/design tradeoffs?")
+        low_reversibility = yes_no("Would rollback be difficult, incomplete, or operationally risky?")
+        meaningful_unknowns = yes_no("Are important requirements, failure modes, environments, or verification paths still uncertain?")
+        localized = yes_no("Is the change localized, well understood, easily reversible, and low blast radius?")
+
+        if trust_or_sensitive or production_or_contract or low_reversibility:
             high = True
-            reasons.append("You identified a high-risk surface.")
-        if yes_no("Does this add meaningful behavior, span modules, add an API/integration/dependency, or require design tradeoffs?"):
+            reasons.append("Impact or reversibility requires the high-risk workflow.")
+        if cross_boundary or meaningful_unknowns:
             feature = True
-            reasons.append("You identified a meaningful feature or cross-boundary change.")
-        localized = yes_no("Is it localized, well understood, reversible, and low blast radius?")
-    else:
-        localized = bool(matched_light) and not feature and not high
+            reasons.append("Scope or uncertainty requires specification and planning.")
 
     if high:
         return "HIGH-RISK", reasons
     if feature or not localized:
         if not reasons:
-            reasons.append("The change is not clearly a tiny localized edit.")
+            reasons.append("The change is not clearly localized, reversible, and low blast radius.")
         return "FULL FEATURE", reasons
-    reasons.append("The change appears localized, reversible, and low risk.")
+    reasons.append("The change appears localized, reversible, well understood, and low risk.")
     return "LIGHT", reasons
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Recommend Light, Full Feature, or High-Risk workflow.")
-    parser.add_argument("description", nargs="*", help="Optional change description. Omit for interactive mode.")
+    parser.add_argument("description", nargs="*", help="Optional change description. Omit for interactive impact questions.")
     args = parser.parse_args()
 
     interactive = not args.description
@@ -87,9 +93,10 @@ def main() -> int:
     elif workflow == "FULL FEATURE":
         print("\nCreate a feature workspace, approve the brief and plan, implement on a branch, independently review, and record verification evidence.")
     else:
-        print("\nUse the full feature workflow plus the applicable threat model, migration, rollback, security review, staged rollout, and explicit human approvals.")
+        print("\nUse the full feature workflow plus applicable specialist review, threat model, migration, rollback, staged rollout, and explicit human approvals.")
 
-    print("\nGuide: docs/getting-started/workflow-decision-tree.md")
+    print("\nAdvisory only: classify upward when discovery reveals greater blast radius, lower reversibility, new trust boundaries, public contracts, or material unknowns.")
+    print("Guide: docs/getting-started/workflow-decision-tree.md")
     return 0
 
 

@@ -1,0 +1,13 @@
+---
+description: Load the repository's authoritative AI-assisted development contract and governance controls.
+globs:
+alwaysApply: true
+---
+
+Read and follow these files before changing code:
+
+@AGENTS.md
+@agent-context.yml
+@agent-policy.yml
+
+For non-trivial work, also read the applicable feature `state.yml`, approved brief, approved plan, and relevant nested `AGENTS.md` files. Do not duplicate or weaken the imported rules in Cursor-specific instructions.

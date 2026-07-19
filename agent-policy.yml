@@ -1,0 +1,80 @@
+version: 1
+
+default: prohibited
+
+status_values:
+  - allowed
+  - approval_required
+  - prohibited
+
+permissions:
+  repository_read:
+    status: allowed
+    constraints:
+      - Respect ignore files, access controls, and data-classification rules.
+  repository_write:
+    status: allowed
+    constraints:
+      - Work only on an agent-owned branch or isolated worktree.
+      - Stay within approved scope and expected change surface.
+  shell_read_only:
+    status: allowed
+    examples:
+      - Inspect files, git state, installed versions, logs, and test output.
+  shell_mutating_repository:
+    status: allowed
+    constraints:
+      - Mutation must be reversible and within the repository or its disposable local environment.
+      - Destructive commands require explicit approval.
+  shell_outside_repository:
+    status: approval_required
+  network_documentation:
+    status: allowed
+    constraints:
+      - Prefer authoritative, versioned primary sources.
+  network_arbitrary_download:
+    status: approval_required
+  package_inspection:
+    status: allowed
+  package_install_development:
+    status: approval_required
+  package_install_production:
+    status: approval_required
+    constraints:
+      - Verify publisher, version, license, maintenance, vulnerabilities, and existing alternatives.
+  local_disposable_database:
+    status: allowed
+  shared_development_database:
+    status: approval_required
+  staging_database:
+    status: approval_required
+  production_database:
+    status: prohibited
+  cloud_read:
+    status: approval_required
+  cloud_mutation:
+    status: prohibited
+  github_read:
+    status: allowed
+  github_branch_commit_pull_request:
+    status: allowed
+    constraints:
+      - Never push directly to the protected default branch.
+  github_merge_release_settings:
+    status: prohibited
+  staging_deployment:
+    status: approval_required
+  production_deployment:
+    status: prohibited
+  secrets_read_or_output:
+    status: prohibited
+  external_communications:
+    status: prohibited
+    examples:
+      - Email, chat messages, tickets, or notifications sent outside the repository workflow.
+
+approval_rules:
+  - Approval must be explicit, authenticated, scoped, and recorded in the relevant work artifact.
+  - Approval for one tool, environment, or command does not transfer to another.
+  - Human approval cannot authorize exposure of secrets or violation of platform or organization policy.
+  - When a required capability is unavailable, report BLOCKED rather than silently substituting a riskier tool.

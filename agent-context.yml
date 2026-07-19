@@ -1,0 +1,46 @@
+version: 1
+
+# Load the smallest context set that is sufficient for the task. More specific
+# repository instructions may add files, but may not remove required controls.
+always:
+  - AGENTS.md
+  - README.md
+  - agent-policy.yml
+
+when:
+  generated_project:
+    - project.yml
+  non_trivial:
+    - .agent/PLANS.md
+    - docs/engineering/ai-assisted-development.md
+    - docs/engineering/testing-strategy.md
+    - docs/engineering/code-review.md
+  user_facing_ui:
+    - docs/design/README.md
+    - docs/work/_template/ux-requirements.md
+    - docs/work/_template/ui-verification.md
+  security_or_privacy:
+    - docs/security/README.md
+    - docs/security/risk-classification.md
+    - docs/security/threat-model-template.md
+  data_or_migration:
+    - docs/architecture/data-model.md
+    - docs/operations/migration-runbook.md
+    - docs/operations/rollback.md
+  api_event_or_schema:
+    - docs/contracts/README.md
+  deployment_or_operations:
+    - docs/operations/README.md
+    - docs/operations/production-readiness.md
+  incident_or_failure:
+    - docs/engineering/root-cause-analysis.md
+    - docs/operations/incident-response.md
+  agent_handoff_or_resume:
+    - docs/engineering/session-recovery.md
+    - docs/engineering/multi-agent-coordination.md
+
+rules:
+  - Read applicable nested AGENTS.md files for every path considered for modification.
+  - Prefer summaries and targeted sections over loading entire documentation trees.
+  - If applicability is uncertain, load the additional context rather than silently omitting it.
+  - Record material context omissions or inaccessible files as limitations.

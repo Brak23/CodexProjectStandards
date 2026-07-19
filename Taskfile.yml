@@ -24,7 +24,7 @@ tasks:
       - python3 scripts/bootstrap_next_steps.py
 
   doctor:
-    desc: Report repository adoption health and the highest-priority gaps
+    desc: Report standards adoption health and the highest-priority gaps
     cmds:
       - python3 scripts/doctor.py
 
@@ -33,10 +33,16 @@ tasks:
     cmds:
       - python3 scripts/recommend_workflow.py
 
+  agent-evals:
+    desc: Validate the portable agent behavior evaluation contracts
+    cmds:
+      - python3 scripts/validate_agent_governance.py --evals-only
+
   validate:
-    desc: Validate required structure, local links, workflows, and configuration
+    desc: Validate required structure, local links, workflows, configuration, and agent governance
     cmds:
       - python3 scripts/validate_repository.py
+      - python3 scripts/validate_agent_governance.py
 
   verify:
     desc: Run the authoritative stack-agnostic verification contract

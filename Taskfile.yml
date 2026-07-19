@@ -21,6 +21,16 @@ tasks:
     cmds:
       - python3 scripts/bootstrap_project.py --config project.yml
 
+  doctor:
+    desc: Report repository adoption health and the highest-priority gaps
+    cmds:
+      - python3 scripts/doctor.py
+
+  recommend:
+    desc: Recommend the Light, Full Feature, or High-Risk workflow
+    cmds:
+      - python3 scripts/recommend_workflow.py
+
   validate:
     desc: Validate required structure, local links, workflows, and configuration
     cmds:

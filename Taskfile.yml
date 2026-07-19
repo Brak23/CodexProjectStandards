@@ -12,6 +12,7 @@ tasks:
     desc: Interactively configure a repository created from this template
     cmds:
       - python3 scripts/bootstrap_project.py
+      - python3 scripts/bootstrap_next_steps.py
 
   bootstrap-config:
     desc: Configure the repository from project.yml
@@ -20,6 +21,7 @@ tasks:
         msg: Copy project.config.example.yml to project.yml and edit it first.
     cmds:
       - python3 scripts/bootstrap_project.py --config project.yml
+      - python3 scripts/bootstrap_next_steps.py
 
   doctor:
     desc: Report repository adoption health and the highest-priority gaps

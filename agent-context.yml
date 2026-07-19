@@ -25,7 +25,7 @@ when:
     - docs/security/threat-model-template.md
   data_or_migration:
     - docs/architecture/data-model.md
-    - docs/operations/migrations.md
+    - docs/operations/migration-runbook.md
     - docs/operations/rollback.md
   api_event_or_schema:
     - docs/contracts/README.md

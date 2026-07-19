@@ -4,6 +4,7 @@
 - Owner:
 - Status: Draft
 - Risk classification: Low / Moderate / High / Critical
+- User-interface impact: None / Minor / Significant
 
 ## Problem
 
@@ -25,15 +26,19 @@
 
 [Primary, secondary, empty, failure, recovery, and administrative paths.]
 
+For significant user-interface work, complete [`ux-requirements.md`](ux-requirements.md). Define the user goal, information hierarchy, complete interaction-state inventory, responsive behavior, accessibility behavior, content, design-system reuse, design source, and usability validation before implementation.
+
 ## Acceptance criteria
 
 - Given...
 - When...
 - Then...
 
+User-facing criteria must cover applicable loading, empty, error, success, disabled, read-only, permission-denied, partial, and recovery behavior rather than only the ideal state.
+
 ## Failure and edge cases
 
-Include invalid input, duplicates, unauthorized users, concurrency, dependency failure, partial completion, retry, empty state, and maximum supported size.
+Include invalid input, duplicates, unauthorized users, concurrency, dependency failure, partial completion, retry, empty state, maximum supported size, long content, narrow layouts, zoom, and assistive-technology use where applicable.
 
 ## Permissions
 
@@ -51,6 +56,10 @@ Include invalid input, duplicates, unauthorized users, concurrency, dependency f
 - Privacy:
 - Observability:
 - Browser or device support:
+- Responsive and zoom behavior:
+- Localization and text expansion:
+- Visual-regression coverage:
+- Usability validation:
 
 ## Non-goals
 
@@ -58,7 +67,7 @@ Include invalid input, duplicates, unauthorized users, concurrency, dependency f
 
 ## Constraints
 
-[Business, technical, regulatory, cost, schedule, or compatibility constraints.]
+[Business, technical, regulatory, cost, schedule, design-system, or compatibility constraints.]
 
 ## Assumptions
 
@@ -66,11 +75,11 @@ Include invalid input, duplicates, unauthorized users, concurrency, dependency f
 
 ## Blocking decisions
 
-[Decisions requiring human authority.]
+[Decisions requiring human authority. Static mockups and design links do not authorize the agent to invent missing interaction, content, accessibility, or responsive behavior.]
 
 ## Success measurement
 
-[How production behavior will demonstrate success.]
+[How production behavior will demonstrate success, including task completion or usability measures for consequential user flows.]
 
 ## Approval
 

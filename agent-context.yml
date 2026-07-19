@@ -6,9 +6,10 @@ always:
   - AGENTS.md
   - README.md
   - agent-policy.yml
-  - project.yml
 
 when:
+  generated_project:
+    - project.yml
   non_trivial:
     - .agent/PLANS.md
     - docs/engineering/ai-assisted-development.md

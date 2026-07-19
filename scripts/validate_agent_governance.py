@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+ALLOWED_PERMISSION_STATUSES = {"allowed", "approval_required", "prohibited"}
 
 
 def read(path: str, errors: list[str]) -> str:
@@ -24,6 +25,37 @@ def require_tokens(path: str, tokens: list[str], errors: list[str]) -> None:
     for token in tokens:
         if token not in text:
             errors.append(f"{path} missing required token: {token}")
+
+
+def validate_context_manifest(errors: list[str]) -> None:
+    text = read("agent-context.yml", errors)
+    for token in ("version: 1", "always:", "when:", "generated_project:", "user_facing_ui:", "security_or_privacy:", "agent_handoff_or_resume:"):
+        if token not in text:
+            errors.append(f"agent-context.yml missing required token: {token}")
+
+    before_rules = text.split("\nrules:\n", 1)[0]
+    for raw in before_rules.splitlines():
+        stripped = raw.strip()
+        if not stripped.startswith("- "):
+            continue
+        relative = stripped[2:].strip()
+        if relative == "project.yml" and not (ROOT / relative).exists() and (ROOT / "project.config.example.yml").exists():
+            continue
+        if not (ROOT / relative).exists():
+            errors.append(f"agent-context.yml references missing path: {relative}")
+
+
+def validate_tool_policy(errors: list[str]) -> None:
+    text = read("agent-policy.yml", errors)
+    for token in ("version: 1", "default: prohibited", "production_database:", "production_deployment:", "secrets_read_or_output:"):
+        if token not in text:
+            errors.append(f"agent-policy.yml missing required token: {token}")
+    statuses = [line.split(":", 1)[1].strip() for line in text.splitlines() if line.strip().startswith("status:")]
+    if not statuses:
+        errors.append("agent-policy.yml contains no permission statuses")
+    for status in statuses:
+        if status not in ALLOWED_PERMISSION_STATUSES:
+            errors.append(f"agent-policy.yml contains invalid permission status: {status}")
 
 
 def validate_evals(errors: list[str]) -> None:
@@ -76,19 +108,11 @@ def validate_evals(errors: list[str]) -> None:
 
 
 def validate_governance(errors: list[str]) -> None:
-    require_tokens(
-        "agent-context.yml",
-        ["version: 1", "always:", "when:", "user_facing_ui:", "security_or_privacy:", "agent_handoff_or_resume:"],
-        errors,
-    )
-    require_tokens(
-        "agent-policy.yml",
-        ["default: prohibited", "approval_required", "production_database:", "production_deployment:", "secrets_read_or_output:"],
-        errors,
-    )
+    validate_context_manifest(errors)
+    validate_tool_policy(errors)
     require_tokens(
         "docs/work/_template/state.yml",
-        ["phase: specification", "implementation_authorized: false", "release_authorized: false", "active_agent:", "base_commit:"],
+        ["phase: specification", "implementation_authorized: false", "release_authorized: false", "active_agent:", "base_commit:", "independent_review_level:"],
         errors,
     )
     require_tokens("GEMINI.md", ["@./AGENTS.md", "@./agent-context.yml", "@./agent-policy.yml"], errors)
@@ -107,6 +131,7 @@ def validate_governance(errors: list[str]) -> None:
         "docs/engineering/session-recovery.md",
         "docs/engineering/multi-agent-coordination.md",
         "docs/engineering/agent-evaluations.md",
+        "evals/agent-behavior/README.md",
     ):
         read(path, errors)
 

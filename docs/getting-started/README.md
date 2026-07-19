@@ -1,5 +1,11 @@
 # Getting started
 
+## First decide how this applies
+
+These standards are adopted **once for the whole repository**, not copied separately for every feature or bug fix.
+
+Then each change uses a light, full, or high-risk workflow depending on scope and risk. Start with [`when-to-use-this.md`](when-to-use-this.md) when you are unsure which path applies.
+
 ## Create and configure a project
 
 1. Create a repository from the GitHub template.

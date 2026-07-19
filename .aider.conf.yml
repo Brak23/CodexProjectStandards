@@ -1,0 +1,9 @@
+read:
+  - AGENTS.md
+  - agent-context.yml
+  - agent-policy.yml
+
+auto-commits: false
+dirty-commits: false
+yes-always: false
+suggest-shell-commands: true

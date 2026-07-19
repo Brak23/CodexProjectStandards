@@ -22,6 +22,7 @@ COMMON_REQUIRED = [
     ".agent/PLANS.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/workflows/reusable-verify.yml",
+    ".github/workflows/dependency-review.yml",
     "docs/README.md",
     "docs/architecture/overview.md",
     "docs/engineering/ai-assisted-development.md",

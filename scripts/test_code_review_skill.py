@@ -28,6 +28,82 @@ def write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def test_snapshot_and_requirements(temporary: Path) -> None:
+    repo = temporary / "capture-repo"
+    repo.mkdir()
+    run("git", "init", "-q", cwd=repo)
+    run("git", "config", "user.name", "Test Reviewer", cwd=repo)
+    run("git", "config", "user.email", "reviewer@example.invalid", cwd=repo)
+    (repo / "app.py").write_text("print('one')\n", encoding="utf-8")
+    run("git", "add", "app.py", cwd=repo)
+    run("git", "commit", "-q", "-m", "initial", cwd=repo)
+    (repo / "app.py").write_text("print('two')\n", encoding="utf-8")
+    run("git", "add", "app.py", cwd=repo)
+    snapshot_dir = temporary / "captured-snapshot"
+    run(
+        sys.executable,
+        str(SKILL_SCRIPTS / "capture_review_snapshot.py"),
+        "--target",
+        "staged",
+        "--output",
+        str(snapshot_dir),
+        cwd=repo,
+    )
+    manifest = json.loads((snapshot_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["target"]["type"] == "staged"
+    assert manifest["scope"]["included_paths"] == ["app.py"]
+    assert manifest["snapshot_id"].startswith("snapshot-")
+    assert (snapshot_dir / "diff.patch").exists()
+
+    policy = ROOT / ".agents/skills/code-review/config/review-policy.example.json"
+    registry = ROOT / ".agents/skills/code-review/config/evidence-requirements.example.json"
+    plan = temporary / "plan-requirements.json"
+    detected = temporary / "detected-requirements.json"
+    composed = temporary / "effective-requirements.json"
+    write_json(
+        plan,
+        {
+            "additional_requirements": [
+                {
+                    "id": "test.integration",
+                    "parameters": {"scenarios": ["downstream_timeout"], "required_status": "PASSED"},
+                }
+            ],
+            "required_dimensions": ["data"],
+        },
+    )
+    write_json(
+        detected,
+        {
+            "trigger_id": "authorization-boundary",
+            "requirements": [{"id": "review.security", "parameters": {"minimum_level": "specialist"}}],
+            "dimensions": ["security"],
+            "seams": [],
+        },
+    )
+    run(
+        sys.executable,
+        str(SKILL_SCRIPTS / "compose_requirements.py"),
+        "--policy",
+        str(policy),
+        "--registry",
+        str(registry),
+        "--change-class",
+        "standard_change",
+        "--plan",
+        str(plan),
+        "--detected",
+        str(detected),
+        "--output",
+        str(composed),
+        cwd=ROOT,
+    )
+    requirements = json.loads(composed.read_text(encoding="utf-8"))
+    ids = {item["id"] for item in requirements["requirements"]}
+    assert {"test.targeted", "test.integration", "review.security"} <= ids
+    assert {"general_engineering", "data", "security"} <= set(requirements["required_dimensions"])
+
+
 def test_review_store(temporary: Path) -> None:
     repo = temporary / "repo"
     repo.mkdir()
@@ -68,6 +144,10 @@ def test_review_store(temporary: Path) -> None:
         merge_sha,
         "--merge-method",
         "squash",
+        "--reviewed-head",
+        merge_sha,
+        "--base-commit",
+        merge_sha,
         "--snapshot-id",
         "snap-1",
         cwd=repo,
@@ -164,7 +244,8 @@ def test_aggregation_and_gate(temporary: Path) -> None:
             "dependencies_ready": True,
             "ci": {"required": True, "status": "MISSING", "snapshot_id": "snap-1"},
             "approvals": {"required": ["review"], "present": ["review"]},
-            "exception": {"valid": False},
+            "evaluated_at": "2026-07-22T00:00:00Z",
+            "exception": {"enabled": False},
         },
     )
     run(
@@ -182,10 +263,60 @@ def test_aggregation_and_gate(temporary: Path) -> None:
     assert gate_result["decision"] == "BLOCK"
     assert any(item["type"] == "REQUIRED_CI_MISSING" for item in gate_result["blockers"])
 
+    invalid_gate = temporary / "invalid-exception-gate.json"
+    invalid_state = json.loads(state.read_text(encoding="utf-8"))
+    invalid_state["exception"] = {
+        "enabled": True,
+        "bypasses": ["REQUIRED_CI_MISSING"],
+        "decision_basis": "EMERGENCY_POLICY",
+    }
+    write_json(state, invalid_state)
+    run(
+        sys.executable,
+        str(SKILL_SCRIPTS / "evaluate_merge_gate.py"),
+        "--aggregate",
+        str(aggregate),
+        "--repository-state",
+        str(state),
+        "--output",
+        str(invalid_gate),
+        expect=2,
+    )
+    invalid_result = json.loads(invalid_gate.read_text(encoding="utf-8"))
+    assert any(item["type"] == "EXCEPTION_INVALID" for item in invalid_result["blockers"])
+
+    allowed_gate = temporary / "allowed-exception-gate.json"
+    invalid_state["exception"] = {
+        "enabled": True,
+        "authority_verified": True,
+        "approved_by": "incident-commander",
+        "scope": ["snap-1"],
+        "expires_at": "2026-07-23T00:00:00Z",
+        "decision_basis": "EMERGENCY_POLICY",
+        "bypasses": ["REQUIRED_CI_MISSING"],
+        "compensating_controls": ["manual deployment monitoring"],
+        "post_merge_obligations": ["run full CI"],
+    }
+    write_json(state, invalid_state)
+    run(
+        sys.executable,
+        str(SKILL_SCRIPTS / "evaluate_merge_gate.py"),
+        "--aggregate",
+        str(aggregate),
+        "--repository-state",
+        str(state),
+        "--output",
+        str(allowed_gate),
+    )
+    allowed_result = json.loads(allowed_gate.read_text(encoding="utf-8"))
+    assert allowed_result["decision"] == "ALLOW"
+    assert allowed_result["decision_basis"] == "EMERGENCY_POLICY"
+
 
 def main() -> int:
     with tempfile.TemporaryDirectory(prefix="code-review-skill-test-") as temp:
         temporary = Path(temp)
+        test_snapshot_and_requirements(temporary)
         test_review_store(temporary)
         test_reconciliation(temporary)
         test_aggregation_and_gate(temporary)

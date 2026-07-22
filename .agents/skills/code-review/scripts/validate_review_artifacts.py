@@ -34,6 +34,7 @@ def require_files(errors: list[str]) -> None:
         "config/seam-registry.example.json",
         "config/evidence-requirements.example.json",
         "config/review-triggers.example.json",
+        "schemas/snapshot.schema.json",
         "schemas/finding.schema.json",
         "schemas/review-result.schema.json",
         "schemas/coordination.schema.json",
@@ -41,6 +42,8 @@ def require_files(errors: list[str]) -> None:
         "schemas/finding-ledger.schema.json",
         "schemas/aggregate-review.schema.json",
         "schemas/merge-gate.schema.json",
+        "scripts/capture_review_snapshot.py",
+        "scripts/compose_requirements.py",
         "scripts/review_store.py",
         "scripts/reconcile_findings.py",
         "scripts/aggregate_reviews.py",
@@ -133,10 +136,18 @@ def validate_contracts(errors: list[str]) -> None:
     for path in (SKILL / "schemas").glob("*.json"):
         load_json(path, errors)
     policy = load_json(SKILL / "config/review-policy.example.json", errors)
+    registry = load_json(SKILL / "config/evidence-requirements.example.json", errors)
     if isinstance(policy, dict):
         retention = policy.get("retention") or {}
         if "external_routine_evidence_days" not in retention or "external_high_risk_evidence_days" not in retention:
             errors.append("review policy must set explicit external evidence retention")
+        if isinstance(registry, dict):
+            known = set((registry.get("requirements") or {}).keys())
+            for class_name, class_policy in (policy.get("change_classes") or {}).items():
+                for requirement in (class_policy.get("requirements") or []) + (class_policy.get("deferred_requirements") or []):
+                    requirement_id = requirement if isinstance(requirement, str) else requirement.get("id")
+                    if requirement_id not in known:
+                        errors.append(f"review policy {class_name} references unknown requirement: {requirement_id}")
     scenarios_path = ROOT / "evals/code-review/scenarios.json"
     scenarios = load_json(scenarios_path, errors)
     if isinstance(scenarios, dict):

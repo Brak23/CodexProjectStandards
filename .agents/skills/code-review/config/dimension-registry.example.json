@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "dimensions": {
+    "general_engineering": {
+      "primary_role": "general_reviewer",
+      "includes": ["correctness", "structural_maintainability", "local_maintainability", "testing_quality", "repository_standards"]
+    },
+    "security": {
+      "primary_role": "security_specialist",
+      "includes": ["authentication", "authorization", "trust_boundaries", "security_input_validation", "secrets", "abuse_resistance"]
+    },
+    "privacy": {
+      "primary_role": "privacy_specialist",
+      "includes": ["sensitive_data_collection", "data_minimization", "consent", "retention", "disclosure", "secondary_use"]
+    },
+    "concurrency": {
+      "primary_role": "concurrency_specialist",
+      "includes": ["synchronization", "ordering", "atomicity", "race_conditions", "deadlocks"]
+    },
+    "data": {
+      "primary_role": "data_specialist",
+      "includes": ["schema", "migration", "integrity", "mixed_version_compatibility", "reconciliation"]
+    },
+    "accessibility": {
+      "primary_role": "accessibility_specialist",
+      "includes": ["semantic_structure", "keyboard", "focus", "screen_reader", "zoom", "motion"]
+    },
+    "operations": {
+      "primary_role": "operations_specialist",
+      "includes": ["observability", "rollback", "deployment", "recovery", "capacity"]
+    },
+    "cross_dimension_integration": {
+      "primary_role": "integration_reviewer",
+      "includes": ["assumption_compatibility", "control_ordering", "composed_failure", "cross_boundary_rollback"]
+    }
+  }
+}

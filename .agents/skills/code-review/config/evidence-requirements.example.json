@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "requirements": {
+    "test.targeted": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "required_status": {"type": "enum", "order": ["NOT_RUN", "PASSED"]},
+        "snapshot_match": {"type": "boolean", "stronger": true}
+      }
+    },
+    "test.integration": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "scenarios": {"type": "set", "merge": "union"},
+        "required_status": {"type": "enum", "order": ["NOT_RUN", "PASSED"]}
+      }
+    },
+    "performance.load": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "minimum_requests_per_second": {"type": "number", "stronger": "higher"},
+        "maximum_p95_milliseconds": {"type": "number", "stronger": "lower"}
+      }
+    },
+    "review.security": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "minimum_level": {"type": "enum", "order": ["fresh_context", "separate_agent", "diverse_reviewer", "specialist"]}
+      }
+    },
+    "migration.mixed_version": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "versions": {"type": "set", "merge": "union"}
+      }
+    }
+  },
+  "substitutions": []
+}

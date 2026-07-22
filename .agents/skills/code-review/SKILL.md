@@ -14,7 +14,7 @@ description: >
 
 ## Mission
 
-Improve code health over time. Merge readiness is not a reviewer verdict. Reviewers issue scoped verdicts; a deterministic policy gate separately decides whether an exact snapshot may merge.
+Improve code health over time. Merge readiness is not a reviewer verdict. Reviewers issue scoped verdicts; a deterministic policy gate separately decides whether an exact snapshot may merge. The merge gate is deterministic and separate from reviewer judgment.
 
 ## Invariants
 

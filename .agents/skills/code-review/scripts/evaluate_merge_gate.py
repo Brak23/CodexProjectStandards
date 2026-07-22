@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime
 from pathlib import Path
 
 BLOCKING_FINDING_STATES = {"OPEN", "ADDRESSED", "DISPUTED", "STILL_OPEN", "REGRESSED"}
@@ -21,6 +22,39 @@ def blocker(kind: str, owner: str, action: str, reference: str | None = None, au
     if authority:
         item["authority_basis"] = authority
     return item
+
+
+def parse_time(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def validate_exception(exception: dict, snapshot_id: str, evaluated_at: str | None) -> list[str]:
+    errors: list[str] = []
+    if not exception.get("approved_by"):
+        errors.append("missing approved_by")
+    if exception.get("authority_verified") is not True:
+        errors.append("authority is not verified")
+    scope = exception.get("scope") or []
+    if snapshot_id not in scope and "*" not in scope:
+        errors.append("exception scope does not include the reviewed snapshot")
+    if not exception.get("bypasses"):
+        errors.append("no bypassed blocker types are named")
+    if not exception.get("compensating_controls"):
+        errors.append("no compensating controls are recorded")
+    basis = exception.get("decision_basis")
+    if basis not in {"APPROVED_EXCEPTION", "EMERGENCY_POLICY"}:
+        errors.append("invalid decision_basis")
+    if not evaluated_at:
+        errors.append("repository state lacks evaluated_at")
+    if not exception.get("expires_at"):
+        errors.append("missing expires_at")
+    if evaluated_at and exception.get("expires_at"):
+        try:
+            if parse_time(exception["expires_at"]) <= parse_time(evaluated_at):
+                errors.append("exception is expired")
+        except ValueError:
+            errors.append("invalid evaluated_at or expires_at timestamp")
+    return errors
 
 
 def evaluate(aggregate: dict, state: dict) -> dict:
@@ -98,12 +132,24 @@ def evaluate(aggregate: dict, state: dict) -> dict:
 
     exception = state.get("exception") or {}
     decision_basis = "NORMAL_POLICY"
-    if blockers and exception.get("valid", False):
-        bypasses = set(exception.get("bypasses") or [])
-        unbypassed = [item for item in blockers if item["type"] not in bypasses]
-        if not unbypassed:
-            blockers = []
-            decision_basis = exception.get("decision_basis", "APPROVED_EXCEPTION")
+    exception_enabled = exception.get("enabled", exception.get("valid", False)) is True
+    if blockers and exception_enabled:
+        exception_errors = validate_exception(exception, snapshot_id, state.get("evaluated_at"))
+        if exception_errors:
+            blockers.append(
+                blocker(
+                    "EXCEPTION_INVALID",
+                    "human_authority",
+                    "repair_or_remove_exception",
+                    "; ".join(exception_errors),
+                )
+            )
+        else:
+            bypasses = set(exception.get("bypasses") or [])
+            unbypassed = [item for item in blockers if item["type"] not in bypasses]
+            if not unbypassed:
+                blockers = []
+                decision_basis = exception["decision_basis"]
 
     return {
         "schema_version": 1,

@@ -154,6 +154,7 @@ def put_merge_alias(args: argparse.Namespace) -> None:
             "merge_commit": merge_commit,
             "merge_method": args.merge_method,
             "reviewed_head": args.reviewed_head,
+            "base_commit": args.base_commit,
             "snapshot_ids": snapshots,
             "snapshot_refs": [f"refs/reviews/snapshots/{item}" for item in snapshots],
         }
@@ -225,6 +226,7 @@ def parser() -> argparse.ArgumentParser:
     alias.add_argument("--merge-commit", required=True)
     alias.add_argument("--merge-method", choices=["merge", "squash", "rebase"], required=True)
     alias.add_argument("--reviewed-head")
+    alias.add_argument("--base-commit")
     alias.add_argument("--snapshot-id", action="append", required=True)
     alias.add_argument("--sign", action="store_true")
     alias.set_defaults(function=put_merge_alias)

@@ -1,6 +1,8 @@
 {
   "schema_version": 1,
   "requirements": {
+    "validation.repository": {"independently_satisfiable": true, "parameters": {}},
+    "validation.links": {"independently_satisfiable": true, "parameters": {}},
     "test.targeted": {
       "independently_satisfiable": true,
       "parameters": {
@@ -8,6 +10,7 @@
         "snapshot_match": {"type": "boolean", "stronger": true}
       }
     },
+    "test.affected_module": {"independently_satisfiable": true, "parameters": {}},
     "test.integration": {
       "independently_satisfiable": true,
       "parameters": {
@@ -15,17 +18,32 @@
         "required_status": {"type": "enum", "order": ["NOT_RUN", "PASSED"]}
       }
     },
+    "test.full_regression": {"independently_satisfiable": true, "parameters": {}},
+    "analysis.static": {"independently_satisfiable": true, "parameters": {}},
+    "analysis.root_cause": {"independently_satisfiable": true, "parameters": {}},
+    "build.application": {"independently_satisfiable": true, "parameters": {}},
+    "review.general": {"independently_satisfiable": true, "parameters": {}},
+    "review.specialist": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "minimum_level": {"type": "enum", "order": ["fresh_context", "separate_agent", "diverse_reviewer", "specialist"]}
+      }
+    },
+    "review.independent": {"independently_satisfiable": true, "parameters": {}},
+    "review.security": {
+      "independently_satisfiable": true,
+      "parameters": {
+        "minimum_level": {"type": "enum", "order": ["fresh_context", "separate_agent", "diverse_reviewer", "specialist"]}
+      }
+    },
+    "rollback.available": {"independently_satisfiable": true, "parameters": {}},
+    "approval.incident_commander": {"independently_satisfiable": true, "parameters": {}},
+    "observability.deployment": {"independently_satisfiable": true, "parameters": {}},
     "performance.load": {
       "independently_satisfiable": true,
       "parameters": {
         "minimum_requests_per_second": {"type": "number", "stronger": "higher"},
         "maximum_p95_milliseconds": {"type": "number", "stronger": "lower"}
-      }
-    },
-    "review.security": {
-      "independently_satisfiable": true,
-      "parameters": {
-        "minimum_level": {"type": "enum", "order": ["fresh_context", "separate_agent", "diverse_reviewer", "specialist"]}
       }
     },
     "migration.mixed_version": {

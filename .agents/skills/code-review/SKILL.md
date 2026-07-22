@@ -82,7 +82,7 @@ Lifecycle:
 
 ## Storage
 
-Use `.agents/skills/code-review/scripts/review_store.py`.
+Use `capture_review_snapshot.py` to create the target-neutral snapshot, `compose_requirements.py` to build the effective requirement set, and `review_store.py` for durable Git-ref storage.
 
 - Immutable snapshot bundle: `refs/reviews/snapshots/<snapshot-id>`
 - Append-only work ledger: `refs/reviews/ledgers/<work-id>`

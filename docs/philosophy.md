@@ -1,39 +1,35 @@
 # Engineering philosophy
 
-These standards exist to make AI-assisted software development faster **without making uncertainty invisible**.
+These documents define the shared engineering worldview used by repository standards, project-local skills, plans, implementation workflows, and reviews.
 
-## Understand before changing
+They are authoritative for interpretation but are loaded conditionally through `agent-context.yml` so routine tasks do not carry the entire philosophy into context.
 
-Repository discovery is required because plausible code written without context often violates existing architecture, duplicates functionality, or fixes the wrong problem.
+## Canonical doctrines
 
-## Separate intent from implementation
+1. [`philosophy/01-engineering-principles.md`](philosophy/01-engineering-principles.md)  
+   Outcome hierarchy, code health, evidence, small changes, quality attributes, decision authority, and enforcement model.
 
-A brief defines the outcome. A plan defines the technical approach. Separating them makes misunderstandings and design mistakes cheaper to correct before code exists.
+2. [`philosophy/02-review-philosophy.md`](philosophy/02-review-philosophy.md)  
+   Independent review mission, blocking and advisory authority, severity, confidence, evidence, coverage, findings, and merge-readiness verdicts.
 
-## Scale process to risk
+3. [`philosophy/03-planning-philosophy.md`](philosophy/03-planning-philosophy.md)  
+   Intent, decision, execution, and evidence contracts; discovery; decomposition; change budgets; amendments; and plan-defect handling.
 
-A typo should not require the same ceremony as authentication or a database migration. The repository keeps permanent baseline rules while each change uses a light, full, or high-risk workflow.
+4. [`philosophy/04-security-philosophy.md`](philosophy/04-security-philosophy.md)  
+   Secure-by-design lifecycle, threat modeling, least privilege, safe defaults, supply-chain controls, realistic validation, and residual-risk ownership.
 
-## Verification must be deterministic
+5. [`philosophy/05-agent-behavior.md`](philosophy/05-agent-behavior.md)  
+   Agent authority, permissions, context routing, untrusted-content handling, uncertainty, scope discipline, specialist behavior, and independent review.
 
-An agent saying “this looks correct” is not evidence. Stable commands, tests, scanners, builds, and observed behavior allow humans and future agents to reproduce the result.
+## Interpretation rules
 
-## Passing tests is necessary, not sufficient
+- The doctrines define principles and decision logic. Operational standards and skills define the procedure for a specific task.
+- A skill may specialize a doctrine but may not silently contradict or weaken it.
+- Technically enforced policy outranks advisory prose.
+- Approved product intent and accepted decisions govern the current change within legal, security, and organizational constraints.
+- When principles conflict, record the conflict, evidence, decision owner, consequence, and rationale.
+- These documents do not grant approvals, permissions, exceptions, or production authority.
 
-Tests can be incomplete, misconfigured, or weakened. Independent review checks requirement alignment, architecture, security, data behavior, operational safety, and whether the tests meaningfully prove the claim.
+## Source policy
 
-## Humans own consequential decisions
-
-Agents can discover, propose, implement, and verify. Humans retain control of product intent, irreversible tradeoffs, exceptions, merge, and production release.
-
-## Prefer visible uncertainty
-
-A blocked agent is safer than an agent that silently guesses. Assumptions, unknowns, limitations, and confidence must be recorded where they affect correctness.
-
-## Keep evidence with the code
-
-Briefs, plans, decisions, verification, contracts, and operational guidance remain in the repository so the project does not depend on one chat session or one person's memory.
-
-## Build for replacement
-
-The standards are the durable layer. Individual AI tools are interchangeable adapters. A project should remain understandable and operable when the preferred agent changes.
+The doctrines synthesize public primary guidance from Google Engineering Practices, DORA, NIST, CISA, Microsoft, AWS, the Agile Manifesto, and OpenAI. Each document lists its source basis. Repository requirements remain the project's own derived standards rather than claims that any source organization uses this exact combined process.

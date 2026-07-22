@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "snapshot-example",
+  "change_class": {
+    "declared": "standard_change",
+    "effective": "standard_change",
+    "reasons": []
+  },
+  "requirement_set": {
+    "stabilized": true,
+    "escalation_rounds_used": 0,
+    "maximum_escalation_rounds": 2
+  },
+  "dimensions": {
+    "required": ["general_engineering"],
+    "assignments": {
+      "general_engineering": {
+        "reviewer_role": "general_reviewer",
+        "qualified": true
+      }
+    }
+  },
+  "seams": {
+    "required": [],
+    "assignments": {}
+  },
+  "escalations": {
+    "open": [],
+    "resolved": []
+  }
+}

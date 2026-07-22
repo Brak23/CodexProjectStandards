@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/coordination.schema.json",
+  "title": "Review coordination manifest",
+  "type": "object",
+  "required": ["schema_version", "snapshot_id", "requirement_set", "dimensions", "seams", "escalations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "requirement_set": {
+      "type": "object",
+      "required": ["stabilized"],
+      "properties": {
+        "stabilized": {"type": "boolean"},
+        "escalation_rounds_used": {"type": "integer", "minimum": 0},
+        "maximum_escalation_rounds": {"type": "integer", "minimum": 0}
+      }
+    },
+    "dimensions": {"type": "object", "required": ["required"]},
+    "seams": {"type": "object", "required": ["required"]},
+    "escalations": {"type": "object"}
+  },
+  "additionalProperties": true
+}

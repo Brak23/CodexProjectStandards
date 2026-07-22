@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/aggregate-review.schema.json",
+  "title": "Aggregate review",
+  "type": "object",
+  "required": ["schema_version", "snapshot_id", "status", "dimension_coverage", "seam_coverage", "binding_findings", "evidence"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["COMPLETE", "INCOMPLETE", "STALE", "CONTRADICTORY", "INVALID"]},
+    "dimension_coverage": {"type": "object"},
+    "seam_coverage": {"type": "object"},
+    "binding_findings": {"type": "object"},
+    "evidence": {"type": "object"},
+    "escalations": {"type": "object"},
+    "blocking_work": {"type": "object"}
+  },
+  "additionalProperties": true
+}

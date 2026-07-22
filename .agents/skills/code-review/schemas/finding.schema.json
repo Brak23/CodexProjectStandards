@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/finding.schema.json",
+  "title": "Code review record",
+  "type": "object",
+  "required": ["schema_version", "record_id", "record_type", "snapshot_id", "status"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "record_id": {"type": "string", "minLength": 1},
+    "record_type": {"enum": ["dimension_finding", "seam_finding", "routed_observation", "plan_defect", "evidence_gap", "escalation_request", "strength", "coverage_statement"]},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["OPEN", "ADDRESSED", "DISPUTED", "STILL_OPEN", "RESOLVED", "WITHDRAWN", "SUPERSEDED", "WAIVED", "STALE", "REGRESSED", "ACKNOWLEDGED", "DEFERRED"]},
+    "authority": {"enum": ["BLOCKING", "ADVISORY"]},
+    "dimension": {"type": "string"},
+    "seam_id": {"type": "string"},
+    "severity": {"enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]},
+    "confidence": {"enum": ["HIGH", "MEDIUM", "LOW"]},
+    "problem": {"type": "string"},
+    "impact": {"type": "string"},
+    "acceptance_criterion": {
+      "type": "object",
+      "required": ["statement"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "verification": {"type": "array", "items": {"type": "string"}},
+        "prohibited_shortcuts": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "reference", "decision_excerpt"],
+        "properties": {
+          "kind": {"type": "string"},
+          "reference": {"type": "string"},
+          "decision_excerpt": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string"},
+          "external_locator": {"type": "string"},
+          "retention_until": {"type": ["string", "null"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "closure_authority": {"type": "object"},
+    "fingerprint": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"record_type": {"enum": ["dimension_finding", "seam_finding"]}, "authority": {"const": "BLOCKING"}}, "required": ["authority"]},
+      "then": {"required": ["severity", "confidence", "problem", "impact", "acceptance_criterion", "evidence", "closure_authority", "fingerprint"]}
+    }
+  ],
+  "additionalProperties": true
+}

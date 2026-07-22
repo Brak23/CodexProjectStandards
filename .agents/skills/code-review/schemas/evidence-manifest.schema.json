@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/evidence-manifest.schema.json",
+  "title": "Review evidence manifest",
+  "type": "object",
+  "required": ["schema_version", "snapshot_id", "sufficiency", "satisfied", "unsatisfied", "stale", "contradictory"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "sufficiency": {"enum": ["SUFFICIENT", "PARTIAL", "INSUFFICIENT", "CONTRADICTORY", "STALE"]},
+    "satisfied": {"type": "array"},
+    "partially_satisfied": {"type": "array"},
+    "unsatisfied": {"type": "array"},
+    "stale": {"type": "array"},
+    "contradictory": {"type": "array"},
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["evidence_id", "status", "snapshot_id", "decision_excerpt"],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "decision_excerpt": {"type": "string", "minLength": 1},
+          "external_locator": {"type": "string"},
+          "retention_until": {"type": ["string", "null"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

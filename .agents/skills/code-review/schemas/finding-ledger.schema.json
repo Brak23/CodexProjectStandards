@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/finding-ledger.schema.json",
+  "title": "Persistent finding ledger",
+  "type": "object",
+  "required": ["schema_version", "work_id", "findings", "events"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "work_id": {"type": "string", "minLength": 1},
+    "findings": {"type": "array", "items": {"$ref": "finding.schema.json"}},
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["event_id", "finding_id", "action", "actor_role", "snapshot_id"],
+        "properties": {
+          "action": {"enum": ["CREATED", "ADDRESSED", "DISPUTED", "STILL_OPEN", "RESOLVED", "WITHDRAWN", "SUPERSEDED", "WAIVED", "REGRESSED", "AUTHORITY_OVERRIDE"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

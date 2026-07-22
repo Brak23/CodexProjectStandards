@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "snapshot-example",
+  "base_fresh": true,
+  "merge_conflict": false,
+  "branch_protection_satisfied": true,
+  "dependencies_ready": true,
+  "ci": {
+    "required": true,
+    "status": "PASSED",
+    "snapshot_id": "snapshot-example"
+  },
+  "approvals": {
+    "required": ["plan", "review"],
+    "present": ["plan", "review"]
+  },
+  "exception": {
+    "valid": false,
+    "bypasses": [],
+    "post_merge_obligations": []
+  },
+  "input_hashes": {}
+}

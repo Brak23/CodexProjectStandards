@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/review-result.schema.json",
+  "title": "Scoped review result",
+  "type": "object",
+  "required": ["schema_version", "review_id", "snapshot_id", "owned_scope", "verdicts", "coverage"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "review_id": {"type": "string", "minLength": 1},
+    "snapshot_id": {"type": "string", "minLength": 1},
+    "review_type": {"enum": ["dimension", "seam", "closure"]},
+    "owned_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "verdicts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["verdict"],
+        "properties": {
+          "verdict": {"enum": ["APPROVE", "APPROVE_WITH_COMMENTS", "CHANGES_REQUESTED", "CANNOT_ASSESS"]},
+          "confidence": {"enum": ["HIGH", "MEDIUM", "LOW"]}
+        },
+        "additionalProperties": true
+      }
+    },
+    "findings": {"type": "array", "items": {"type": "string"}},
+    "routed_observations": {"type": "array", "items": {"type": "string"}},
+    "escalation_requests": {"type": "array", "items": {"type": "string"}},
+    "coverage": {"type": "object"}
+  },
+  "additionalProperties": true
+}

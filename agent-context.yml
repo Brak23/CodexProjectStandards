@@ -35,8 +35,8 @@ when:
   api_event_or_schema:
     - docs/contracts/README.md
   dependency_change:
-    - docs/engineering/dependency-management.md
-    - docs/security/supply-chain-security.md
+    - docs/engineering/coding-standards.md
+    - docs/security/README.md
   deployment_or_operations:
     - docs/operations/README.md
     - docs/operations/production-readiness.md

@@ -6,6 +6,7 @@
 - [`tool-permissions.md`](tool-permissions.md): Default-deny tool and environment permissions.
 - [`approval-amendments.md`](approval-amendments.md): How authenticated scope changes update approved artifacts.
 - [`review-independence.md`](review-independence.md): Risk-based independent review levels.
+- [`review-system.md`](review-system.md): Stateful scoped review, evidence composition, seams, durable review refs, aggregation, and deterministic merge gating.
 - [`session-recovery.md`](session-recovery.md): Safe recovery after interruption, compaction, or handoff.
 - [`multi-agent-coordination.md`](multi-agent-coordination.md): Ownership, roles, leases, and concurrent work.
 - [`agent-evaluations.md`](agent-evaluations.md): Portable behavior-evaluation scenarios and passing criteria.

@@ -3,8 +3,12 @@
 
 # Sensitive paths require explicit owner review in team mode.
 /.github/workflows/ @Brak23
+/.agents/skills/ @Brak23
 /infrastructure/ @Brak23
 /migrations/ @Brak23
 /docs/security/ @Brak23
+/docs/engineering/review-system.md @Brak23
+/agent-context.yml @Brak23
+/agent-policy.yml @Brak23
 /SECURITY.md @Brak23
 /CODEOWNERS @Brak23

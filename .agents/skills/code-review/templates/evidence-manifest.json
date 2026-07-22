@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "snapshot-example",
+  "sufficiency": "SUFFICIENT",
+  "satisfied": ["test.targeted", "review.general"],
+  "partially_satisfied": [],
+  "unsatisfied": [],
+  "stale": [],
+  "contradictory": [],
+  "items": [
+    {
+      "evidence_id": "EV-001",
+      "satisfies": ["test.targeted"],
+      "status": "PASSED",
+      "snapshot_id": "snapshot-example",
+      "decision_excerpt": "12 targeted tests passed; 0 failed; 0 skipped.",
+      "sha256": "replace-with-artifact-hash",
+      "external_locator": "ci://provider/run/123",
+      "retention_until": "2027-07-22T00:00:00Z"
+    }
+  ]
+}

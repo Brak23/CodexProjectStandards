@@ -8,11 +8,13 @@ Documentation is separated by purpose so agents and humans can find authoritativ
 - [`product/`](product/README.md): Product intent, domain concepts, users, and success measures.
 - [`design/`](design/README.md): UX/UI workflow, design systems, accessibility, responsive behavior, content, usability, and visual review.
 - [`architecture/`](architecture/README.md): Components, boundaries, data ownership, interfaces, and ADRs.
-- [`engineering/`](engineering/README.md): Coding, testing, review, context loading, tool permissions, agent state, recovery, coordination, evaluations, enforcement, exceptions, and releases.
+- [`engineering/`](engineering/README.md): Coding, testing, stateful review, context loading, tool permissions, agent state, recovery, coordination, evaluations, enforcement, exceptions, and releases.
 - [`security/`](security/README.md): Risk classification, threat modeling, supply chain, and GitHub hardening.
 - [`contracts/`](contracts/README.md): API, event, and schema design standards.
 - [`operations/`](operations/README.md): Deployment, migrations, rollback, observability, incidents, and recovery.
 - [`profiles/`](profiles/README.md): Optional stack-specific standards.
 - [`work/`](work/README.md): Feature briefs, machine-readable state, execution plans, UX requirements, decisions, verification evidence, and UI evidence.
+
+Project-local professional workflows live under [`.agents/skills/`](../.agents/skills/README.md). They execute these standards without replacing repository-wide authority.
 
 Do not use chat history, design-tool comments, PR descriptions, or issue comments as the only authoritative record for lasting product, design, agent-governance, or architecture decisions.

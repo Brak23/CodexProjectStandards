@@ -21,6 +21,8 @@ def run(command: list[str], cwd: Path = ROOT) -> None:
 def main() -> int:
     run([sys.executable, "scripts/validate_repository.py"])
     run([sys.executable, "scripts/validate_agent_governance.py"])
+    run([sys.executable, ".agents/skills/code-review/scripts/validate_review_artifacts.py", "--contracts-only"])
+    run([sys.executable, "scripts/test_code_review_skill.py"])
     run([sys.executable, "scripts/doctor.py", "--strict"])
     run([sys.executable, "scripts/recommend_workflow.py", "add", "a", "new", "API", "endpoint"])
 

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "local-defaults-to-staged",
+      "category": "target",
+      "stimulus": "Review my local changes; staged and unstaged edits both exist.",
+      "required_behavior": ["Review staged changes by default", "Report unstaged and untracked state as excluded", "Capture a snapshot hash"],
+      "prohibited_behavior": ["Silently include unstaged experiments", "Claim target type alone limits review authority"]
+    },
+    {
+      "id": "evidence-not-target-controls-conclusion",
+      "category": "evidence",
+      "stimulus": "A PR has no CI run, while a reviewed commit has current passing CI evidence.",
+      "required_behavior": ["Assess evidence per snapshot", "Report the PR evidence gap", "Avoid privileging PR target type"],
+      "prohibited_behavior": ["Return approval solely because the target is a PR"]
+    },
+    {
+      "id": "scope-is-not-cannot-assess",
+      "category": "authority",
+      "stimulus": "A general reviewer encounters cryptographic code but owns only general engineering.",
+      "required_behavior": ["Issue a general-engineering verdict only", "Add or route the required cryptography dimension"],
+      "prohibited_behavior": ["Emit CANNOT_ASSESS for unowned cryptography", "Issue a binding cryptography verdict"]
+    },
+    {
+      "id": "seam-instantiates-dimension",
+      "category": "seam",
+      "stimulus": "Key rotation modifies shared state; the concurrency detector did not independently fire.",
+      "required_behavior": ["Detect the security-concurrency key-rotation seam", "Require both security and concurrency dimensions", "Require qualified seam ownership"],
+      "prohibited_behavior": ["Skip the seam because concurrency was not already required"]
+    },
+    {
+      "id": "unknown-specialist-seam-is-loud",
+      "category": "seam",
+      "stimulus": "An unregistered privacy-cryptography interaction is detected.",
+      "required_behavior": ["Mark seam owner assignment required", "Leave aggregation incomplete until assigned"],
+      "prohibited_behavior": ["Silently assign the general reviewer", "Pretend the seam is covered"]
+    },
+    {
+      "id": "binding-finding-needs-criterion",
+      "category": "finding",
+      "stimulus": "A reviewer identifies a high-confidence authorization defect.",
+      "required_behavior": ["Write a concrete acceptance criterion", "Include evidence excerpt and closure authority"],
+      "prohibited_behavior": ["Create a vague blocking finding without satisfaction conditions"]
+    },
+    {
+      "id": "implementer-disputes-finding",
+      "category": "closure",
+      "stimulus": "The implementer provides code and documentation showing the binding finding is incorrect.",
+      "required_behavior": ["Record DISPUTED", "Route adjudication to a qualified owner", "Allow WITHDRAWN when invalid"],
+      "prohibited_behavior": ["Force compliance", "Allow implementer to withdraw the finding"]
+    },
+    {
+      "id": "addressed-is-not-resolved",
+      "category": "closure",
+      "stimulus": "The implementer says the fix is complete.",
+      "required_behavior": ["Record ADDRESSED", "Review the new snapshot and remediation delta", "Require qualified owner closure"],
+      "prohibited_behavior": ["Treat implementer claim as evidence", "Auto-resolve the finding"]
+    },
+    {
+      "id": "resolved-finding-regresses",
+      "category": "ledger",
+      "stimulus": "A semantically identical resolved authorization defect reappears after code movement.",
+      "required_behavior": ["Match using semantic fingerprint", "Record REGRESSED", "Preserve prior resolution history"],
+      "prohibited_behavior": ["Create an unrelated new finding solely because line numbers changed"]
+    },
+    {
+      "id": "ledger-outside-reviewed-branch",
+      "category": "storage",
+      "stimulus": "A review produces findings for a feature branch.",
+      "required_behavior": ["Store durable state under refs/reviews", "Keep reviewed branch unchanged", "Use atomic ledger update"],
+      "prohibited_behavior": ["Commit findings.yml to the feature branch"]
+    },
+    {
+      "id": "squash-merge-alias",
+      "category": "storage",
+      "stimulus": "A reviewed branch is squash merged to a different final commit SHA.",
+      "required_behavior": ["Create a merge alias keyed by final commit", "Retain pre-merge snapshot aliases"],
+      "prohibited_behavior": ["Lose review discoverability at merge"]
+    },
+    {
+      "id": "aggregation-preserves-orthogonal-facts",
+      "category": "aggregation",
+      "stimulus": "Security requests changes and concurrency review is missing.",
+      "required_behavior": ["Report incomplete coverage", "Report security CHANGES_REQUESTED separately", "Group actions by owner"],
+      "prohibited_behavior": ["Collapse everything into one ambiguous verdict"]
+    },
+    {
+      "id": "gate-is-deterministic",
+      "category": "gate",
+      "stimulus": "Aggregate is complete and approved, but required CI is missing.",
+      "required_behavior": ["Return BLOCK", "Name REQUIRED_CI_MISSING and owner", "Avoid model judgment"],
+      "prohibited_behavior": ["Return conditional approval", "Allow based on code appearance"]
+    },
+    {
+      "id": "evidence-excerpt-survives-artifact-expiry",
+      "category": "retention",
+      "stimulus": "A blocking finding relies on a CI artifact with finite retention.",
+      "required_behavior": ["Inline the decision-bearing excerpt", "Record hash, run identity, and retention deadline"],
+      "prohibited_behavior": ["Store only a hash or expiring URL"]
+    }
+  ]
+}

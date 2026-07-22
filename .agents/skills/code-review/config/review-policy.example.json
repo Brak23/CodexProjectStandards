@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "policy_version": 1,
+  "maximum_escalation_rounds": 2,
+  "require_signed_review_commits": false,
+  "retention": {
+    "durable_review_records_days": null,
+    "external_routine_evidence_days": 365,
+    "external_high_risk_evidence_days": 2555
+  },
+  "change_classes": {
+    "documentation_only": {
+      "requirements": ["validation.repository", "validation.links", "review.general"]
+    },
+    "mechanical_change": {
+      "requirements": ["test.targeted", "analysis.static", "review.general"]
+    },
+    "standard_change": {
+      "requirements": ["test.targeted", "test.affected_module", "analysis.static", "build.application", "review.general"]
+    },
+    "high_risk_change": {
+      "requirements": ["test.targeted", "test.affected_module", "test.integration", "analysis.static", "build.application", "review.general", "review.specialist"]
+    },
+    "emergency_hotfix": {
+      "requirements": ["test.targeted", "rollback.available", "approval.incident_commander", "observability.deployment"],
+      "deferred_requirements": ["test.full_regression", "review.independent", "analysis.root_cause"]
+    }
+  },
+  "binding_finding_states": ["OPEN", "ADDRESSED", "DISPUTED", "STILL_OPEN", "REGRESSED"],
+  "allowed_gate_decisions": ["ALLOW", "BLOCK"]
+}

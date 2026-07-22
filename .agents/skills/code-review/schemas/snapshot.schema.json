@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/code-review/snapshot.schema.json",
+  "title": "Immutable review snapshot",
+  "type": "object",
+  "required": ["schema_version", "snapshot_id", "snapshot_sha256", "diff_sha256", "target", "scope", "patch"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "snapshot_id": {"type": "string", "pattern": "^snapshot-[0-9a-f]{16}$"},
+    "snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "diff_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "target": {
+      "type": "object",
+      "required": ["type", "base_commit"],
+      "properties": {
+        "type": {"enum": ["staged", "unstaged", "commit", "branch_diff", "github_pr"]},
+        "base_commit": {"type": ["string", "null"]},
+        "head_commit": {"type": ["string", "null"]}
+      }
+    },
+    "scope": {"type": "object"},
+    "patch": {"type": "object"}
+  },
+  "additionalProperties": true
+}

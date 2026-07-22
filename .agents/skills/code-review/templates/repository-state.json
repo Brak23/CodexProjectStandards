@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "snapshot-example",
+  "evaluated_at": "2026-07-22T00:00:00Z",
+  "base_fresh": true,
+  "merge_conflict": false,
+  "branch_protection_satisfied": true,
+  "dependencies_ready": true,
+  "ci": {
+    "required": true,
+    "status": "PASSED",
+    "snapshot_id": "snapshot-example"
+  },
+  "approvals": {
+    "required": ["plan", "review"],
+    "present": ["plan", "review"]
+  },
+  "exception": {
+    "enabled": false,
+    "authority_verified": false,
+    "approved_by": null,
+    "scope": [],
+    "expires_at": null,
+    "decision_basis": "APPROVED_EXCEPTION",
+    "bypasses": [],
+    "compensating_controls": [],
+    "post_merge_obligations": []
+  },
+  "input_hashes": {}
+}

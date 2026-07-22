@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "dimension_triggers": {
+    "security": {
+      "paths": ["**/auth/**", "**/security/**"],
+      "concepts": ["authenticate", "authorize", "session", "token", "permission"]
+    },
+    "concurrency": {
+      "concepts": ["mutex", "semaphore", "atomic", "lock", "shared_state"]
+    },
+    "privacy": {
+      "concepts": ["pii", "phi", "diagnosis", "consent", "retention"]
+    },
+    "data": {
+      "paths": ["**/migrations/**", "**/schema/**"],
+      "concepts": ["migration", "backfill", "reconcile"]
+    }
+  },
+  "seam_triggers": {
+    "security_concurrency.key_rotation": {
+      "concepts": ["key_rotation", "active_key", "shared_key_cache", "synchronization"],
+      "requires_dimensions": ["security", "concurrency"]
+    },
+    "privacy_data.deletion_and_replication": {
+      "concepts": ["delete", "replica", "cache", "retention"],
+      "requires_dimensions": ["privacy", "data"]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "seam_pairs": {
+    "security_concurrency": {
+      "dimensions": ["security", "concurrency"],
+      "default_assignment": "explicit_assignment_required",
+      "contexts": {
+        "key_rotation": {
+          "preferred_owner_dimension": "security",
+          "required_participants": ["security", "concurrency"],
+          "requirements": ["review.key_lifecycle", "test.concurrent_rotation", "test.revocation_boundary"]
+        },
+        "shared_session_cache": {
+          "preferred_owner_dimension": "concurrency",
+          "required_participants": ["security", "concurrency"],
+          "requirements": ["test.cache_invalidation", "test.authorization_under_race"]
+        }
+      }
+    },
+    "privacy_data": {
+      "dimensions": ["privacy", "data"],
+      "default_assignment": "privacy",
+      "contexts": {
+        "deletion_and_replication": {
+          "preferred_owner_dimension": "privacy",
+          "required_participants": ["privacy", "data"],
+          "requirements": ["review.data_lifecycle", "test.replica_deletion"]
+        }
+      }
+    },
+    "data_operations": {
+      "dimensions": ["data", "operations"],
+      "default_assignment": "data",
+      "contexts": {
+        "rolling_migration": {
+          "preferred_owner_dimension": "data",
+          "required_participants": ["data", "operations"],
+          "requirements": ["migration.mixed_version", "migration.rollback", "observability.migration"]
+        }
+      }
+    }
+  }
+}

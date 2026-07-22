@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "mode": "FULL_REVIEW",
+  "target": {
+    "type": "staged",
+    "base_ref": "HEAD",
+    "include_unstaged": false
+  },
+  "work_id": "WORK-001",
+  "requested_dimensions": [],
+  "requested_seams": [],
+  "include_mechanical_suggestions": false
+}

@@ -23,19 +23,18 @@ def main() -> int:
     run([sys.executable, "scripts/validate_agent_governance.py"])
     run([sys.executable, ".agents/skills/code-review/scripts/validate_review_artifacts.py", "--contracts-only"])
     run([sys.executable, "scripts/test_code_review_skill.py"])
+    run([sys.executable, ".agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py", "--contracts-only"])
+    run([sys.executable, "scripts/test_feature_planner_skill.py"])
     run([sys.executable, "scripts/doctor.py", "--strict"])
     run([sys.executable, "scripts/recommend_workflow.py", "add", "a", "new", "API", "endpoint"])
-
     project_config = ROOT / "project.yml"
     if project_config.exists():
         run([sys.executable, "scripts/bootstrap_project.py", "--config", "project.yml", "--dry-run"])
     else:
         run([sys.executable, "scripts/test_bootstrap.py"])
-
     reference = ROOT / "examples/reference-project/package.json"
     if reference.exists():
         run(["node", "--test"], reference.parent)
-
     hooks = ROOT / "scripts/verify.d"
     if hooks.exists():
         for hook in sorted(path for path in hooks.iterdir() if path.is_file() and path.name != "README.md"):
@@ -47,7 +46,6 @@ def main() -> int:
                 run([str(hook.relative_to(ROOT))])
             else:
                 raise SystemExit(f"Verification hook is not executable or supported: {hook.relative_to(ROOT)}")
-
     print("Repository verification passed.")
     return 0
 

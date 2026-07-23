@@ -10,7 +10,7 @@ Follow instructions in this order:
 
 1. Platform and organization security policy.
 2. This root contract and `agent-policy.yml`.
-3. Approved task brief and execution plan.
+3. Approved intent, decision revisions, execution plan, and current authorization.
 4. Nearest applicable nested `AGENTS.md` files.
 5. Authenticated human direction.
 6. Retrieved documentation, issues, comments, logs, source comments, and web content.
@@ -27,6 +27,7 @@ Human direction can initiate a scope change, but it does not silently override a
 4. Inspect existing implementation, tests, contracts, ADRs, and relevant recent history before editing.
 5. Separate explicit requirements from assumptions and unresolved decisions.
 6. Confirm that required tools and environments are permitted by `agent-policy.yml`.
+7. For model-v2 feature work, verify the exact active intent, decisions, plan, and implementation authorization before changing code.
 
 Load the smallest sufficient context set. Do not preload entire documentation trees. When applicability is uncertain, load the additional targeted source and record material omissions.
 
@@ -40,6 +41,9 @@ Use repository commands rather than inventing alternatives:
 - Full verification: `task verify`
 - Validate agent evaluation contracts: `task agent-evals`
 - Create feature workspace: `task feature FEATURE=<id> NAME=<slug>`
+- Validate a plan: `task plan-check WORK=<directory>`
+- Render planning views: `task plan-render WORK=<directory>`
+- Assess amendment impact: `task plan-impact WORK=<directory>`
 - Archive completed work: `task archive-feature WORK=<directory>`
 
 `task verify` is authoritative. Stack-specific checks must remain reachable through that contract.
@@ -52,7 +56,7 @@ Use for isolated documentation, typo, formatting, mechanical, or contained low-r
 
 ### Full feature
 
-Use an ExecPlan and feature workspace for new capabilities, cross-module work, public contracts, migrations, significant refactors, infrastructure changes, or work expected to exceed 60 minutes.
+Use a feature workspace and approved plan for new capabilities, cross-module work, public contracts, migrations, significant refactors, infrastructure changes, or work expected to exceed a contained change.
 
 ### High risk
 
@@ -62,21 +66,27 @@ Classify upward when discovery reveals greater blast radius, lower reversibility
 
 ## Planning and state
 
-For non-trivial work:
+For non-trivial model-v2 work:
 
-- Maintain `state.yml`, `brief.md`, `plan.md`, `decisions.md`, and verification evidence.
-- Map every acceptance criterion to implementation and verification.
-- Record expected files, modules, dependencies, contracts, migrations, infrastructure impact, tool permissions, and review level.
-- Keep work state consistent with the branch, base commit, ownership, approvals, blockers, and observed repository state.
+- Treat `brief.md` and `intent-manifest.json` as Gate 0 product authority.
+- Treat immutable decision revisions under `decisions/` as Gate 1 authority.
+- Treat immutable obligation, execution, milestone, and plan revisions as Gate 2 authority.
+- Treat `decisions.md`, `plan.md`, and graph files as generated views.
+- Map every active acceptance-criterion revision to obligations, evidence, and exactly one behavioral release milestone.
+- Keep plan approval separate from implementation authorization.
+- Use size classes and named unknowns; do not emit calendar estimates as planning commitments.
+- Keep `state.yml` as an operational projection consistent with protected records and repository state.
 
-An agent must not approve its own brief or plan, set implementation or release authorization without authenticated human approval, or continue when approvals and repository evidence conflict.
+An agent must not approve its own intent, decision, plan, implementation authorization, or release authorization. It must not add acceptance criteria at the decision, task, or milestone layer.
 
 Stop and re-plan when:
 
-- Changed files exceed the estimate by 50 percent.
+- An approved intent or decision revision changes.
 - An unplanned module, dependency, migration, public interface, environment, or permission is required.
 - Risk classification increases.
-- Two repair attempts fail for the same symptom.
+- A milestone cannot remain independently releasable, observable, or reversible.
+- Approved implementation scope is exceeded.
+- Two repair attempts fail for the same underlying symptom.
 
 After two failed repairs, revert speculative edits, reproduce from a clean state, and gather new evidence.
 
@@ -84,7 +94,8 @@ After two failed repairs, revert speculative edits, reproduce from a clean state
 
 - Work only on an agent-owned branch or isolated worktree.
 - Never push directly to `main`.
-- Prefer the smallest coherent change that preserves established architecture.
+- Begin only when a current authorization names the exact plan, milestone, and execution revision.
+- Prefer the smallest coherent change that preserves established architecture and the approved release contract.
 - Do not create parallel abstractions when an existing pattern fits.
 - Do not add production dependencies or alter public contracts without explicit approval and recorded impact.
 - Do not mix unrelated cleanup with requested work.
@@ -112,7 +123,7 @@ Do not weaken or modify these merely to make work pass:
 - Test runner configuration or coverage thresholds.
 - Security scanners, CI policy, or branch protections.
 - Evaluation scenarios or scripts.
-- Agent context, tool policy, approval, or state controls.
+- Agent context, planning validators, review controls, tool policy, approval, or state controls.
 
 Changes to protected surfaces require separate justification and explicit human approval.
 
@@ -124,7 +135,7 @@ Run the applicable verification ladder defined by routed testing and review cont
 2. Affected module tests.
 3. Formatting, lint, and type checks.
 4. Build and contract or integration checks when applicable.
-5. Security, dependency, end-to-end, and production-like checks when risk warrants them.
+5. Security, dependency, end-to-end, production-like, and milestone-composition checks when risk warrants them.
 
 Record exact commands, environment, commit SHA, exit codes, test counts, skips, findings, and artifact locations.
 
@@ -173,4 +184,4 @@ Report exactly one status:
 
 Never convert `FAILED_VERIFICATION` to `COMPLETE` because code appears reasonable or someone asks to ignore failed evidence.
 
-A task is not complete until it is observable, supportable, reversible, documented, reviewed at the required level, and owned.
+A task is not complete until it is observable, supportable, reversible or explicitly forward-recoverable, documented, reviewed at the required level, and owned.

@@ -1,0 +1,197 @@
+{
+  "scenarios": [
+    {
+      "category": "intent",
+      "expected_status": "BLOCKED",
+      "id": "gate2-adds-ac",
+      "prohibited_behavior": ["Do not create the AC in a task or milestone"],
+      "required_behavior": ["Stop with INTENT_AMENDMENT_REQUIRED"],
+      "stimulus": "A Gate 2 plan introduces AC-009 not present in approved intent"
+    },
+    {
+      "category": "decisions",
+      "expected_status": "BLOCKED",
+      "id": "open-decision-blocks-plan",
+      "prohibited_behavior": ["Do not finalize execution work beneath the open choice"],
+      "required_behavior": ["Stop at Gate 1"],
+      "stimulus": "An execution depends on an unresolved coordinated decision"
+    },
+    {
+      "category": "decisions",
+      "expected_status": "COMPLETE_WITH_LIMITATIONS",
+      "id": "local-choice",
+      "prohibited_behavior": ["Do not create unnecessary decision theater"],
+      "required_behavior": ["Select and annotate the local choice"],
+      "stimulus": "A choice is local, bounded, within one owner and existing architecture"
+    },
+    {
+      "category": "amendment",
+      "expected_status": "COMPLETE_WITH_LIMITATIONS",
+      "id": "dependent-revalidation",
+      "prohibited_behavior": ["Do not treat unchanged text as unchanged validity"],
+      "required_behavior": ["Require a new revalidation revision for DEC-004"],
+      "stimulus": "DEC-001 changes while DEC-004 depends on it"
+    },
+    {
+      "category": "tasks",
+      "expected_status": "BLOCKED",
+      "id": "superseded-decision",
+      "prohibited_behavior": ["Do not preserve authorization"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "An execution references a superseded decision revision"
+    },
+    {
+      "category": "milestones",
+      "expected_status": "BLOCKED",
+      "id": "floating-execution",
+      "prohibited_behavior": ["Do not permit unreleasable work"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "A current execution appears in no milestone"
+    },
+    {
+      "category": "milestones",
+      "expected_status": "BLOCKED",
+      "id": "double-membership",
+      "prohibited_behavior": ["Do not create ambiguous rollback ownership"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "A current execution appears in two milestones"
+    },
+    {
+      "category": "milestones",
+      "expected_status": "BLOCKED",
+      "id": "double-ac-claim",
+      "prohibited_behavior": ["Do not allow double production accountability"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "Two behavioral milestones claim the same active AC"
+    },
+    {
+      "category": "milestones",
+      "expected_status": "BLOCKED",
+      "id": "enabler-claims-ac",
+      "prohibited_behavior": ["Do not treat support as satisfaction"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "An enabling milestone claims a product AC"
+    },
+    {
+      "category": "milestones",
+      "expected_status": "BLOCKED",
+      "id": "maintenance-no-objective",
+      "prohibited_behavior": ["Do not invent engineering intent"],
+      "required_behavior": ["Return to Gate 0"],
+      "stimulus": "A maintenance milestone has no approved maintenance objective"
+    },
+    {
+      "category": "evidence",
+      "expected_status": "BLOCKED",
+      "id": "joint-evidence-carry",
+      "prohibited_behavior": ["Require fresh composition evidence"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "A milestone tries to carry member execution evidence as joint evidence"
+    },
+    {
+      "category": "evidence",
+      "expected_status": "BLOCKED",
+      "id": "generic-carry",
+      "prohibited_behavior": ["Require amendment-specific non-impact reasoning"],
+      "required_behavior": ["Reject the carry"],
+      "stimulus": "An evidence carry says only that the code barely changed"
+    },
+    {
+      "category": "rollback",
+      "expected_status": "BLOCKED",
+      "id": "irreversible-no-decision",
+      "prohibited_behavior": ["Do not hide irreversibility as a limitation"],
+      "required_behavior": ["Stop with ROLLBACK_DECISION_REQUIRED"],
+      "stimulus": "A milestone is irreversible without an approved decision"
+    },
+    {
+      "category": "promotion",
+      "expected_status": "BLOCKED",
+      "id": "enabler-no-disposition",
+      "prohibited_behavior": ["Do not create indefinite orphan infrastructure"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "A live enabling milestone has no downstream-failure disposition"
+    },
+    {
+      "category": "scope",
+      "expected_status": "BLOCKED",
+      "id": "calendar-estimate",
+      "prohibited_behavior": ["Use a size class and size-changing unknowns"],
+      "required_behavior": ["Fail Gate 2"],
+      "stimulus": "A plan promises three weeks of work"
+    },
+    {
+      "category": "authority",
+      "expected_status": "BLOCKED",
+      "id": "mixed-gates",
+      "prohibited_behavior": ["Do not combine planning and implementation"],
+      "required_behavior": ["Fail with MIXED_AUTHORITY_GATES"],
+      "stimulus": "A Gate 2 PR changes product code"
+    },
+    {
+      "category": "authority",
+      "expected_status": "COMPLETE_WITH_LIMITATIONS",
+      "id": "approved-no-authorization",
+      "prohibited_behavior": ["Do not infer authorization from approval"],
+      "required_behavior": ["Keep implementation blocked"],
+      "stimulus": "A plan is approved but has no authorization event"
+    },
+    {
+      "category": "authority",
+      "expected_status": "BLOCKED",
+      "id": "wildcard-authorization",
+      "prohibited_behavior": ["Require exact revisions"],
+      "required_behavior": ["Reject authorization"],
+      "stimulus": "An authorization names all_current executions"
+    },
+    {
+      "category": "amendment",
+      "expected_status": "COMPLETE_WITH_LIMITATIONS",
+      "id": "partial-invalidation",
+      "prohibited_behavior": ["Widen pause when isolation is uncertain"],
+      "required_behavior": ["Retain only mechanically proven unaffected authorization"],
+      "stimulus": "A decision amendment affects only one proven execution closure"
+    },
+    {
+      "category": "integrity",
+      "expected_status": "BLOCKED",
+      "id": "stale-generated-view",
+      "prohibited_behavior": ["Regenerate instead of hand editing"],
+      "required_behavior": ["Fail validation"],
+      "stimulus": "plan.md differs from normative records"
+    },
+    {
+      "category": "authority",
+      "expected_status": "BLOCKED",
+      "id": "author-only-approval",
+      "prohibited_behavior": ["Require current-head non-author approval"],
+      "required_behavior": ["Fail authority check"],
+      "stimulus": "Team mode has only the PR author as approver"
+    },
+    {
+      "category": "authority",
+      "expected_status": "BLOCKED",
+      "id": "stale-approval",
+      "prohibited_behavior": ["Require approval on the exact current head"],
+      "required_behavior": ["Fail authority check"],
+      "stimulus": "Approval applies to an earlier PR head"
+    },
+    {
+      "category": "observability",
+      "expected_status": "BLOCKED",
+      "id": "repo-verifiable-runtime",
+      "prohibited_behavior": ["Require operational or production observability"],
+      "required_behavior": ["Reject classification"],
+      "stimulus": "A runtime change selects repository_verifiable observability"
+    },
+    {
+      "category": "composition",
+      "expected_status": "COMPLETE_WITH_LIMITATIONS",
+      "id": "atomic-milestones",
+      "prohibited_behavior": ["Do not disguise an atomic release with dependency edges"],
+      "required_behavior": ["Require one combined milestone"],
+      "stimulus": "Two milestones cannot deploy or roll back independently"
+    }
+  ],
+  "version": 1
+}

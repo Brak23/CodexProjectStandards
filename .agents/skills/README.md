@@ -16,3 +16,4 @@ Repository-wide controls remain in `AGENTS.md`, `agent-policy.yml`, and routed s
 ## Included skills
 
 - [`code-review`](code-review/SKILL.md): Stateful, scoped, evidence-driven independent review with Git-native review refs and deterministic aggregation and merge gating.
+- [`feature-execution-planner`](feature-execution-planner/SKILL.md): Gate-separated feature planning with immutable decisions, obligations and execution attempts, validated release compositions, evidence design, amendment impact, and explicit implementation authorization.

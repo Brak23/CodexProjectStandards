@@ -5,6 +5,7 @@
 - [`context-loading.md`](context-loading.md): Conditional context routing and refresh rules.
 - [`tool-permissions.md`](tool-permissions.md): Default-deny tool and environment permissions.
 - [`approval-amendments.md`](approval-amendments.md): How authenticated scope changes update approved artifacts.
+- [`feature-planning.md`](feature-planning.md): Gate-separated intent, decision, plan, release-composition, and implementation-authorization contracts.
 - [`review-independence.md`](review-independence.md): Risk-based independent review levels.
 - [`review-system.md`](review-system.md): Stateful scoped review, evidence composition, seams, durable review refs, aggregation, and deterministic merge gating.
 - [`session-recovery.md`](session-recovery.md): Safe recovery after interruption, compaction, or handoff.
@@ -22,4 +23,4 @@
 - [`root-cause-analysis.md`](root-cause-analysis.md): Evidence-based debugging template.
 - [`release-management.md`](release-management.md): Versioning, release evidence, and hotfix policy.
 
-Stack profiles may strengthen these rules but may not weaken security, tool-permission, verification, state, or approval requirements.
+Stack profiles may strengthen these rules but may not weaken security, tool-permission, planning, verification, state, or approval requirements.

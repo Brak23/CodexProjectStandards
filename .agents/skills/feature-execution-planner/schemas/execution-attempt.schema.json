@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "assignee": {
+      "type": "object"
+    },
+    "attempt": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "corrects": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "decision_basis": {
+      "type": "array"
+    },
+    "dependencies": {
+      "type": "array"
+    },
+    "evidence_carries": {
+      "type": "array"
+    },
+    "evidence_requirements": {
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^TASK-[0-9]{3,}/[0-9]+$"
+    },
+    "implementation": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "local_choices": {
+      "type": "array"
+    },
+    "milestone": {
+      "type": "string"
+    },
+    "obligation": {
+      "pattern": "^TASK-[0-9]{3,}$"
+    },
+    "replaces": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "obligation",
+    "attempt",
+    "kind",
+    "status",
+    "decision_basis",
+    "implementation",
+    "dependencies",
+    "assignee",
+    "evidence_requirements",
+    "milestone",
+    "integrity"
+  ],
+  "title": "Execution attempt",
+  "type": "object"
+}

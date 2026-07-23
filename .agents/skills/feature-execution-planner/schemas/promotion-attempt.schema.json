@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_identity": {
+      "type": "object"
+    },
+    "dependency_snapshot": {
+      "type": "array"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^MILESTONE-[0-9]{3,}/[0-9]+#P[0-9]+$"
+    },
+    "initiated_by": {
+      "type": "string"
+    },
+    "milestone_revision": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "started_at": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "milestone_revision",
+    "environment",
+    "status",
+    "artifact_identity",
+    "dependency_snapshot",
+    "started_at",
+    "initiated_by"
+  ],
+  "title": "Promotion attempt",
+  "type": "object"
+}

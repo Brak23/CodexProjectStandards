@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "type": "object"
+    },
+    "basis": {
+      "type": "object"
+    },
+    "branch": {
+      "type": "object"
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^AUTH-IMP-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "scope": {
+      "type": "object"
+    },
+    "type": {
+      "enum": [
+        "grant",
+        "extend",
+        "restrict",
+        "pause",
+        "revoke",
+        "supersede"
+      ]
+    },
+    "validity": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "type",
+    "feature_id",
+    "basis",
+    "scope",
+    "authority",
+    "validity",
+    "branch",
+    "integrity"
+  ],
+  "title": "Implementation authorization",
+  "type": "object"
+}

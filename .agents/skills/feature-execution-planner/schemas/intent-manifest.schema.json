@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "acceptance_criteria": {
+      "type": "array"
+    },
+    "approval_basis": {
+      "type": "object"
+    },
+    "constraints": {
+      "type": "array"
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "id": {
+      "pattern": "^INTENT-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "maintenance_objectives": {
+      "type": "array"
+    },
+    "non_goals": {
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "approved",
+        "superseded"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "feature_id",
+    "status",
+    "acceptance_criteria",
+    "maintenance_objectives",
+    "non_goals",
+    "constraints",
+    "approval_basis",
+    "integrity"
+  ],
+  "title": "Intent manifest",
+  "type": "object"
+}

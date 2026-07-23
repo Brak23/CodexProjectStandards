@@ -1,0 +1,40 @@
+{
+  "approval_requirements": {
+    "additional_roles": [],
+    "primary_role": "engineering_owner"
+  },
+  "basis": {
+    "decision_graph_hash": "PENDING",
+    "intent_manifest_hash": "PENDING",
+    "policy_version": 1,
+    "repository_base_commit": "PENDING"
+  },
+  "classification": {
+    "risk": "moderate",
+    "size_class": "S",
+    "size_unknowns": []
+  },
+  "generated_views": {
+    "plan_md_hash": "PENDING",
+    "release_graph_hash": "PENDING",
+    "task_graph_hash": "PENDING"
+  },
+  "id": "PLAN-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "records": {
+    "executions": [],
+    "milestones": [],
+    "obligations": []
+  },
+  "replan_when": [
+    "active intent revision changes",
+    "active decision revision changes",
+    "risk classification increases",
+    "approved scope boundary is exceeded"
+  ],
+  "revision": 1,
+  "schema_version": 1
+}

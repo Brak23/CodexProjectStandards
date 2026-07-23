@@ -1,0 +1,17 @@
+{
+  "accountability": {
+    "owner": "[owner]"
+  },
+  "current_execution": "TASK-001/1",
+  "id": "TASK-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "intent_basis": [
+    "AC-001@1"
+  ],
+  "lifecycle": "active",
+  "schema_version": 1,
+  "title": "[Durable truth that must become true]"
+}

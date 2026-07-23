@@ -1,0 +1,33 @@
+{
+  "authority": {
+    "required_role": "engineering_owner"
+  },
+  "basis": {
+    "plan_manifest_hash": "PENDING",
+    "plan_revision": "PLAN-001/1",
+    "repository_base_commit": "PENDING"
+  },
+  "branch": {
+    "required_prefix": "agent/[ID]-implementation"
+  },
+  "feature_id": "[ID]",
+  "id": "AUTH-IMP-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "schema_version": 1,
+  "scope": {
+    "executions": [
+      "TASK-001/1"
+    ],
+    "milestones": [
+      "MILESTONE-001/1"
+    ]
+  },
+  "type": "grant",
+  "validity": {
+    "expires_at": "[YYYY-MM-DD]",
+    "not_before": "[YYYY-MM-DD]"
+  }
+}

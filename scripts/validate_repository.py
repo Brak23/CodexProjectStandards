@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -10,19 +11,7 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMON_REQUIRED = [
-    "README.md",
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
-    "CHANGELOG.md",
-    "LICENSE",
-    "CODEOWNERS",
-    "Taskfile.yml",
-    "agent-context.yml",
-    "agent-policy.yml",
-    ".agent/PLANS.md",
+    "README.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "CONTRIBUTING.md", "SECURITY.md", "CHANGELOG.md", "LICENSE", "CODEOWNERS", "Taskfile.yml", "agent-context.yml", "agent-policy.yml", "planning-approval-roles.json", ".agent/PLANS.md",
     ".agents/skills/README.md",
     ".agents/skills/code-review/SKILL.md",
     ".agents/skills/code-review/references/record-model.md",
@@ -49,65 +38,38 @@ COMMON_REQUIRED = [
     ".agents/skills/code-review/templates/evidence-manifest.json",
     ".agents/skills/code-review/templates/coordination.json",
     ".agents/skills/code-review/templates/review-request.json",
-    ".cursor/rules/project-standards.mdc",
-    ".aider.conf.yml",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/workflows/reusable-verify.yml",
-    ".github/workflows/dependency-review.yml",
-    "docs/README.md",
-    "docs/architecture/overview.md",
-    "docs/design/README.md",
-    "docs/design/ux-ui-development.md",
-    "docs/design/design-system.md",
-    "docs/design/accessibility.md",
-    "docs/design/responsive-design.md",
-    "docs/design/content-design.md",
-    "docs/design/usability-validation.md",
-    "docs/design/ui-review-checklist.md",
-    "docs/engineering/ai-assisted-development.md",
-    "docs/engineering/agent-compatibility.md",
-    "docs/engineering/context-loading.md",
-    "docs/engineering/tool-permissions.md",
-    "docs/engineering/approval-amendments.md",
-    "docs/engineering/review-independence.md",
-    "docs/engineering/review-system.md",
-    "docs/engineering/session-recovery.md",
-    "docs/engineering/multi-agent-coordination.md",
-    "docs/engineering/agent-evaluations.md",
-    "docs/engineering/enforcement-matrix.md",
-    "docs/security/github-hardening.md",
-    "docs/operations/production-readiness.md",
-    "docs/work/_template/brief.md",
-    "docs/work/_template/state.yml",
-    "docs/work/_template/ux-requirements.md",
-    "docs/work/_template/ui-verification.md",
-    "evals/agent-behavior/scenarios.json",
-    "evals/code-review/README.md",
-    "evals/code-review/scenarios.json",
-    "scripts/bootstrap_project.py",
-    "scripts/configure_review_governance.py",
-    "scripts/verify_project.py",
-    "scripts/validate_agent_governance.py",
-    "scripts/test_code_review_skill.py",
-    "scripts/verify.d/README.md",
-    "templates/licenses/MIT.txt",
-    "templates/licenses/Apache-2.0.txt",
-    "templates/licenses/Proprietary.txt",
+    ".agents/skills/feature-execution-planner/SKILL.md",
+    ".agents/skills/feature-execution-planner/README.md",
+    ".agents/skills/feature-execution-planner/config/decision-triggers.json",
+    ".agents/skills/feature-execution-planner/config/reversal-classes.json",
+    ".agents/skills/feature-execution-planner/config/size-classes.json",
+    ".agents/skills/feature-execution-planner/config/approval-roles.example.json",
+    ".agents/skills/feature-execution-planner/config/milestone-classes.json",
+    ".agents/skills/feature-execution-planner/config/planning-policy.example.json",
+    ".agents/skills/feature-execution-planner/schemas/decision-revision.schema.json",
+    ".agents/skills/feature-execution-planner/schemas/obligation.schema.json",
+    ".agents/skills/feature-execution-planner/schemas/execution-attempt.schema.json",
+    ".agents/skills/feature-execution-planner/schemas/milestone-revision.schema.json",
+    ".agents/skills/feature-execution-planner/schemas/plan-revision.schema.json",
+    ".agents/skills/feature-execution-planner/schemas/implementation-authorization.schema.json",
+    ".agents/skills/feature-execution-planner/scripts/planning_common.py",
+    ".agents/skills/feature-execution-planner/scripts/render_planning_views.py",
+    ".agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py",
+    ".agents/skills/feature-execution-planner/scripts/validate_planning_authority.py",
+    ".agents/skills/feature-execution-planner/scripts/build_plan_manifest.py",
+    ".agents/skills/feature-execution-planner/scripts/assess_plan_impact.py",
+    ".cursor/rules/project-standards.mdc", ".aider.conf.yml", ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/workflows/reusable-verify.yml", ".github/workflows/dependency-review.yml", ".github/workflows/planning-structure.yml", ".github/workflows/planning-authority.yml",
+    "docs/README.md", "docs/architecture/overview.md", "docs/design/README.md", "docs/design/ux-ui-development.md", "docs/design/design-system.md", "docs/design/accessibility.md", "docs/design/responsive-design.md", "docs/design/content-design.md", "docs/design/usability-validation.md", "docs/design/ui-review-checklist.md",
+    "docs/engineering/ai-assisted-development.md", "docs/engineering/agent-compatibility.md", "docs/engineering/context-loading.md", "docs/engineering/tool-permissions.md", "docs/engineering/approval-amendments.md", "docs/engineering/feature-planning.md", "docs/engineering/review-independence.md", "docs/engineering/review-system.md", "docs/engineering/session-recovery.md", "docs/engineering/multi-agent-coordination.md", "docs/engineering/agent-evaluations.md", "docs/engineering/enforcement-matrix.md",
+    "docs/security/github-hardening.md", "docs/operations/production-readiness.md",
+    "docs/work/_template/brief.md", "docs/work/_template/state.yml", "docs/work/_template/planning-model.json", "docs/work/_template/intent-manifest.json", "docs/work/_template/planning-context.json", "docs/work/_template/impact-assessment.json", "docs/work/_template/decisions.md", "docs/work/_template/plan.md", "docs/work/_template/ux-requirements.md", "docs/work/_template/ui-verification.md",
+    "evals/agent-behavior/scenarios.json", "evals/code-review/README.md", "evals/code-review/scenarios.json", "evals/feature-planning/README.md", "evals/feature-planning/scenarios.json",
+    "scripts/bootstrap_project.py", "scripts/configure_review_governance.py", "scripts/create_feature.py", "scripts/verify_project.py", "scripts/validate_agent_governance.py", "scripts/test_code_review_skill.py", "scripts/test_feature_planner_skill.py", "scripts/verify.d/README.md",
+    "templates/licenses/MIT.txt", "templates/licenses/Apache-2.0.txt", "templates/licenses/Proprietary.txt",
 ]
-TEMPLATE_REQUIRED = [
-    ".github/workflows/template-validation.yml",
-    "project.config.example.yml",
-    "scripts/test_bootstrap.py",
-    "examples/reference-project/package.json",
-    "templates/github-actions/project-validation.yml",
-    "templates/github-actions/semantic-release.yml.example",
-]
-PROJECT_REQUIRED = [
-    "project.yml",
-    ".github/workflows/project-validation.yml",
-    "docs/getting-started/template-origin.md",
-]
-
+TEMPLATE_REQUIRED = [".github/workflows/template-validation.yml", "project.config.example.yml", "scripts/test_bootstrap.py", "examples/reference-project/package.json", "templates/github-actions/project-validation.yml", "templates/github-actions/semantic-release.yml.example"]
+PROJECT_REQUIRED = ["project.yml", ".github/workflows/project-validation.yml", "docs/getting-started/template-origin.md"]
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ACTION = re.compile(r"uses:\s*([^\s@]+)@([^\s#]+)")
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
@@ -159,6 +121,21 @@ def validate_actions(errors: list[str]) -> None:
             errors.append(f"workflow lacks explicit permissions: {path.relative_to(ROOT)}")
 
 
+def validate_json(errors: list[str]) -> None:
+    roots = [ROOT / "planning-approval-roles.json", ROOT / ".agents/skills/feature-execution-planner", ROOT / "evals/feature-planning", ROOT / "docs/work/_template"]
+    paths: list[Path] = []
+    for root in roots:
+        if root.is_file():
+            paths.append(root)
+        elif root.exists():
+            paths.extend(root.rglob("*.json"))
+    for path in sorted(set(paths)):
+        try:
+            json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"invalid JSON: {path.relative_to(ROOT)}: {exc}")
+
+
 def validate_generated_configuration(errors: list[str]) -> None:
     if not is_generated_project():
         return
@@ -190,12 +167,13 @@ def main() -> int:
     validate_required(errors)
     validate_markdown_links(errors)
     validate_actions(errors)
+    validate_json(errors)
     validate_generated_configuration(errors)
     validate_text(errors)
     if errors:
         print("Repository validation failed:", file=sys.stderr)
-        for error in errors:
-            print(f"- {error}", file=sys.stderr)
+        for item in errors:
+            print(f"- {item}", file=sys.stderr)
         return 1
     print("Repository validation passed.")
     return 0

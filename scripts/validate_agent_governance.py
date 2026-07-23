@@ -29,18 +29,9 @@ def require_tokens(path: str, tokens: list[str], errors: list[str]) -> None:
 
 def validate_context_manifest(errors: list[str]) -> None:
     text = read("agent-context.yml", errors)
-    for token in (
-        "version: 4",
-        "always:",
-        "when:",
-        "repository_orientation:",
-        "independent_review:",
-        "security_or_privacy:",
-        "agent_handoff_or_resume:",
-    ):
+    for token in ("version: 5", "always:", "when:", "repository_orientation:", "feature_planning:", "independent_review:", "security_or_privacy:", "agent_handoff_or_resume:"):
         if token not in text:
             errors.append(f"agent-context.yml missing required token: {token}")
-
     before_rules = text.split("\nrules:\n", 1)[0]
     for raw in before_rules.splitlines():
         stripped = raw.strip()
@@ -76,14 +67,12 @@ def validate_scenarios(path: str, minimum: int, required: set[str], errors: list
     except json.JSONDecodeError as exc:
         errors.append(f"invalid evaluation JSON {path}: {exc}")
         return
-
     scenarios = payload.get("scenarios")
     if payload.get("version") != 1:
         errors.append(f"{path} version must be 1")
     if not isinstance(scenarios, list) or len(scenarios) < minimum:
         errors.append(f"{path} must contain at least {minimum} scenarios")
         return
-
     ids: set[str] = set()
     for index, scenario in enumerate(scenarios):
         if not isinstance(scenario, dict):
@@ -99,74 +88,31 @@ def validate_scenarios(path: str, minimum: int, required: set[str], errors: list
             errors.append(f"duplicate evaluation id in {path}: {scenario_id}")
         else:
             ids.add(scenario_id)
-        for list_key in ("required_behavior", "prohibited_behavior"):
-            value = scenario.get(list_key)
+        for key in ("required_behavior", "prohibited_behavior"):
+            value = scenario.get(key)
             if not isinstance(value, list) or not value or not all(isinstance(item, str) and item for item in value):
-                errors.append(f"{path} {scenario_id or index} {list_key} must be a non-empty string list")
+                errors.append(f"{path} {scenario_id or index} {key} must be a non-empty string list")
 
 
 def validate_evals(errors: list[str]) -> None:
-    validate_scenarios(
-        "evals/agent-behavior/scenarios.json",
-        8,
-        {
-            "id",
-            "category",
-            "stimulus",
-            "required_behavior",
-            "prohibited_behavior",
-            "expected_workflow",
-            "expected_status",
-            "expected_escalation",
-        },
-        errors,
-    )
-    validate_scenarios(
-        "evals/code-review/scenarios.json",
-        10,
-        {"id", "category", "stimulus", "required_behavior", "prohibited_behavior"},
-        errors,
-    )
+    validate_scenarios("evals/agent-behavior/scenarios.json", 8, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior", "expected_workflow", "expected_status", "expected_escalation"}, errors)
+    validate_scenarios("evals/code-review/scenarios.json", 10, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior"}, errors)
+    validate_scenarios("evals/feature-planning/scenarios.json", 20, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior", "expected_status"}, errors)
 
 
 def validate_governance(errors: list[str]) -> None:
     validate_context_manifest(errors)
     validate_tool_policy(errors)
-    require_tokens(
-        "docs/work/_template/state.yml",
-        ["phase: specification", "implementation_authorized: false", "release_authorized: false", "active_agent:", "base_commit:", "independent_review_level:"],
-        errors,
-    )
+    require_tokens("docs/work/_template/state.yml", ["planning_model_version: 2", "authorization_status: not_authorized", "release_authorized: false", "active_agent:", "base_commit:", "independent_review_level:"], errors)
     require_tokens("GEMINI.md", ["@./AGENTS.md", "@./agent-context.yml", "@./agent-policy.yml"], errors)
-    require_tokens(
-        ".cursor/rules/project-standards.mdc",
-        ["alwaysApply: true", "@AGENTS.md", "@agent-context.yml", "@agent-policy.yml"],
-        errors,
-    )
+    require_tokens(".cursor/rules/project-standards.mdc", ["alwaysApply: true", "@AGENTS.md", "@agent-context.yml", "@agent-policy.yml"], errors)
     require_tokens(".aider.conf.yml", ["read:", "AGENTS.md", "agent-context.yml", "agent-policy.yml", "yes-always: false"], errors)
-    require_tokens(
-        ".agents/skills/code-review/SKILL.md",
-        ["name: code-review", "refs/reviews/snapshots", "Every binding finding includes a written acceptance criterion", "The merge gate"],
-        errors,
-    )
-    require_tokens(
-        "docs/engineering/review-system.md",
-        ["Evidence requirements", "Scoped dimensions", "Seams", "Persistent ledger", "Merge gate"],
-        errors,
-    )
-
-    for path in (
-        "docs/engineering/context-loading.md",
-        "docs/engineering/tool-permissions.md",
-        "docs/engineering/approval-amendments.md",
-        "docs/engineering/review-independence.md",
-        "docs/engineering/review-system.md",
-        "docs/engineering/session-recovery.md",
-        "docs/engineering/multi-agent-coordination.md",
-        "docs/engineering/agent-evaluations.md",
-        "evals/agent-behavior/README.md",
-        "evals/code-review/README.md",
-    ):
+    require_tokens(".agents/skills/code-review/SKILL.md", ["name: code-review", "refs/reviews/snapshots", "Every binding finding includes a written acceptance criterion", "The merge gate"], errors)
+    require_tokens(".agents/skills/feature-execution-planner/SKILL.md", ["name: feature-execution-planner", "Convert approved product intent", "Every current execution belongs to exactly one milestone", "IMPLEMENTATION_AUTHORIZATION_REQUIRED"], errors)
+    require_tokens("docs/engineering/review-system.md", ["Evidence requirements", "Scoped dimensions", "Seams", "Persistent ledger", "Merge gate"], errors)
+    require_tokens("docs/engineering/feature-planning.md", ["Gate 0", "Gate 1", "Gate 2", "implementation authorization", "Every current execution belongs to one current milestone"], errors)
+    require_tokens("planning-approval-roles.json", ["schema_version", "mode", "roles", "engineering_owner"], errors)
+    for path in ("docs/engineering/context-loading.md", "docs/engineering/tool-permissions.md", "docs/engineering/approval-amendments.md", "docs/engineering/feature-planning.md", "docs/engineering/review-independence.md", "docs/engineering/review-system.md", "docs/engineering/session-recovery.md", "docs/engineering/multi-agent-coordination.md", "docs/engineering/agent-evaluations.md", "evals/agent-behavior/README.md", "evals/code-review/README.md", "evals/feature-planning/README.md"):
         read(path, errors)
 
 
@@ -174,18 +120,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Validate AI platform governance contracts.")
     parser.add_argument("--evals-only", action="store_true", help="Validate only agent behavior evaluation scenarios.")
     args = parser.parse_args()
-
     errors: list[str] = []
     if not args.evals_only:
         validate_governance(errors)
     validate_evals(errors)
-
     if errors:
         print("AI governance validation failed:", file=sys.stderr)
-        for error in errors:
-            print(f"- {error}", file=sys.stderr)
+        for item in errors:
+            print(f"- {item}", file=sys.stderr)
         return 1
-
     if args.evals_only:
         print("Agent behavior evaluation contracts passed structural validation.")
         print("No model was invoked; connect scenario files to a model-specific harness for behavioral results.")

@@ -1,0 +1,26 @@
+{
+  "calendar_estimates_permitted": false,
+  "classes": [
+    {
+      "description": "One contained obligation with established patterns and no protected decisions.",
+      "id": "XS"
+    },
+    {
+      "description": "A small number of contained obligations in one ownership boundary.",
+      "id": "S"
+    },
+    {
+      "description": "Multiple obligations or modules with bounded coordination.",
+      "id": "M"
+    },
+    {
+      "description": "Cross-module or cross-service work with material unknowns or release sequencing.",
+      "id": "L"
+    },
+    {
+      "description": "Multi-release work with migrations, broad coordination, or high-risk decisions.",
+      "id": "XL"
+    }
+  ],
+  "schema_version": 1
+}

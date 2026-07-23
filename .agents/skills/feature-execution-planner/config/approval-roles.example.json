@@ -1,0 +1,43 @@
+{
+  "generated_from_codeowners": true,
+  "mode": "solo",
+  "require_non_author_approval": false,
+  "roles": {
+    "architecture": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "data": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "engineering_owner": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "operations": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "privacy": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "product": {
+      "github_owners": [
+        "Brak23"
+      ]
+    },
+    "security": {
+      "github_owners": [
+        "Brak23"
+      ]
+    }
+  },
+  "schema_version": 1
+}

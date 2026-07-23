@@ -1,0 +1,11 @@
+{
+  "allow_wildcard_authorization": false,
+  "canonicalization": "planning-canonical-json-v1",
+  "evidence_registry": ".agents/skills/code-review/config/evidence-requirements.example.json",
+  "forbid_calendar_estimates": true,
+  "maximum_decision_options": 3,
+  "minimum_decision_options": 2,
+  "require_generated_views": true,
+  "require_separate_implementation_authorization": true,
+  "schema_version": 1
+}

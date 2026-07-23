@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "triggers": [
+    {
+      "id": "schema_backfill_or_destructive_change",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "data",
+        "architecture"
+      ]
+    },
+    {
+      "id": "public_contract_change",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "architecture"
+      ]
+    },
+    {
+      "id": "authentication_or_authorization",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "security"
+      ]
+    },
+    {
+      "id": "pii_or_regulated_data",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "privacy",
+        "security"
+      ]
+    },
+    {
+      "id": "money_movement_or_financial_calculation",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "engineering_owner"
+      ]
+    },
+    {
+      "id": "new_production_third_party_dependency",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "architecture",
+        "security"
+      ]
+    },
+    {
+      "id": "service_boundary_crossing",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "architecture"
+      ]
+    },
+    {
+      "id": "slo_or_recovery_objective_change",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "operations",
+        "architecture"
+      ]
+    },
+    {
+      "id": "coordinated_deployment_or_consumer_migration",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "operations",
+        "architecture"
+      ]
+    },
+    {
+      "id": "irreversible_external_side_effect",
+      "minimum_reversal_class": "irreversible",
+      "required_roles": [
+        "engineering_owner"
+      ]
+    },
+    {
+      "id": "secrets_crypto_iam_or_production_access",
+      "minimum_reversal_class": "coordinated",
+      "required_roles": [
+        "security",
+        "operations"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "classes": [
+    {
+      "id": "local",
+      "planner_selectable": true,
+      "rank": 1
+    },
+    {
+      "id": "bounded",
+      "planner_selectable": true,
+      "rank": 2
+    },
+    {
+      "id": "coordinated",
+      "planner_selectable": false,
+      "rank": 3
+    },
+    {
+      "id": "irreversible",
+      "planner_selectable": false,
+      "rank": 4
+    }
+  ],
+  "schema_version": 1
+}

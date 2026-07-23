@@ -1,10 +1,8 @@
-# Task decision log
+<!-- GENERATED FILE. DO NOT EDIT. -->
+<!-- Source model: planning-model-v2 -->
 
-## YYYY-MM-DD: [Decision]
+# Decisions: [Name]
 
-- Decision:
-- Context:
-- Alternatives:
-- Rationale:
-- Consequences:
-- Approved by:
+No decision revisions have been recorded.
+
+## Revision history

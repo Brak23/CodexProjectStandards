@@ -1,30 +1,33 @@
-version: 1
+version: 2
+planning_model_version: 2
 feature_id: "[ID]"
 feature_name: "[Name]"
 phase: specification
 risk: moderate
 ui_impact: none
 
-brief:
+intent:
   status: draft
-  approved_by: null
-  approved_at: null
+  active_revision: INTENT-001/1
 
 plan:
   status: not_started
-  approved_by: null
-  approved_at: null
+  active_revision: null
+  independent_review_status: not_started
 
 execution:
-  implementation_authorized: false
+  authorization_status: not_authorized
+  effective_authorizations: []
+  authorized_plan_revision: null
+  authorized_milestones: []
+  authorized_executions: []
+  paused_executions: []
   release_authorized: false
-  current_milestone: null
-  last_completed_milestone: null
 
 ownership:
   human_owner: null
   active_agent: null
-  agent_role: implementer
+  agent_role: planner
   branch: null
   base_commit: null
   lease_updated_at: null
@@ -43,5 +46,5 @@ updated_at: null
 # specification, discovery, planning, implementation, review, verification,
 # release_ready, released, blocked, archived
 #
-# Approval and authorization must be updated only from authenticated human
-# direction and must remain consistent with brief.md, plan.md, and decisions.md.
+# This file is an operational projection. Approval and authorization derive from
+# protected repository records and authenticated review, never from editing state.yml.

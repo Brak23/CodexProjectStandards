@@ -1,0 +1,11 @@
+{
+  "base_commit": null,
+  "contracts": [],
+  "existing_patterns": [],
+  "feature_id": "[ID]",
+  "limitations": [],
+  "loaded_sources": [],
+  "rejected_paths": [],
+  "relevant_modules": [],
+  "schema_version": 1
+}

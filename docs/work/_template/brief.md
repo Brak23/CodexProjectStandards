@@ -30,11 +30,17 @@ For significant user-interface work, complete [`ux-requirements.md`](ux-requirem
 
 ## Acceptance criteria
 
-- Given...
-- When...
-- Then...
+Give every criterion a stable ID and revision. Example:
+
+### AC-001@1: [Observable outcome]
+
+- Given [precondition]
+- When [event]
+- Then [observable result]
 
 User-facing criteria must cover applicable loading, empty, error, success, disabled, read-only, permission-denied, partial, and recovery behavior rather than only the ideal state.
+
+The active criteria and their exact revisions must also appear in `intent-manifest.json`. The planner may reference them but may not create or rewrite them.
 
 ## Failure and edge cases
 
@@ -79,7 +85,7 @@ Include invalid input, duplicates, unauthorized users, concurrency, dependency f
 
 ## Success measurement
 
-[How production behavior will demonstrate success, including task completion or usability measures for consequential user flows.]
+[How production behavior will demonstrate success, including task completion or usability measures for important user flows.]
 
 ## Approval
 

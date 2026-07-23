@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "affected_decision": {
+      "type": "string"
+    },
+    "approval_required_from": {
+      "minItems": 1,
+      "type": "array"
+    },
+    "rationale": {
+      "minLength": 30,
+      "type": "string"
+    },
+    "requirement": {
+      "type": "string"
+    },
+    "source_evidence_id": {
+      "type": "string"
+    },
+    "source_execution": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "requirement",
+    "source_execution",
+    "source_evidence_id",
+    "affected_decision",
+    "rationale",
+    "approval_required_from"
+  ],
+  "title": "Evidence carry claim",
+  "type": "object"
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "affected_authorizations": {
+      "type": "array"
+    },
+    "affected_decisions": {
+      "type": "array"
+    },
+    "affected_executions": {
+      "type": "array"
+    },
+    "affected_milestones": {
+      "type": "array"
+    },
+    "affected_obligations": {
+      "type": "array"
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "trigger": {
+      "type": "object"
+    },
+    "uncertain_impact": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "feature_id",
+    "trigger",
+    "affected_decisions",
+    "affected_obligations",
+    "affected_executions",
+    "affected_milestones",
+    "affected_authorizations",
+    "uncertain_impact"
+  ],
+  "title": "Planning impact assessment",
+  "type": "object"
+}

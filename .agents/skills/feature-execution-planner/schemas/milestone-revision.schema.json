@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "claims": {
+      "type": "object"
+    },
+    "class": {
+      "enum": [
+        "behavioral",
+        "enabling",
+        "maintenance"
+      ]
+    },
+    "corrects": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "dependencies": {
+      "type": "array"
+    },
+    "downstream_failure_disposition": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "enables": {
+      "type": "array"
+    },
+    "executions": {
+      "minItems": 1,
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^MILESTONE-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "joint_evidence": {
+      "type": "array"
+    },
+    "observability": {
+      "type": "object"
+    },
+    "provides": {
+      "type": "array"
+    },
+    "release_owner": {
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "rollback": {
+      "type": "object"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "supports": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "class",
+    "claims",
+    "executions",
+    "dependencies",
+    "joint_evidence",
+    "observability",
+    "rollback",
+    "release_owner",
+    "integrity"
+  ],
+  "title": "Milestone revision",
+  "type": "object"
+}

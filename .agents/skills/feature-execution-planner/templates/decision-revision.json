@@ -1,0 +1,57 @@
+{
+  "approval_requirements": {
+    "additional_roles": [],
+    "primary_role": "architecture"
+  },
+  "deadline": "[YYYY-MM-DD]",
+  "default_on_deadline": "do_not_proceed",
+  "depends_on": [],
+  "domain": "architecture",
+  "id": "DEC-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "lifecycle_action": "create",
+  "options": [
+    {
+      "forecloses": [
+        "[What this forecloses]"
+      ],
+      "id": "option-a",
+      "reversal_requirements": [
+        "[Reversal requirement]"
+      ],
+      "summary": "[Option A]"
+    },
+    {
+      "forecloses": [
+        "[What this forecloses]"
+      ],
+      "id": "option-b",
+      "reversal_requirements": [
+        "[Reversal requirement]"
+      ],
+      "summary": "[Option B]"
+    }
+  ],
+  "provides": [],
+  "recommendation": {
+    "option": "option-a",
+    "rationale": "[Evidence-based recommendation]"
+  },
+  "requires": [],
+  "reversal": {
+    "class": "coordinated",
+    "reasons": [
+      "[Why coordinated reversal is required]"
+    ]
+  },
+  "revision": 1,
+  "schema_version": 1,
+  "supersedes": null,
+  "title": "[Decision title]",
+  "trigger_ids": [
+    "service_boundary_crossing"
+  ]
+}

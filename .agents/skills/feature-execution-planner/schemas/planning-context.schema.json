@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "base_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contracts": {
+      "type": "array"
+    },
+    "existing_patterns": {
+      "type": "array"
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array"
+    },
+    "loaded_sources": {
+      "type": "array"
+    },
+    "rejected_paths": {
+      "type": "array"
+    },
+    "relevant_modules": {
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "feature_id",
+    "base_commit",
+    "loaded_sources",
+    "relevant_modules",
+    "contracts",
+    "existing_patterns",
+    "rejected_paths",
+    "limitations"
+  ],
+  "title": "Planning context",
+  "type": "object"
+}

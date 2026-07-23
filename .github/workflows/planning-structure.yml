@@ -1,0 +1,29 @@
+name: Planning structure
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@bfe8cc55a7890e3d6672eda6460ef37bfcc70755
+        with:
+          python-version: '3.13'
+
+      - name: Validate planner package and changed workspaces
+        run: |
+          python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --contracts-only
+          python3 scripts/test_feature_planner_skill.py
+          python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --changed-only --base-ref "origin/${{ github.base_ref }}"

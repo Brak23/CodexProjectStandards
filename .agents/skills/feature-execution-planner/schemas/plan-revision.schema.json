@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_requirements": {
+      "type": "object"
+    },
+    "basis": {
+      "type": "object"
+    },
+    "classification": {
+      "type": "object"
+    },
+    "generated_views": {
+      "type": "object"
+    },
+    "id": {
+      "pattern": "^PLAN-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "records": {
+      "type": "object"
+    },
+    "replan_when": {
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "basis",
+    "records",
+    "classification",
+    "generated_views",
+    "approval_requirements",
+    "integrity"
+  ],
+  "title": "Plan revision",
+  "type": "object"
+}

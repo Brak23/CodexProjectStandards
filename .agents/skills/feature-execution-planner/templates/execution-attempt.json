@@ -1,0 +1,29 @@
+{
+  "assignee": {
+    "inherited_from": null,
+    "owner": "[owner]"
+  },
+  "attempt": 1,
+  "corrects": null,
+  "decision_basis": [],
+  "dependencies": [],
+  "evidence_carries": [],
+  "evidence_requirements": [],
+  "id": "TASK-001/1",
+  "implementation": {
+    "allowed_modules": [],
+    "prohibited_modules": [],
+    "summary": "[Implementation approach]"
+  },
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "kind": "initial_execution",
+  "local_choices": [],
+  "milestone": "MILESTONE-001/1",
+  "obligation": "TASK-001",
+  "replaces": null,
+  "schema_version": 1,
+  "status": "planned"
+}

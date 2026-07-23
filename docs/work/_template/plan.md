@@ -1,62 +1,18 @@
-# Execution plan: [Feature]
+<!-- GENERATED FILE. DO NOT EDIT. -->
+<!-- Source model: planning-model-v2 -->
 
-Follow `.agent/PLANS.md`. Keep this document current during implementation.
+# Execution plan: [Name]
 
-## Purpose
+No plan revision has been recorded.
 
-## Current behavior and evidence
+## Milestone release compositions
 
-## Acceptance criteria mapping
+No milestone revisions have been recorded.
 
-## Non-goals
+## Obligations and current executions
 
-## Assumptions and unknowns
+## Evidence design
 
-## Repository context
+## Replanning and authorization
 
-### Relevant modules
-
-### Existing patterns
-
-### Tests and contracts
-
-### Files considered but rejected
-
-## Proposed design
-
-## Alternatives considered
-
-## Security and privacy
-
-## Data and migration impact
-
-## Expected change surface
-
-- Expected files:
-- Maximum files:
-- Expected meaningful changed lines:
-- Allowed modules:
-- Forbidden modules:
-- New dependency expected: Yes / No
-- Public contract change expected: Yes / No
-- Migration expected: Yes / No
-- Infrastructure change expected: Yes / No
-- Feature flag expected: Yes / No
-
-## Implementation milestones
-
-## Verification matrix
-
-| Acceptance criterion | Implementation | Verification | Evidence |
-| --- | --- | --- | --- |
-| AC-1 | | | |
-
-## Rollout
-
-## Rollback or disablement
-
-## Progress
-
-## Decision log
-
-## Final evidence
+Implementation requires a current immutable authorization event naming the exact plan, milestone revisions, and execution attempts. Plan approval alone does not authorize implementation.

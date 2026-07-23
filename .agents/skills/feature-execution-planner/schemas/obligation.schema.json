@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "accountability": {
+      "type": "object"
+    },
+    "current_execution": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "pattern": "^TASK-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "intent_basis": {
+      "minItems": 1,
+      "type": "array"
+    },
+    "lifecycle": {
+      "enum": [
+        "active",
+        "satisfied",
+        "retired_by_intent"
+      ]
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "title",
+    "intent_basis",
+    "lifecycle",
+    "current_execution",
+    "accountability",
+    "integrity"
+  ],
+  "title": "Stable obligation",
+  "type": "object"
+}

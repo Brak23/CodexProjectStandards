@@ -1,0 +1,11 @@
+{
+  "affected_authorizations": [],
+  "affected_decisions": [],
+  "affected_executions": [],
+  "affected_milestones": [],
+  "affected_obligations": [],
+  "feature_id": "[ID]",
+  "schema_version": 1,
+  "trigger": {},
+  "uncertain_impact": false
+}

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_requirements": {
+      "type": "object"
+    },
+    "deadline": {
+      "type": "string"
+    },
+    "default_on_deadline": {
+      "type": "string"
+    },
+    "depends_on": {
+      "type": "array"
+    },
+    "domain": {
+      "enum": [
+        "product",
+        "architecture",
+        "security",
+        "privacy",
+        "data",
+        "operations",
+        "engineering"
+      ]
+    },
+    "id": {
+      "pattern": "^DEC-[0-9]{3,}$"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "lifecycle_action": {
+      "enum": [
+        "create",
+        "supersede",
+        "revalidate"
+      ]
+    },
+    "options": {
+      "maxItems": 3,
+      "minItems": 2,
+      "type": "array"
+    },
+    "provides": {
+      "type": "array"
+    },
+    "recommendation": {
+      "type": "object"
+    },
+    "requires": {
+      "type": "array"
+    },
+    "reversal": {
+      "type": "object"
+    },
+    "revision": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "trigger_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "revision",
+    "title",
+    "domain",
+    "trigger_ids",
+    "reversal",
+    "options",
+    "recommendation",
+    "approval_requirements",
+    "deadline",
+    "default_on_deadline",
+    "integrity"
+  ],
+  "title": "Decision revision",
+  "type": "object"
+}

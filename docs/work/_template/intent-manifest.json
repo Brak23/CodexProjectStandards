@@ -1,0 +1,19 @@
+{
+  "acceptance_criteria": [],
+  "approval_basis": {
+    "required_role": "product",
+    "source": "brief.md"
+  },
+  "constraints": [],
+  "feature_id": "[ID]",
+  "id": "INTENT-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "maintenance_objectives": [],
+  "non_goals": [],
+  "revision": 1,
+  "schema_version": 1,
+  "status": "draft"
+}

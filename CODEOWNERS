@@ -8,6 +8,15 @@
 /migrations/ @Brak23
 /docs/security/ @Brak23
 /docs/engineering/review-system.md @Brak23
+/docs/engineering/feature-planning.md @Brak23
+/docs/work/**/brief.md @Brak23
+/docs/work/**/intent-manifest.json @Brak23
+/docs/work/**/decisions/ @Brak23
+/docs/work/**/tasks/ @Brak23
+/docs/work/**/milestones/ @Brak23
+/docs/work/**/plans/ @Brak23
+/docs/work/**/authorizations/ @Brak23
+/planning-approval-roles.json @Brak23
 /agent-context.yml @Brak23
 /agent-policy.yml @Brak23
 /SECURITY.md @Brak23

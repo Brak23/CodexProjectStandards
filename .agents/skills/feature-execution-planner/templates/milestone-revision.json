@@ -1,0 +1,42 @@
+{
+  "claims": {
+    "acceptance_criteria": [
+      "AC-001@1"
+    ],
+    "maintenance_objectives": []
+  },
+  "class": "behavioral",
+  "corrects": null,
+  "dependencies": [],
+  "downstream_failure_disposition": null,
+  "enables": [],
+  "executions": [
+    "TASK-001/1"
+  ],
+  "id": "MILESTONE-001",
+  "integrity": {
+    "algorithm": "planning-canonical-json-v1",
+    "content_hash": "PENDING"
+  },
+  "joint_evidence": [],
+  "observability": {
+    "failure_signals": [],
+    "incident_owner": "[owner]",
+    "mode": "production_observable",
+    "monitoring_owner": "[owner]",
+    "success_signals": []
+  },
+  "provides": [],
+  "release_owner": "[owner]",
+  "revision": 1,
+  "rollback": {
+    "class": "local",
+    "data_disposition": "none",
+    "owner": "[owner]",
+    "procedure": []
+  },
+  "schema_version": 1,
+  "supports": {
+    "acceptance_criteria": []
+  }
+}

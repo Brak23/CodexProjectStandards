@@ -1,0 +1,22 @@
+{
+  "classes": {
+    "behavioral": {
+      "may_claim_acceptance_criteria": true,
+      "requires_downstream_consumers": false
+    },
+    "enabling": {
+      "may_claim_acceptance_criteria": false,
+      "requires_downstream_consumers": true
+    },
+    "maintenance": {
+      "may_claim_acceptance_criteria": false,
+      "requires_maintenance_objective": true
+    }
+  },
+  "observability_modes": [
+    "production_observable",
+    "operationally_observable",
+    "repository_verifiable"
+  ],
+  "schema_version": 1
+}

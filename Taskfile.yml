@@ -55,12 +55,75 @@ tasks:
     cmds:
       - python3 scripts/test_code_review_skill.py
 
+  plan-init:
+    desc: Initialize a model-v2 planning workspace
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/init_planning_workspace.py --work "{{.WORK}}"
+
+  plan-context:
+    desc: Refresh deterministic repository context for a planning workspace
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/collect_planning_context.py --work "{{.WORK}}"
+
+  plan-render:
+    desc: Regenerate decisions, plan, task graph, and release graph views
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/render_planning_views.py --work "{{.WORK}}" --write
+
+  plan-check:
+    desc: Validate a model-v2 feature planning workspace
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --work "{{.WORK}}"
+
+  plan-impact:
+    desc: Compute and write a planning impact closure
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/assess_plan_impact.py --work "{{.WORK}}" --write
+
+  plan-build:
+    desc: Build a plan manifest from current normative records
+    requires:
+      vars: [WORK, REVISION, RISK, SIZE]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/build_plan_manifest.py --work "{{.WORK}}" --revision "{{.REVISION}}" --risk "{{.RISK}}" --size "{{.SIZE}}"
+
+  plan-auth-check:
+    desc: Validate planning contracts including implementation authorization
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --work "{{.WORK}}"
+
+  plan-migrate:
+    desc: Preserve a legacy workspace and initialize draft model-v2 records
+    requires:
+      vars: [WORK]
+    cmds:
+      - python3 .agents/skills/feature-execution-planner/scripts/migrate_legacy_workspace.py --work "{{.WORK}}"
+
+  plan-evals:
+    desc: Run dependency-free Feature Execution Planner tests and evaluation contracts
+    cmds:
+      - python3 scripts/test_feature_planner_skill.py
+      - python3 scripts/validate_agent_governance.py --evals-only
+
   validate:
     desc: Validate required structure, local links, workflows, configuration, and agent governance
     cmds:
       - python3 scripts/validate_repository.py
       - python3 scripts/validate_agent_governance.py
       - python3 .agents/skills/code-review/scripts/validate_review_artifacts.py --contracts-only
+      - python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --contracts-only
 
   verify:
     desc: Run the authoritative stack-agnostic verification contract
@@ -68,7 +131,7 @@ tasks:
       - python3 scripts/verify_project.py
 
   feature:
-    desc: Create a feature workspace from the standard templates
+    desc: Create a model-v2 feature workspace from the standard templates
     requires:
       vars: [FEATURE, NAME]
     cmds:

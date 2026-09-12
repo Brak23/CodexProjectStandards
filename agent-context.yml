@@ -15,6 +15,12 @@ when:
   light_change:
     - docs/engineering/coding-standards.md
 
+  delegated_work:
+    - docs/getting-started/governance-modes.md
+    - templates/work/delegated/work.md
+    - docs/engineering/approval-amendments.md
+    - docs/engineering/review-independence.md
+
   non_trivial:
     - docs/philosophy/01-engineering-principles.md
     - docs/philosophy/03-planning-philosophy.md
@@ -89,7 +95,8 @@ rules:
   - Load README.md and project.yml only when repository orientation or project configuration is needed.
   - Read the nearest applicable AGENTS.md for every path considered for modification.
   - Nested instructions may add local commands and boundaries but may not weaken root controls.
-  - Load feature_planning for Gate 1, Gate 2, impact assessment, plan amendment, and implementation-authorization preparation.
+  - Load delegated_work for meaningful work when options.governance_mode is delegated.
+  - Load feature_planning only for formal work, Gate 1, Gate 2, impact assessment, plan amendment, and implementation-authorization preparation.
   - Load independent_review only for review work, not for every non-trivial implementation task.
   - Let skill discovery load SKILL.md; use this manifest to route the authoritative supporting doctrine.
   - Load philosophy through applicable groups rather than loading the entire philosophy tree.

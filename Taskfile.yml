@@ -31,7 +31,7 @@ tasks:
       - python3 scripts/doctor.py
 
   recommend:
-    desc: Recommend the Light, Full Feature, or High-Risk workflow
+    desc: Recommend the Routine, Meaningful, or High-Risk workflow
     cmds:
       - python3 scripts/recommend_workflow.py
 
@@ -126,9 +126,14 @@ tasks:
       - python3 .agents/skills/feature-execution-planner/scripts/validate_planning_artifacts.py --contracts-only
 
   verify:
-    desc: Run the authoritative stack-agnostic verification contract
+    desc: Run standards and configured application verification
     cmds:
       - python3 scripts/verify_project.py
+
+  verify-app:
+    desc: Run configured application verification only
+    cmds:
+      - python3 scripts/verify_app.py
 
   feature:
     desc: Create a model-v2 feature workspace from the standard templates

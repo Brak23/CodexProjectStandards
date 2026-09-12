@@ -15,7 +15,7 @@ Assess the repository setup, run task doctor and task verify, identify missing s
 ```text
 Read AGENTS.md and docs/getting-started/workflow-decision-tree.md.
 
-Classify this request as Light, Full Feature, or High Risk. Explain the specific trigger in no more than five sentences. Do not modify files yet.
+Classify this request as Routine, Meaningful, or High Risk from observed behavior, reversibility, affected boundaries, and the requested environment. Treat words in the request as inspection hints, not proof. Do not modify files yet.
 
 Request:
 [describe the change]
@@ -26,7 +26,7 @@ Request:
 ```text
 Read AGENTS.md and investigate this bug before editing files.
 
-Use the light workflow unless discovery shows multi-module, public-contract, security, data, migration, infrastructure, or high-blast-radius impact. Reproduce the bug, identify the causal chain, make the smallest coherent fix, run focused tests and task verify, and report evidence and limitations.
+Use the routine workflow unless observed behavior crosses a shared boundary, is hard to reverse, or changes a consequential surface. Reproduce the bug, identify the causal chain, make the smallest coherent fix, run focused tests and applicable verification, and report evidence and limitations.
 
 Bug:
 [describe the bug]
@@ -35,15 +35,15 @@ Bug:
 ## New feature
 
 ```text
-Read AGENTS.md and the product and architecture documentation. Do not implement yet.
+Read AGENTS.md and the product and architecture documentation. Inspect the repository before editing.
 
-Create a feature workspace and produce an implementation-ready brief for:
+In delegated mode, create or update work.md and implement this feature. In formal mode, produce the implementation-ready brief for:
 [describe the feature]
 
-Challenge ambiguity, define observable acceptance criteria and non-goals, identify permissions, data meaning, failure states, compatibility, security, and blocking human decisions. Stop after the brief is ready for approval.
+Define observable acceptance criteria and non-goals, identify permissions, data meaning, failure states, compatibility, security, and consequential decisions. Continue with ordinary engineering work; ask only for unresolved consequential product decisions.
 ```
 
-## Approved brief to plan
+## Formal brief to plan
 
 ```text
 Read AGENTS.md, the approved brief, repository architecture, contracts, tests, and .agent/PLANS.md. Do not implement.
@@ -51,12 +51,12 @@ Read AGENTS.md, the approved brief, repository architecture, contracts, tests, a
 Perform read-only discovery and create plan.md. Map every acceptance criterion to implementation and independent verification. Include change surface, alternatives, risk, rollout, rollback, stop conditions, and blocking decisions. Stop for plan approval.
 ```
 
-## Implement an approved plan
+## Implement a delegated work record or formal plan
 
 ```text
-Read AGENTS.md, the approved brief and plan, and all relevant nested instructions.
+Read AGENTS.md, the active work record or formal plan, and all relevant nested instructions.
 
-Implement the approved plan on an agent/* branch. Keep scope bounded, update progress and decisions, preserve protected tests and controls, run verification after coherent milestones, and stop if scope or risk changes materially.
+Implement on an agent/* branch. Keep scope bounded, update progress and material decisions, preserve protected tests and controls, run verification after coherent milestones, and replan technical details as discovery improves. Ask only for unresolved consequential decisions or unavailable required capability.
 ```
 
 ## Refactor
@@ -92,7 +92,7 @@ Read AGENTS.md, the security standards, threat model, and final diff. Identify c
 ```text
 Read the approved work documents, final diff, verification evidence, operations guidance, and release policy.
 
-Prepare the release summary, rollout sequence, success and abort metrics, rollback steps, observability checks, ownership, and known limitations. Do not authorize or perform production release without explicit human direction.
+Prepare the release summary, rollout sequence, success and abort metrics, rollback steps, observability checks, ownership, and known limitations. Execute production only through a configured integration and scoped authorization; otherwise report the exact missing boundary.
 ```
 
 ## Incident or postmortem

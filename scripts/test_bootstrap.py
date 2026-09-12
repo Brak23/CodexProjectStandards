@@ -37,12 +37,15 @@ def snapshot(root: Path) -> dict[str, str]:
 
 
 def assert_generated(root: Path) -> None:
-    required = ["project.yml", "README.md", "LICENSE", "CODEOWNERS", "planning-approval-roles.json", ".github/workflows/project-validation.yml", ".github/workflows/planning-structure.yml", ".github/workflows/planning-authority.yml", ".github/workflows/release.yml", "docs/getting-started/template-origin.md"]
+    required = ["project.yml", "README.md", "LICENSE", "CODEOWNERS", ".github/workflows/project-validation.yml", ".github/workflows/release.yml", "docs/getting-started/template-origin.md"]
     missing = [path for path in required if not (root / path).exists()]
     if missing:
         raise AssertionError("bootstrap did not create: " + ", ".join(missing))
     if (root / ".github/workflows/template-validation.yml").exists():
         raise AssertionError("template-only validation workflow remained after bootstrap")
+    for path in ("planning-approval-roles.json", ".github/workflows/planning-structure.yml", ".github/workflows/planning-authority.yml"):
+        if (root / path).exists():
+            raise AssertionError(f"delegated bootstrap retained formal-only artifact: {path}")
     if (root / "examples/reference-project").exists():
         raise AssertionError("reference project should be removed by the default configuration")
     if "project.yml" in (root / ".gitignore").read_text(encoding="utf-8"):
@@ -51,12 +54,11 @@ def assert_generated(root: Path) -> None:
     if "Example Project" not in readme or "project.yml" not in readme:
         raise AssertionError("generated README is incomplete")
     codeowners = (root / "CODEOWNERS").read_text(encoding="utf-8")
-    for token in ("@Brak23", "/.agents/skills/", "/docs/work/**/decisions/", "/planning-approval-roles.json"):
+    for token in ("@Brak23", "/.agents/skills/", "/docs/work/**/decisions/"):
         if token not in codeowners:
             raise AssertionError(f"generated CODEOWNERS is incomplete: {token}")
-    roles = json.loads((root / "planning-approval-roles.json").read_text(encoding="utf-8"))
-    if "Brak23" not in roles["roles"]["engineering_owner"]["github_owners"]:
-        raise AssertionError("planning approval roles were not configured from CODEOWNERS")
+    if 'governance_mode: "delegated"' not in (root / "project.yml").read_text(encoding="utf-8"):
+        raise AssertionError("generated project did not select delegated governance")
     license_text = (root / "LICENSE").read_text(encoding="utf-8")
     if "Copyright (c) 2026 Example Owner" not in license_text:
         raise AssertionError("generated license did not use configured ownership")
@@ -82,6 +84,12 @@ def main() -> int:
             changed = sorted(set(first) ^ set(second) | {path for path in first.keys() & second.keys() if first[path] != second[path]})
             raise AssertionError("bootstrap is not idempotent; changed on second run: " + ", ".join(changed))
         run([sys.executable, "scripts/validate_repository.py"], copy)
+        run([sys.executable, "scripts/validate_agent_governance.py"], copy)
+        created = run([sys.executable, "scripts/create_feature.py", "--feature", "APP-001", "--name", "first-capability"], copy)
+        if created is not None and (copy / "docs/work/APP-001-first-capability/planning-model.json").exists():
+            raise AssertionError("delegated feature creation used the formal planner")
+        if not (copy / "docs/work/APP-001-first-capability/work.md").exists():
+            raise AssertionError("delegated feature creation did not create work.md")
     print("Bootstrap integration test passed.")
     return 0
 

@@ -18,7 +18,7 @@ def main() -> int:
     print("6. For your next change, run: task recommend")
     print("7. For a normal feature, create a workspace:")
     print("   task feature FEATURE=APP-001 NAME=my-feature")
-    print("8. Review its state.yml before approving implementation")
+    print("8. In delegated mode, complete work.md and inspect the product result; formal mode uses state.yml")
     print("\nGolden path: docs/getting-started/golden-path.md")
     print("Agent evaluation contracts: task agent-evals")
     return 0

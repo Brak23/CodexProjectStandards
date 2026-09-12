@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
+from project_settings import governance_mode, load_project
+
 ROOT = Path(__file__).resolve().parents[1]
 COMMON_REQUIRED = [
     "README.md", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "CONTRIBUTING.md", "SECURITY.md", "CHANGELOG.md", "LICENSE", "CODEOWNERS", "Taskfile.yml", "agent-context.yml", "agent-policy.yml", "planning-approval-roles.json", ".agent/PLANS.md",
@@ -65,11 +67,13 @@ COMMON_REQUIRED = [
     "docs/security/github-hardening.md", "docs/operations/production-readiness.md",
     "docs/work/_template/brief.md", "docs/work/_template/state.yml", "docs/work/_template/planning-model.json", "docs/work/_template/intent-manifest.json", "docs/work/_template/planning-context.json", "docs/work/_template/impact-assessment.json", "docs/work/_template/decisions.md", "docs/work/_template/plan.md", "docs/work/_template/ux-requirements.md", "docs/work/_template/ui-verification.md",
     "evals/agent-behavior/scenarios.json", "evals/code-review/README.md", "evals/code-review/scenarios.json", "evals/feature-planning/README.md", "evals/feature-planning/scenarios.json",
-    "scripts/bootstrap_project.py", "scripts/configure_review_governance.py", "scripts/create_feature.py", "scripts/verify_project.py", "scripts/validate_agent_governance.py", "scripts/test_code_review_skill.py", "scripts/test_feature_planner_skill.py", "scripts/verify.d/README.md",
+    "scripts/bootstrap_project.py", "scripts/configure_review_governance.py", "scripts/create_feature.py", "scripts/project_settings.py", "scripts/verify_project.py", "scripts/verify_app.py", "scripts/validate_agent_governance.py", "scripts/test_code_review_skill.py", "scripts/test_feature_planner_skill.py", "scripts/test_governance_modes.py", "scripts/verify.d/README.md",
+    "templates/work/delegated/work.md", "docs/getting-started/governance-modes.md",
     "templates/licenses/MIT.txt", "templates/licenses/Apache-2.0.txt", "templates/licenses/Proprietary.txt",
 ]
 TEMPLATE_REQUIRED = [".github/workflows/template-validation.yml", "project.config.example.yml", "scripts/test_bootstrap.py", "examples/reference-project/package.json", "templates/github-actions/project-validation.yml", "templates/github-actions/semantic-release.yml.example"]
 PROJECT_REQUIRED = ["project.yml", ".github/workflows/project-validation.yml", "docs/getting-started/template-origin.md"]
+FORMAL_ONLY = {"planning-approval-roles.json", ".github/workflows/planning-structure.yml", ".github/workflows/planning-authority.yml"}
 LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 ACTION = re.compile(r"uses:\s*([^\s@]+)@([^\s#]+)")
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
@@ -82,6 +86,8 @@ def is_generated_project() -> bool:
 
 def validate_required(errors: list[str]) -> None:
     required = COMMON_REQUIRED + (PROJECT_REQUIRED if is_generated_project() else TEMPLATE_REQUIRED)
+    if is_generated_project() and governance_mode(load_project()) == "delegated":
+        required = [path for path in required if path not in FORMAL_ONLY]
     for relative in required:
         if not (ROOT / relative).exists():
             errors.append(f"missing required file: {relative}")
@@ -122,7 +128,9 @@ def validate_actions(errors: list[str]) -> None:
 
 
 def validate_json(errors: list[str]) -> None:
-    roots = [ROOT / "planning-approval-roles.json", ROOT / ".agents/skills/feature-execution-planner", ROOT / "evals/feature-planning", ROOT / "docs/work/_template"]
+    roots = [ROOT / ".agents/skills/feature-execution-planner", ROOT / "evals/feature-planning", ROOT / "docs/work/_template"]
+    if (ROOT / "planning-approval-roles.json").exists():
+        roots.append(ROOT / "planning-approval-roles.json")
     paths: list[Path] = []
     for root in roots:
         if root.is_file():

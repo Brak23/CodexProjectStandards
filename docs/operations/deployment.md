@@ -14,7 +14,7 @@ Use development, staging, and production with configuration separated from code.
 2. Build one immutable artifact.
 3. Deploy the artifact to staging.
 4. Run smoke, integration, security, accessibility, and performance checks as applicable.
-5. Approve production deployment.
+5. Obtain scoped production authorization for the artifact and environment, unless a documented bounded standing authorization applies.
 6. Use canary, percentage, tenant, or cohort rollout where risk warrants.
 7. Verify health and business behavior.
 8. Complete rollout or execute rollback.

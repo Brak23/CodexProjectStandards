@@ -25,3 +25,4 @@ deployment_targets:
 options:
   keep_reference_project: false
   enable_semantic_release: true
+  governance_mode: delegated

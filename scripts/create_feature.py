@@ -8,6 +8,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from project_settings import governance_mode, load_project
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -23,6 +25,14 @@ def main() -> int:
     destination = ROOT / "docs" / "work" / f"{feature}-{name}"
     if destination.exists():
         raise SystemExit(f"Feature workspace already exists: {destination.relative_to(ROOT)}")
+    if governance_mode(load_project()) == "delegated":
+        destination.mkdir(parents=True)
+        template = ROOT / "templates" / "work" / "delegated" / "work.md"
+        text = template.read_text(encoding="utf-8")
+        text = text.replace("[Name]", display_name).replace("[ID]", feature)
+        (destination / "work.md").write_text(text, encoding="utf-8")
+        print(destination.relative_to(ROOT))
+        return 0
     shutil.copytree(ROOT / "docs/work/_template", destination)
     for path in destination.rglob("*"):
         if not path.is_file() or path.suffix not in {".md", ".yml", ".yaml", ".json"}:

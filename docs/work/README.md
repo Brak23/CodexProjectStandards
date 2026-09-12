@@ -1,6 +1,12 @@
 # Feature workspaces
 
-Feature workspaces preserve approved intent, immutable decision and plan records, operational state, execution history, release composition, and evidence for non-trivial changes.
+Feature workspaces preserve product outcome, engineering decisions, progress, and evidence for meaningful changes. See [`governance-modes.md`](../getting-started/governance-modes.md) for mode selection.
+
+## Delegated workspace
+
+In delegated mode, `task feature` creates one editable `work.md` file. It records the outcome, acceptance criteria, constraints, technical plan, material decisions, and evidence. It does not grant authority itself and does not require a graph or separate planning PR.
+
+## Formal workspace
 
 Create a model-v2 workspace with:
 

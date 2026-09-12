@@ -32,20 +32,11 @@ def main() -> int:
         run([sys.executable, "scripts/bootstrap_project.py", "--config", "project.yml", "--dry-run"])
     else:
         run([sys.executable, "scripts/test_bootstrap.py"])
+    run([sys.executable, "scripts/test_governance_modes.py"])
     reference = ROOT / "examples/reference-project/package.json"
     if reference.exists():
         run(["node", "--test"], reference.parent)
-    hooks = ROOT / "scripts/verify.d"
-    if hooks.exists():
-        for hook in sorted(path for path in hooks.iterdir() if path.is_file() and path.name != "README.md"):
-            if hook.suffix == ".py":
-                run([sys.executable, str(hook.relative_to(ROOT))])
-            elif hook.suffix == ".sh":
-                run(["bash", str(hook.relative_to(ROOT))])
-            elif os.access(hook, os.X_OK):
-                run([str(hook.relative_to(ROOT))])
-            else:
-                raise SystemExit(f"Verification hook is not executable or supported: {hook.relative_to(ROOT)}")
+    run([sys.executable, "scripts/verify_app.py"])
     print("Repository verification passed.")
     return 0
 

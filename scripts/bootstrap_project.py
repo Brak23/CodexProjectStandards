@@ -10,6 +10,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from project_settings import GOVERNANCE_MODES
+
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_REPOSITORY = "https://github.com/Brak23/CodexProjectStandards"
 SUPPORTED_PROJECT_TYPES = {"web-app", "api", "service", "cli", "library", "monorepo", "other"}
@@ -106,6 +108,7 @@ def interactive_config() -> dict:
         "options": {
             "keep_reference_project": prompt("Keep reference project? (true/false)", "false").lower() == "true",
             "enable_semantic_release": prompt("Enable semantic release? (true/false)", "true").lower() == "true",
+            "governance_mode": prompt("Governance mode (delegated/formal)", "delegated"),
         },
     }
 
@@ -162,6 +165,7 @@ def normalize_config(config: dict) -> dict:
         "options": {
             "keep_reference_project": bool(config.get("options", {}).get("keep_reference_project", False)),
             "enable_semantic_release": bool(config.get("options", {}).get("enable_semantic_release", True)),
+            "governance_mode": config.get("options", {}).get("governance_mode", "formal"),
         },
     }
 
@@ -181,6 +185,8 @@ def validate_config(config: dict) -> None:
         raise ValueError("Unsupported project.license: " + project["license"])
     if repository["mode"] not in {"solo", "team"}:
         raise ValueError("repository.mode must be solo or team")
+    if config["options"]["governance_mode"] not in GOVERNANCE_MODES:
+        raise ValueError("options.governance_mode must be delegated or formal")
     if not re.fullmatch(r"[A-Za-z0-9_.-]+", repository["owner"]):
         raise ValueError("repository.owner contains unsupported characters")
     if not re.fullmatch(r"[A-Za-z0-9_.-]+", repository["name"]):
@@ -244,9 +250,10 @@ Add stack-specific `setup`, `dev`, `test`, and `build` tasks while keeping `task
 
 - Codex and compatible agents follow [`AGENTS.md`](AGENTS.md).
 - Claude Code follows [`CLAUDE.md`](CLAUDE.md), which delegates to `AGENTS.md`.
-- Non-trivial features use [`docs/work/`](docs/work/README.md) and [`.agent/PLANS.md`](.agent/PLANS.md).
-- Agents work on `agent/*` branches and open draft PRs.
-- Humans approve specification, consequential technical decisions, merge, and production release.
+- Meaningful delegated work uses [`docs/work/`](docs/work/README.md) and `work.md`; formal projects use [`.agent/PLANS.md`](.agent/PLANS.md).
+- AI owns discovery, technical planning, implementation, testing, review, and release execution within `agent-policy.yml`.
+- The product owner decides outcomes, constraints, consequential commitments, and product acceptance.
+- Governance mode: `{config['options']['governance_mode']}`. See [`docs/getting-started/governance-modes.md`](docs/getting-started/governance-modes.md).
 
 ## Documentation
 
@@ -325,6 +332,12 @@ def configure_workflows(config: dict) -> None:
         atomic_write(release, release_template.read_text(encoding="utf-8"))
     elif release.exists():
         release.unlink()
+
+    if config["options"]["governance_mode"] == "delegated":
+        for name in ("planning-authority.yml", "planning-structure.yml"):
+            path = workflows / name
+            if path.exists():
+                path.unlink()
 
 
 def apply(config: dict, dry_run: bool) -> None:

@@ -62,6 +62,10 @@ def planning_gate(paths: list[str]) -> str:
             gates.add("GATE_2")
         if relative.startswith("authorizations/implementation/"):
             gates.add("AUTHORIZATION")
+    if "project.yml" in paths:
+        if gates:
+            return "MIXED"
+        return "MODE_TRANSITION"
     if not gates:
         return "NONE"
     if len(gates) > 1:
@@ -131,6 +135,7 @@ def main() -> int:
         "GATE_1": set(),
         "GATE_2": set(),
         "AUTHORIZATION": set(),
+        "MODE_TRANSITION": {"engineering_owner"},
     }[gate]
     for path in paths:
         record = None
@@ -160,15 +165,13 @@ def main() -> int:
         if teams:
             external_roles.append(role)
         if owners and not (owners & set(approved)):
-            if mode == "solo" and not require_non_author and author in owners:
-                continue
             unsatisfied.append(role)
     if require_non_author and not any(user != author for user in approved):
         unsatisfied.append("non_author_current_head_approval")
     if unsatisfied:
         print(json.dumps({"status": "FAIL", "gate": gate, "head_sha": head_sha, "unsatisfied": sorted(set(unsatisfied)), "current_head_approvers": sorted(approved), "externally_enforced_team_roles": external_roles}, indent=2), file=sys.stderr)
         return 1
-    print(json.dumps({"status": "PASS", "gate": gate, "head_sha": head_sha, "current_head_approvers": sorted(approved), "externally_enforced_team_roles": external_roles, "mode": mode}, indent=2))
+    print(json.dumps({"status": "PASS", "gate": gate, "head_sha": head_sha, "current_head_approvers": sorted(approved), "externally_enforced_team_roles": external_roles, "mode": mode, "note": "PR authorship is not approval evidence."}, indent=2))
     return 0
 
 

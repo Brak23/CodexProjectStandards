@@ -4,13 +4,13 @@
 
 Use Semantic Versioning only when the project has a meaningful public contract. Internal continuously deployed applications may use release IDs based on date and commit SHA while still using Conventional Commits.
 
-## Commit and release classification
+## Release decision and execution
 
-- `fix`: backward-compatible defect correction
-- `feat`: backward-compatible capability
-- `BREAKING CHANGE` or `!`: incompatible contract or behavior
-- `perf`: measurable performance change
-- Other types do not create a release unless project policy says otherwise
+The product owner decides whether a consequential release should ship. AI may prepare, merge, publish metadata, deploy, run smoke checks, and recover from a failed rollout when **agent-policy.yml**, the configured integration, and scoped authorization allow it.
+
+Distinguish source merge, package or release metadata, preview, staging, production deployment, rollback, and repository settings. A successful GitHub release or deployment command does not prove production health.
+
+Production authorization should name the commit or artifact, environment, and relevant release conditions. A project may record a bounded standing authorization for recurring qualifying releases. Credentials, branch protections, and deployment environments enforce controls where configured; repository prose does not.
 
 ## Release evidence
 
@@ -18,18 +18,9 @@ Every release record should identify:
 
 - Version or release ID
 - Commit SHA and immutable artifact digest
-- User-visible changes
+- User-visible changes and how to inspect them
 - Breaking changes and migration steps
 - Configuration, permission, and data changes
-- Security fixes
 - Known limitations
-- Deployment and rollback information
-- Verification evidence
-
-## Prereleases and hotfixes
-
-Define prerelease channels and maintenance branches before using them. Hotfixes still require verification and production approval. Emergency process may reduce waiting time, not remove auditability or recovery requirements.
-
-## Changelog
-
-Use `CHANGELOG.md` for curated context. Use generated GitHub release notes as a seed, not a substitute for explaining migration, risk, or operational impact.
+- Deployment, health checks, and rollback information
+- Technical verification and product acceptance state

@@ -2,7 +2,7 @@
 
 ## Operating model
 
-The human owns intent, domain decisions, priority, consequential tradeoffs, merge, and production authorization. The agent owns repository discovery, options, planning, implementation, tests, documentation, and evidence. CI owns deterministic enforcement.
+The product owner owns outcomes, domain rules, priorities, consequential commitments, and product acceptance. The agent owns repository discovery, technical planning, implementation, tests, documentation, technical review, and allowed release execution. CI and protected environments enforce only the controls they are actually configured to enforce.
 
 ## Phases
 
@@ -10,7 +10,7 @@ The human owns intent, domain decisions, priority, consequential tradeoffs, merg
 
 No code changes. Convert the idea into a feature brief. Challenge flawed premises, identify missing journeys, permissions, failure states, data meaning, compatibility, security, and operational requirements.
 
-**Gate:** Human approves the intent contract.
+In delegated mode, a clear product request authorizes ordinary engineering work. Formal mode retains its intent gate.
 
 ### 2. Read-only discovery
 
@@ -20,7 +20,7 @@ Inspect repository instructions, architecture, existing implementations, tests, 
 
 Create a self-contained plan using `.agent/PLANS.md`. Map every acceptance criterion to implementation and verification. State the change budget and stop conditions.
 
-**Gate:** Human approves consequential technical decisions.
+Ask for a decision only when it changes the product outcome or introduces a material commitment, data boundary, irreversible effect, or unapproved production action.
 
 ### 4. Autonomous implementation
 
@@ -38,9 +38,9 @@ Run the applicable verification ladder and create `verification.md`. A targeted 
 
 Generate the PR from the final diff. Document final behavior, deliberately unchanged behavior, migration, security, rollout, rollback, and limitations.
 
-### 8. Human merge and production release
+### 8. Merge and production release
 
-The agent cannot approve its own exception, merge its own work, or independently release high-risk changes.
+The agent may execute a merge or deployment when the configured repository policy, integration, and scoped authorization permit it. A product owner decides consequential release authorization; editable repository records and PR authorship do not prove that decision.
 
 ### 9. Post-deployment verification
 

@@ -14,6 +14,7 @@ Written policy is not the same as enforced control. Every project should maintai
 | Context routing and refresh | Agent runtime behavior plus review | Implementer and reviewer | Context manifest and work evidence |
 | Pull requests before merge | Enforced by GitHub settings | Repository administrator | Ruleset configuration |
 | Required approvals | Enforced by GitHub settings in team mode | Repository administrator | Ruleset configuration |
+| Formal-to-delegated transition | Trusted base-branch planning-authority workflow when present | Engineering owner | Current-head review and workflow result |
 | CODEOWNER review for sensitive paths | Enforced by GitHub settings and CODEOWNERS | Security or platform owner | Review record |
 | Secret scanning and push protection | Enforced by GitHub settings | Security | Security settings |
 | Dependency review | Enforced by workflow and required check when configured | Engineering | Workflow result |

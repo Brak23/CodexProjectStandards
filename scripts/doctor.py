@@ -7,6 +7,8 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
+from project_settings import governance_mode, load_project
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -30,13 +32,14 @@ def contains(path: str, text: str) -> bool:
 
 def collect_checks() -> list[Check]:
     taskfile = "Taskfile.yml"
+    mode = governance_mode(load_project())
     return [
         Check("Foundation", "Project README", 5, exists("README.md"), "Add README.md."),
         Check("Foundation", "Canonical agent contract", 7, exists("AGENTS.md"), "Add AGENTS.md."),
         Check("Foundation", "Project configuration", 4, exists("project.yml") or exists("project.config.example.yml"), "Add project.yml or the example configuration."),
         Check("AI governance", "Conditional context manifest", 5, exists("agent-context.yml"), "Add agent-context.yml."),
         Check("AI governance", "Tool permission policy", 6, exists("agent-policy.yml"), "Add agent-policy.yml."),
-        Check("AI governance", "Machine-readable feature state", 5, exists("docs/work/_template/state.yml"), "Add the feature state template."),
+        Check("AI governance", "Feature work template", 5, exists("templates/work/delegated/work.md") if mode == "delegated" else exists("docs/work/_template/state.yml"), "Add the selected feature work template."),
         Check("AI governance", "Behavior evaluation contracts", 5, exists("evals/agent-behavior/scenarios.json"), "Add agent behavior evaluation scenarios."),
         Check("AI governance", "Agent governance validator", 5, exists("scripts/validate_agent_governance.py"), "Add the agent governance validator."),
         Check("Adapters", "Claude Code adapter", 2, exists("CLAUDE.md"), "Add CLAUDE.md."),
@@ -48,6 +51,7 @@ def collect_checks() -> list[Check]:
         Check("Documentation", "Operations guidance", 3, exists("docs/operations/README.md"), "Add operations guidance."),
         Check("Documentation", "Design standards", 3, exists("docs/design/README.md"), "Add UX/UI standards."),
         Check("Verification", "Stable verify command", 8, contains(taskfile, "  verify:"), "Add task verify."),
+        Check("Verification", "Application verification command", 6, contains(taskfile, "  verify-app:"), "Add task verify-app."),
         Check("Verification", "Repository validator", 5, exists("scripts/validate_repository.py"), "Add repository validation."),
         Check("Verification", "Shared verification script", 6, exists("scripts/verify_project.py"), "Add the shared local and CI verifier."),
         Check("Verification", "Stack verification extension point", 2, exists("scripts/verify.d/README.md"), "Add scripts/verify.d/README.md."),

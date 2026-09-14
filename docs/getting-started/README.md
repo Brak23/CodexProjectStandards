@@ -33,6 +33,7 @@ Then each change uses a light, full, or high-risk workflow depending on scope an
 - `repository.name`
 - `repository.mode`: `solo` or `team`
 - `repository.codeowners`: valid GitHub users or `@organization/team` entries
+- `options.governance_mode`: `delegated` (default for new projects) or `formal`; see [governance modes](governance-modes.md)
 - `profiles`
 - `deployment_targets`
 - bootstrap options
@@ -55,7 +56,7 @@ Profiles are standards overlays, not application generators. For every selected 
 task feature FEATURE=APP-001 NAME=first-capability
 ```
 
-Complete and approve `brief.md`, then have the agent perform discovery and draft `plan.md`. Do not allow implementation while blocking product, security, data, cost, or compatibility decisions remain.
+In delegated mode, create `work.md`, let the agent perform discovery, and keep product, security, data, cost, and compatibility decisions visible. Formal mode continues to use `brief.md` and `plan.md` approval records.
 
 ## Bootstrap safety
 

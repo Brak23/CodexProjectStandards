@@ -2,9 +2,9 @@
 
 A production-grade GitHub template for planning, building, reviewing, documenting, releasing, and operating software with AI coding agents.
 
-This repository treats AI coding as a governed engineering workflow:
+This repository treats AI coding as a product-directed engineering workflow:
 
-> Human-owned intent, agent-executed implementation, deterministic verification, independent review, and human-controlled merge and production release.
+> Product-owned outcomes, agent-executed technical delivery, truthful verification, practical review, and scoped release execution.
 
 ## Start here: when do I use this?
 
@@ -20,8 +20,8 @@ You do **not** create a fresh copy for every feature or bug fix. Each change fol
 
 ### Choose the workflow
 
-- **Light:** typo, docs, small UI issue, or contained low-risk bug.
-- **Full Feature:** new capability, API, integration, dependency, significant refactor, or multi-module behavior change.
+- **Routine:** typo, docs, small UI issue, or contained low-risk bug.
+- **Meaningful:** behavior that crosses a shared boundary, needs a technical tradeoff, is difficult to reverse, or has material unknowns.
 - **High Risk:** authentication, permissions, payments, sensitive data, migrations, infrastructure access, secrets, or breaking public contracts.
 
 Use the visual guide at [`docs/getting-started/workflow-decision-tree.md`](docs/getting-started/workflow-decision-tree.md), or run:
@@ -58,7 +58,7 @@ A small bug fix inside a project already using this template still follows the r
 - It does not choose every framework or architecture for you.
 - It does not make an AI agent automatically correct.
 - It does not replace meaningful tests, review, or product judgment.
-- It does not allow an agent to approve its own risky decisions, merge, production release, or prohibited tool use.
+- It does not allow an agent to bypass platform, organization, environment, or scoped-release controls.
 - It does not require maximum ceremony for every small change.
 - It does not certify that a model follows the standards merely because evaluation scenarios exist.
 
@@ -80,9 +80,9 @@ task agent-evals  # Are the portable behavior-evaluation contracts valid?
 - Thin adapters for Claude Code, Gemini CLI, Cursor, and Aider.
 - Conditional context loading through `agent-context.yml`.
 - Default-deny tool and environment permissions through `agent-policy.yml`.
-- Machine-readable feature phase, approval, ownership, blocker, review, and verification state.
-- Feature briefs, execution plans, decision logs, and verification evidence.
-- Risk-based independent review levels.
+- Delegated work records with outcome, technical plan, decisions, demonstration, and verification evidence.
+- Optional formal planning and review records for projects that need them.
+- Risk-based technical review and recovery guidance.
 - Session recovery and multi-agent coordination protocols.
 - Portable agent behavior evaluation scenarios.
 - Stack-agnostic product, design, architecture, engineering, security, release, and operations standards.
@@ -127,7 +127,7 @@ task bootstrap-config
 Bootstrap records and applies:
 
 - Project name, type, description, and license.
-- Repository owner, repository name, governance mode, and CODEOWNERS.
+- Repository owner, repository name, collaboration mode, governance mode, and CODEOWNERS.
 - Standards profiles and deployment targets.
 - Project README and committed `project.yml`.
 - Private security-reporting link.
@@ -143,7 +143,7 @@ task doctor
 task verify
 ```
 
-`task verify` is the authoritative local verification command. GitHub Actions calls the same verification script, including AI governance contract validation.
+`task validate` checks standards. `task verify-app` checks the configured application. `task verify` runs both and does not treat missing application checks as a pass.
 
 ### 5. Complete GitHub configuration
 
@@ -161,14 +161,11 @@ task feature FEATURE=APP-001 NAME=user-authentication
 
 Then:
 
-1. Review `state.yml`, complete `brief.md`, and obtain specification approval.
-2. Have the agent perform read-only repository discovery using applicable context from `agent-context.yml`.
-3. Review and approve `plan.md`, including tool permissions and review level.
-4. Let the authorized implementer work on the recorded `agent/*` branch.
-5. Run the required independent review and deterministic verification.
-6. Record evidence, reviewed commit, limitations, and state transitions.
-7. Open a draft PR.
-8. Human-review, merge, deploy, and verify production behavior.
+1. Create or update `work.md` with outcome, acceptance criteria, constraints, and evidence plan.
+2. Let the agent inspect the repository and implement ordinary necessary engineering work on an `agent/*` branch.
+3. Record material decisions, verification, review, demonstration, and limitations.
+4. Open a draft PR and inspect the working product.
+5. Use configured checks and release authorization before merge or production execution.
 
 ## AI platform governance
 
@@ -177,7 +174,8 @@ The durable controls are:
 - [`AGENTS.md`](AGENTS.md): Authority, lifecycle, stopping conditions, and completion contract.
 - [`agent-context.yml`](agent-context.yml): Minimum and conditional context routing.
 - [`agent-policy.yml`](agent-policy.yml): Tool and environment permissions.
-- [`docs/work/_template/state.yml`](docs/work/_template/state.yml): Machine-readable task state.
+- [`docs/getting-started/governance-modes.md`](docs/getting-started/governance-modes.md): Delegated default and formal option.
+- [`templates/work/delegated/work.md`](templates/work/delegated/work.md): Lightweight feature work record.
 - [`docs/engineering/approval-amendments.md`](docs/engineering/approval-amendments.md): Safe changes to approved scope.
 - [`docs/engineering/review-independence.md`](docs/engineering/review-independence.md): Review strength by risk.
 - [`docs/engineering/session-recovery.md`](docs/engineering/session-recovery.md): Context restart and handoff recovery.

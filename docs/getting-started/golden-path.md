@@ -64,25 +64,19 @@ docs/work/APP-001-user-authentication/
 
 ## 6. Define the outcome
 
-Complete `brief.md` before implementation. Focus on observable behavior, users, permissions, failure states, non-goals, acceptance criteria, and applicable UX/UI requirements.
-
-Keep `state.yml` in the specification phase until an authenticated human approves the brief and authorizes planning.
+In delegated mode, complete `work.md` with observable behavior, constraints, acceptance criteria, technical plan, and verification. A clear product request authorizes ordinary engineering work. Formal mode uses `brief.md` and its approval state.
 
 ## 7. Discover before designing
 
 Have the agent load the applicable groups from `agent-context.yml` and inspect the repository without modifying files. It should map relevant modules, tests, contracts, ownership, authorization, dependencies, environments, design patterns, and comparable implementations.
 
-## 8. Approve the plan
+## 8. Plan and implement
 
-Have the agent create `plan.md` using `.agent/PLANS.md`. Review architecture, security, data, dependency, tool permissions, rollout, rollback, verification, and independent-review level before coding starts.
-
-Set implementation authorization in `state.yml` only from authenticated human approval.
+Have the agent inspect actual repository boundaries and keep technical decisions, verification, review, rollout, and rollback appropriate to the change. In delegated mode, update `work.md` as discovery changes the approach. Formal mode uses `.agent/PLANS.md` and implementation authorization.
 
 ## 9. Implement on the recorded branch
 
-Use the `agent/*` branch and ownership fields recorded in `state.yml`. The agent should update phase, milestones, progress, decisions, blockers, and ownership lease as it works.
-
-When scope changes materially, follow the amendment process and obtain reapproval before continuing.
+Use an `agent/*` branch. Record progress, material decisions, evidence, blockers, and limitations as the agent works. Update technical plans autonomously; ask only for unresolved consequential product or release decisions.
 
 ## 10. Verify and independently review
 
@@ -94,7 +88,7 @@ Apply the required level in `docs/engineering/review-independence.md`. Record ex
 
 ## 11. Open and merge the pull request
 
-Open a draft PR first. Required checks and human review must pass before squash merge. An agent cannot set release authorization, merge its own work, or perform prohibited production actions.
+Open a draft PR first. Required checks and configured repository policy must pass before merge. An authorized agent may merge or execute a release through configured integrations; production release still needs scoped authorization unless a bounded standing authorization applies.
 
 ## 12. Release and observe
 

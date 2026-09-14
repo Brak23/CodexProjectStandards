@@ -1,66 +1,32 @@
-# Workflow decision tree
+# Workflow decision guide
 
-Use this page when you are unsure how much process a change needs.
+Use this guide after inspecting the requested behavior and the action environment. The recommender is advisory; words in a ticket are not a risk classification.
 
-```text
-Are you creating a maintained repository?
-├─ No → A throwaway script or experiment probably does not need this template.
-└─ Yes → Adopt the template once for the whole repository.
-          │
-          What are you changing?
-          │
-          ├─ Typo, docs, tiny UI fix, or contained low-risk bug
-          │  └─ LIGHT WORKFLOW
-          │     Understand → smallest change → relevant tests → task verify → PR
-          │
-          ├─ New feature, API, integration, dependency, or multi-module change
-          │  └─ FULL FEATURE WORKFLOW
-          │     Brief → discovery → plan → implement → review → verify → PR
-          │
-          └─ Auth, payments, sensitive data, migration, infrastructure,
-             secrets, or breaking public contract
-             └─ HIGH-RISK WORKFLOW
-                Full workflow + threat model/migration/rollback/security review
-```
+## Routine
 
-## Light workflow
-
-Use when the behavior is already understood, the change is localized, and failure has a small blast radius.
-
-Required:
+Use for localized, well-understood, reversible work with low blast radius.
 
 1. Confirm current behavior.
-2. Make the smallest coherent change.
-3. Run focused tests and `task verify`.
-4. Open a pull request with actual evidence.
+2. Make the coherent change.
+3. Run focused checks and applicable application verification.
+4. Report the changed behavior and how to inspect it.
 
-A feature workspace or ExecPlan is normally unnecessary.
+## Meaningful
 
-## Full feature workflow
+Use when behavior crosses a shared boundary, needs technical tradeoffs, is difficult to reverse, or has material unknowns.
 
-Use when the change introduces meaningful behavior, spans boundaries, or is likely to require tradeoffs.
+1. In delegated mode, create or update **work.md** with outcome, constraints, technical plan, verification, and material decisions.
+2. Inspect affected modules, contracts, dependencies, and operational effects.
+3. Implement and obtain fresh-context review when available.
+4. Demonstrate the result and record limitations.
 
-Required:
+Formal mode uses its existing planner for the same class of work.
 
-1. Create a feature workspace.
-2. Approve the brief.
-3. Perform read-only discovery.
-4. Approve the plan.
-5. Implement on a branch.
-6. Conduct independent review.
-7. Record verification evidence.
-8. Human-control merge and release.
+## High risk
 
-## High-risk workflow
+Use when executable behavior changes a trust boundary, sensitive or regulated data, production state, or an irreversible external effect.
 
-Use the full feature workflow and add the applicable specialist controls:
-
-- Threat model.
-- Data migration and reconciliation plan.
-- Rollback or disablement plan.
-- Security review.
-- Staged rollout and monitoring thresholds.
-- Explicit human approval for consequential decisions.
+Use the meaningful workflow and add applicable security, data, rollback, staged-release, and specialist evidence. Development and local testing may proceed within policy; production execution still needs a configured integration and scoped authorization.
 
 ## Fast command
 
@@ -70,4 +36,8 @@ Run:
 task recommend
 ```
 
-The interactive helper asks a few questions and recommends a workflow.
+For noninteractive use, supply observed facts rather than relying on a description alone:
+
+```bash
+python3 scripts/recommend_workflow.py "Fix authorization bypass" --trust-or-sensitive
+```

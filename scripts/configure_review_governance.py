@@ -7,6 +7,8 @@ import json
 import sys
 from pathlib import Path
 
+from project_settings import governance_mode, load_project
+
 ROOT = Path(__file__).resolve().parents[1]
 CODEOWNERS = ROOT / "CODEOWNERS"
 ROLE_REGISTRY = ROOT / "planning-approval-roles.json"
@@ -55,6 +57,11 @@ def main() -> int:
         print(f"Added {len(additions)} governance CODEOWNERS entries.")
     else:
         print("Review and planning CODEOWNERS entries already configured.")
+    if governance_mode(load_project()) == "delegated":
+        if ROLE_REGISTRY.exists() and json.loads(ROLE_REGISTRY.read_text(encoding="utf-8")).get("generated_from_codeowners"):
+            ROLE_REGISTRY.unlink()
+            print("Delegated mode does not generate formal planning approval roles.")
+        return 0
     logins = [item.lstrip("@") for item in owners.split()]
     payload = None
     if ROLE_REGISTRY.exists():

@@ -8,6 +8,8 @@ import json
 import sys
 from pathlib import Path
 
+from project_settings import governance_mode, load_project
+
 ROOT = Path(__file__).resolve().parents[1]
 ALLOWED_PERMISSION_STATUSES = {"allowed", "approval_required", "prohibited"}
 
@@ -81,6 +83,8 @@ def validate_scenarios(path: str, minimum: int, required: set[str], errors: list
         missing = sorted(required - scenario.keys())
         if missing:
             errors.append(f"{path} scenario {index} missing: {', '.join(missing)}")
+        if "governance_mode" in required and scenario.get("governance_mode") not in {"delegated", "formal", "all"}:
+            errors.append(f"{path} scenario {index} has invalid governance_mode")
         scenario_id = scenario.get("id")
         if not isinstance(scenario_id, str) or not scenario_id:
             errors.append(f"{path} scenario {index} has invalid id")
@@ -95,24 +99,29 @@ def validate_scenarios(path: str, minimum: int, required: set[str], errors: list
 
 
 def validate_evals(errors: list[str]) -> None:
-    validate_scenarios("evals/agent-behavior/scenarios.json", 8, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior", "expected_workflow", "expected_status", "expected_escalation"}, errors)
+    validate_scenarios("evals/agent-behavior/scenarios.json", 8, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior", "expected_workflow", "expected_status", "expected_escalation", "governance_mode"}, errors)
     validate_scenarios("evals/code-review/scenarios.json", 10, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior"}, errors)
     validate_scenarios("evals/feature-planning/scenarios.json", 20, {"id", "category", "stimulus", "required_behavior", "prohibited_behavior", "expected_status"}, errors)
 
 
 def validate_governance(errors: list[str]) -> None:
+    mode = governance_mode(load_project())
     validate_context_manifest(errors)
     validate_tool_policy(errors)
-    require_tokens("docs/work/_template/state.yml", ["planning_model_version: 2", "authorization_status: not_authorized", "release_authorized: false", "active_agent:", "base_commit:", "independent_review_level:"], errors)
     require_tokens("GEMINI.md", ["@./AGENTS.md", "@./agent-context.yml", "@./agent-policy.yml"], errors)
     require_tokens(".cursor/rules/project-standards.mdc", ["alwaysApply: true", "@AGENTS.md", "@agent-context.yml", "@agent-policy.yml"], errors)
     require_tokens(".aider.conf.yml", ["read:", "AGENTS.md", "agent-context.yml", "agent-policy.yml", "yes-always: false"], errors)
-    require_tokens(".agents/skills/code-review/SKILL.md", ["name: code-review", "refs/reviews/snapshots", "Every binding finding includes a written acceptance criterion", "The merge gate"], errors)
-    require_tokens(".agents/skills/feature-execution-planner/SKILL.md", ["name: feature-execution-planner", "Convert approved product intent", "Every current execution belongs to exactly one milestone", "IMPLEMENTATION_AUTHORIZATION_REQUIRED"], errors)
-    require_tokens("docs/engineering/review-system.md", ["Evidence requirements", "Scoped dimensions", "Seams", "Persistent ledger", "Merge gate"], errors)
-    require_tokens("docs/engineering/feature-planning.md", ["Gate 0", "Gate 1", "Gate 2", "implementation authorization", "Every current execution belongs to one current milestone"], errors)
-    require_tokens("planning-approval-roles.json", ["schema_version", "mode", "roles", "engineering_owner"], errors)
-    for path in ("docs/engineering/context-loading.md", "docs/engineering/tool-permissions.md", "docs/engineering/approval-amendments.md", "docs/engineering/feature-planning.md", "docs/engineering/review-independence.md", "docs/engineering/review-system.md", "docs/engineering/session-recovery.md", "docs/engineering/multi-agent-coordination.md", "docs/engineering/agent-evaluations.md", "evals/agent-behavior/README.md", "evals/code-review/README.md", "evals/feature-planning/README.md"):
+    if mode == "formal":
+        require_tokens("docs/work/_template/state.yml", ["planning_model_version: 2", "authorization_status: not_authorized", "release_authorized: false", "active_agent:", "base_commit:", "independent_review_level:"], errors)
+        require_tokens(".agents/skills/code-review/SKILL.md", ["name: code-review", "refs/reviews/snapshots", "Every binding finding includes a written acceptance criterion", "The merge gate"], errors)
+        require_tokens(".agents/skills/feature-execution-planner/SKILL.md", ["name: feature-execution-planner", "Convert approved product intent", "Every current execution belongs to exactly one milestone", "IMPLEMENTATION_AUTHORIZATION_REQUIRED"], errors)
+        require_tokens("docs/engineering/review-system.md", ["Evidence requirements", "Scoped dimensions", "Seams", "Persistent ledger", "Merge gate"], errors)
+        require_tokens("docs/engineering/feature-planning.md", ["Gate 0", "Gate 1", "Gate 2", "implementation authorization", "Every current execution belongs to one current milestone"], errors)
+        require_tokens("planning-approval-roles.json", ["schema_version", "mode", "roles", "engineering_owner"], errors)
+    paths = ["docs/engineering/context-loading.md", "docs/engineering/tool-permissions.md", "docs/engineering/approval-amendments.md", "docs/engineering/review-independence.md", "docs/engineering/session-recovery.md", "docs/engineering/multi-agent-coordination.md", "docs/engineering/agent-evaluations.md", "evals/agent-behavior/README.md"]
+    if mode == "formal":
+        paths += ["docs/engineering/feature-planning.md", "docs/engineering/review-system.md", "evals/code-review/README.md", "evals/feature-planning/README.md"]
+    for path in paths:
         read(path, errors)
 
 

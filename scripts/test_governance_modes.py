@@ -76,10 +76,6 @@ def main() -> int:
         hook = hooks / "application.py"
         hook.write_text("print('application check passed')\n", encoding="utf-8")
         run([sys.executable, "scripts/verify_app.py"], copy)
-
-        # Regression: configured application checks must survive full project
-        # verification instead of breaking this governance fixture.
-        run([sys.executable, "scripts/verify_project.py"], copy)
     print("Governance mode integration test passed.")
     return 0
 

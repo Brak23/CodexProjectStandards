@@ -239,20 +239,19 @@ See [`docs/engineering/agent-compatibility.md`](docs/engineering/agent-compatibi
 | Apply a stack profile | [`docs/profiles/README.md`](docs/profiles/README.md) |
 | See a minimal tested implementation | [`examples/reference-project/README.md`](examples/reference-project/README.md) |
 
-## The two contracts and three gates
+## Governance contracts and gates
 
-Every meaningful change has:
+**Delegated mode** uses the product request plus `work.md` as the living intent and execution record. The product owner approves outcomes, constraints, consequential commitments, exceptions, and production release. Ordinary technical planning and implementation do not require separate approval gates.
+
+**Formal mode** uses the two-contract, three-gate model:
 
 1. **Intent contract:** The approved brief defines what must be true.
 2. **Execution contract:** The approved plan defines how the system will change and how correctness will be established.
+3. **Specification gate:** Acceptance criteria, permissions, data meaning, and non-goals.
+4. **Technical decision gate:** Consequential architecture, security, migration, dependency, cost, tool, and compatibility decisions.
+5. **Release gate:** Merge and production deployment.
 
-Human approval occurs at:
-
-1. **Specification gate:** Acceptance criteria, permissions, data meaning, and non-goals.
-2. **Technical decision gate:** Consequential architecture, security, migration, dependency, cost, tool, and compatibility decisions.
-3. **Release gate:** Merge and production deployment.
-
-`state.yml` records the current phase and approval state but does not grant approval by itself.
+`state.yml` records formal phase and approval state but does not grant approval by itself.
 
 ## Core principles
 

@@ -1,5 +1,11 @@
 # Change risk classification
 
+Risk determines verification and review strength. Governance mode determines how that evidence is organized.
+
+In **delegated** mode, routine low-risk work may use author self-check plus relevant verification. Meaningful moderate work requires a fresh-context independent review; if one cannot be obtained, the work is not ready for release unless the product owner records an explicit exception under the project's exception process. High and critical work requires the named specialist reviews below and may not treat a missing required reviewer as a mere limitation.
+
+In **formal** mode, use the same risk expectations through the formal planning, review, and approval records.
+
 ## Low
 
 Examples: documentation, isolated style correction, mechanical refactor with strong coverage.
@@ -10,7 +16,7 @@ Required: short plan, targeted verification, CI, PR review.
 
 Examples: normal feature, API endpoint, cross-module behavior, new external integration without sensitive data.
 
-Required: feature brief, ExecPlan, full relevant verification, independent review, rollout and rollback.
+Required: a delegated `work.md` record or formal feature plan, full relevant verification, independent fresh-context review, rollout, and rollback.
 
 ## High
 

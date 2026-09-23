@@ -61,8 +61,19 @@ def main() -> int:
         if not (copy / "docs/work/APP-003-legacy-feature/planning-model.json").exists():
             raise AssertionError("project without governance mode did not retain formal behavior")
 
+        # The template source may itself contain application verification hooks.
+        # Isolate this fixture before asserting the generated project's
+        # NOT_CONFIGURED state.
+        hooks = copy / "scripts/verify.d"
+        inherited_hooks = [
+            path for path in hooks.iterdir()
+            if path.is_file() and path.name != "README.md"
+        ] if hooks.exists() else []
+        for path in inherited_hooks:
+            path.unlink()
+
         run([sys.executable, "scripts/verify_app.py"], copy, expected=2)
-        hook = copy / "scripts/verify.d/application.py"
+        hook = hooks / "application.py"
         hook.write_text("print('application check passed')\n", encoding="utf-8")
         run([sys.executable, "scripts/verify_app.py"], copy)
     print("Governance mode integration test passed.")

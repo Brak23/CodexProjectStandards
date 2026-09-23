@@ -5,12 +5,13 @@ Review should find failures, requirement mismatch, and recovery gaps. It is sepa
 ## Delegated mode
 
 - Small changes require an author self-check and relevant verification.
-- Meaningful changes use a fresh-context reviewer when available.
+- Meaningful moderate changes require a fresh-context independent reviewer before release. If one cannot be obtained, record the limitation and use the project's explicit exception process rather than silently treating review as optional.
+- High and critical changes require the specialist reviews named by the applicable risk and security policy. Missing required specialist review blocks release unless higher-priority organizational policy defines an authorized exception path.
 - Record the reviewed commit, reviewer identity or agent/context, scope, findings, disposition, and remaining limitations in the PR or **work.md**.
 - Self-review cannot be presented as independent review.
 - Changes after the reviewed commit require review of the changed surface.
 
-A missing independent reviewer is a stated limitation. Do not invent reviewer independence or specialist qualifications.
+Do not invent reviewer independence or specialist qualifications.
 
 ## Formal mode
 
